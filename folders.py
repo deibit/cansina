@@ -9,3 +9,4 @@ for n in p:
 f = open("folder.txt", "w")
 for n in folders:
     f.write("%s\n" % n)
+
