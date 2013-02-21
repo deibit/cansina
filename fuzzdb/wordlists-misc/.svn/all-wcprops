@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/!svn/ver/60/trunk/wordlists-misc
+END
+wordlist-common-snmp-community-strings.txt
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/60/trunk/wordlists-misc/wordlist-common-snmp-community-strings.txt
+END
+wordlist-alphanumeric-case.txt
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/60/trunk/wordlists-misc/wordlist-alphanumeric-case.txt
+END
+us_cities.txt
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/60/trunk/wordlists-misc/us_cities.txt
+END
+wordlist-dna.txt
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/60/trunk/wordlists-misc/wordlist-dna.txt
+END
+common-http-ports.txt
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/60/trunk/wordlists-misc/common-http-ports.txt
+END

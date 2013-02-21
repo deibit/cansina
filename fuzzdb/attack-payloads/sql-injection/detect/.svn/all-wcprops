@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/142/trunk/attack-payloads/sql-injection/detect
+END
+MySQL_MSSQL.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/136/trunk/attack-payloads/sql-injection/detect/MySQL_MSSQL.fuzz.txt
+END
+MySQL.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/142/trunk/attack-payloads/sql-injection/detect/MySQL.fuzz.txt
+END
+GenericBlind.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/138/trunk/attack-payloads/sql-injection/detect/GenericBlind.fuzz.txt
+END
+oracle.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/!svn/ver/136/trunk/attack-payloads/sql-injection/detect/oracle.fuzz.txt
+END
+MSSQL_blind.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/136/trunk/attack-payloads/sql-injection/detect/MSSQL_blind.fuzz.txt
+END
+xplatform.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/137/trunk/attack-payloads/sql-injection/detect/xplatform.fuzz.txt
+END
+MSSQL.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/136/trunk/attack-payloads/sql-injection/detect/MSSQL.fuzz.txt
+END

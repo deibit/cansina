@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/60/trunk/attack-payloads/path-traversal
+END
+traversals-8-deep-exotic-encoding.txt
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/!svn/ver/60/trunk/attack-payloads/path-traversal/traversals-8-deep-exotic-encoding.txt
+END
+path-traversal-windows.txt
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/60/trunk/attack-payloads/path-traversal/path-traversal-windows.txt
+END

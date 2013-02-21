@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/188/trunk/attack-payloads/http-protocol
+END
+crlf-injection.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/184/trunk/attack-payloads/http-protocol/crlf-injection.fuzz.txt
+END
+docs.http-method-defs.html
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/60/trunk/attack-payloads/http-protocol/docs.http-method-defs.html
+END
+known-uri-types.fuzz
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/188/trunk/attack-payloads/http-protocol/known-uri-types.fuzz
+END
+http-header-cache-poison.txt
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/60/trunk/attack-payloads/http-protocol/http-header-cache-poison.txt
+END
+crlf-notes.txt
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/183/trunk/attack-payloads/http-protocol/crlf-notes.txt
+END
+user-agents.txt
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/60/trunk/attack-payloads/http-protocol/user-agents.txt
+END
+http-protocol-methods.txt
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/60/trunk/attack-payloads/http-protocol/http-protocol-methods.txt
+END

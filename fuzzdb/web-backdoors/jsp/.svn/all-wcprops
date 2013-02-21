@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/63/trunk/web-backdoors/jsp
+END
+up.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/63/trunk/web-backdoors/jsp/up.jsp
+END
+jsp-reverse.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/63/trunk/web-backdoors/jsp/jsp-reverse.jsp
+END
+ListServlet.java
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/63/trunk/web-backdoors/jsp/ListServlet.java
+END
+ListServlet.class
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/63/trunk/web-backdoors/jsp/ListServlet.class
+END
+list.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/63/trunk/web-backdoors/jsp/list.jsp
+END
+CmdServlet.java
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/63/trunk/web-backdoors/jsp/CmdServlet.java
+END
+UpServlet.java
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/63/trunk/web-backdoors/jsp/UpServlet.java
+END
+cmdjsp.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/63/trunk/web-backdoors/jsp/cmdjsp.jsp
+END
+CmdServlet.class
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/63/trunk/web-backdoors/jsp/CmdServlet.class
+END
+UpServlet.class
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/63/trunk/web-backdoors/jsp/UpServlet.class
+END
+browser.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/63/trunk/web-backdoors/jsp/browser.jsp
+END
+cmd.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/63/trunk/web-backdoors/jsp/cmd.jsp
+END

@@ -1,0 +1,377 @@
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes
+END
+FatwireCMS.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/168/trunk/Discovery/PredictableRes/FatwireCMS.fuzz.txt
+END
+raft-large-words-lowercase.txt
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-large-words-lowercase.txt
+END
+raft-large-extensions-lowercase.txt
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-large-extensions-lowercase.txt
+END
+KitchensinkDirectories.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/162/trunk/Discovery/PredictableRes/KitchensinkDirectories.fuzz.txt
+END
+raft-large-files-lowercase.txt
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-large-files-lowercase.txt
+END
+HTTP_POST_Microsoft.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/162/trunk/Discovery/PredictableRes/HTTP_POST_Microsoft.fuzz.txt
+END
+Sharepoint.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/162/trunk/Discovery/PredictableRes/Sharepoint.fuzz.txt
+END
+tftp.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/162/trunk/Discovery/PredictableRes/tftp.fuzz.txt
+END
+JRun.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/168/trunk/Discovery/PredictableRes/JRun.fuzz.txt
+END
+LotusNotes.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/168/trunk/Discovery/PredictableRes/LotusNotes.fuzz.txt
+END
+raft-small-directories.txt
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-small-directories.txt
+END
+CGI_HTTP_POST_Windows.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/162/trunk/Discovery/PredictableRes/CGI_HTTP_POST_Windows.fuzz.txt
+END
+Apache.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/162/trunk/Discovery/PredictableRes/Apache.fuzz.txt
+END
+SuniPlanet.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/168/trunk/Discovery/PredictableRes/SuniPlanet.fuzz.txt
+END
+SAP.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/176/trunk/Discovery/PredictableRes/SAP.fuzz.txt
+END
+Websphere.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/162/trunk/Discovery/PredictableRes/Websphere.fuzz.txt
+END
+Frontpage.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/168/trunk/Discovery/PredictableRes/Frontpage.fuzz.txt
+END
+Vignette.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/168/trunk/Discovery/PredictableRes/Vignette.fuzz.txt
+END
+PHP_CommonBackdoors.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/162/trunk/Discovery/PredictableRes/PHP_CommonBackdoors.fuzz.txt
+END
+raft-medium-directories.txt
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-medium-directories.txt
+END
+AdobeXML.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/176/trunk/Discovery/PredictableRes/AdobeXML.fuzz.txt
+END
+Weblogic.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/169/trunk/Discovery/PredictableRes/Weblogic.fuzz.txt
+END
+Logins.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/162/trunk/Discovery/PredictableRes/Logins.fuzz.txt
+END
+CGI_XPlatform.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/162/trunk/Discovery/PredictableRes/CGI_XPlatform.fuzz.txt
+END
+raft-large-directories.txt
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-large-directories.txt
+END
+raft-small-directories-lowercase.txt
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-small-directories-lowercase.txt
+END
+SunAppServerGlassfish.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/168/trunk/Discovery/PredictableRes/SunAppServerGlassfish.fuzz.txt
+END
+raft-small-words.txt
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-small-words.txt
+END
+raft-small-extensions.txt
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-small-extensions.txt
+END
+SiteMinder.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/162/trunk/Discovery/PredictableRes/SiteMinder.fuzz.txt
+END
+proxy-conf.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/162/trunk/Discovery/PredictableRes/proxy-conf.fuzz.txt
+END
+raft-small-files.txt
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-small-files.txt
+END
+Netware.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/168/trunk/Discovery/PredictableRes/Netware.fuzz.txt
+END
+ColdFusion.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/168/trunk/Discovery/PredictableRes/ColdFusion.fuzz.txt
+END
+CGI_HTTP_POST.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/162/trunk/Discovery/PredictableRes/CGI_HTTP_POST.fuzz.txt
+END
+Oracle9i.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/168/trunk/Discovery/PredictableRes/Oracle9i.fuzz.txt
+END
+raft-medium-directories-lowercase.txt
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-medium-directories-lowercase.txt
+END
+raft-medium-words.txt
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-medium-words.txt
+END
+raft-medium-extensions.txt
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-medium-extensions.txt
+END
+UnixDotfiles.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/168/trunk/Discovery/PredictableRes/UnixDotfiles.fuzz.txt
+END
+raft-medium-files.txt
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-medium-files.txt
+END
+UserAgents.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/167/trunk/Discovery/PredictableRes/UserAgents.fuzz.txt
+END
+JBoss.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/162/trunk/Discovery/PredictableRes/JBoss.fuzz.txt
+END
+JavaServlets_Common.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/166/trunk/Discovery/PredictableRes/JavaServlets_Common.fuzz.txt
+END
+raft-large-directories-lowercase.txt
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-large-directories-lowercase.txt
+END
+raft-small-words-lowercase.txt
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-small-words-lowercase.txt
+END
+raft-large-words.txt
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-large-words.txt
+END
+raft-large-extensions.txt
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-large-extensions.txt
+END
+IIS.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/168/trunk/Discovery/PredictableRes/IIS.fuzz.txt
+END
+raft-small-extensions-lowercase.txt
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-small-extensions-lowercase.txt
+END
+Passwords.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/162/trunk/Discovery/PredictableRes/Passwords.fuzz.txt
+END
+raft-small-files-lowercase.txt
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-small-files-lowercase.txt
+END
+raft-large-files.txt
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-large-files.txt
+END
+PHP.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/168/trunk/Discovery/PredictableRes/PHP.fuzz.txt
+END
+CGI_Microsoft.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/162/trunk/Discovery/PredictableRes/CGI_Microsoft.fuzz.txt
+END
+ApacheTomcat.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/162/trunk/Discovery/PredictableRes/ApacheTomcat.fuzz.txt
+END
+raft-medium-words-lowercase.txt
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-medium-words-lowercase.txt
+END
+raft-medium-extensions-lowercase.txt
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-medium-extensions-lowercase.txt
+END
+OracleAppServer.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/162/trunk/Discovery/PredictableRes/OracleAppServer.fuzz.txt
+END
+Hyperion.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/162/trunk/Discovery/PredictableRes/Hyperion.fuzz.txt
+END
+raft-medium-files-lowercase.txt
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/179/trunk/Discovery/PredictableRes/raft-medium-files-lowercase.txt
+END
+Randomfiles.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/162/trunk/Discovery/PredictableRes/Randomfiles.fuzz.txt
+END

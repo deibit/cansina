@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 29
+/svn/!svn/ver/175/trunk/regex
+END
+errors.txt
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/61/trunk/regex/errors.txt
+END
+readme.txt
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/106/trunk/regex/readme.txt
+END
+pii.readme.txt
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/175/trunk/regex/pii.readme.txt
+END
+pii.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/175/trunk/regex/pii.fuzz.txt
+END
+sessionid.txt
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/61/trunk/regex/sessionid.txt
+END

@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/180/trunk/web-backdoors/cfm
+END
+cfExec.cfm
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/180/trunk/web-backdoors/cfm/cfExec.cfm
+END
+cmd.cfm
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/63/trunk/web-backdoors/cfm/cmd.cfm
+END
+cfSQL.cfm
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/180/trunk/web-backdoors/cfm/cfSQL.cfm
+END

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/187/trunk/attack-payloads/xss
+END
+default-javascript-event-attributes.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/187/trunk/attack-payloads/xss/default-javascript-event-attributes.fuzz.txt
+END
+xss-uri.txt
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/60/trunk/attack-payloads/xss/xss-uri.txt
+END
+all-encodings-of-lt.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/186/trunk/attack-payloads/xss/all-encodings-of-lt.fuzz.txt
+END
+xss-rsnake.txt
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/186/trunk/attack-payloads/xss/xss-rsnake.txt
+END

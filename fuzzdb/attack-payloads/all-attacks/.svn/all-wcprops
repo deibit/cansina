@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/60/trunk/attack-payloads/all-attacks
+END
+all-attacks-unix.txt
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/60/trunk/attack-payloads/all-attacks/all-attacks-unix.txt
+END
+all-attacks-win.txt
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/60/trunk/attack-payloads/all-attacks/all-attacks-win.txt
+END
+interesting-metacharacters.txt
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/60/trunk/attack-payloads/all-attacks/interesting-metacharacters.txt
+END

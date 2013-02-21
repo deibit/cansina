@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/60/trunk/wordlists-user-passwd/db2
+END
+db2_default_pass.txt
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/60/trunk/wordlists-user-passwd/db2/db2_default_pass.txt
+END
+db2_default_user.txt
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/60/trunk/wordlists-user-passwd/db2/db2_default_user.txt
+END
+db2_default_userpass.txt
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/60/trunk/wordlists-user-passwd/db2/db2_default_userpass.txt
+END

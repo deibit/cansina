@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/60/trunk/wordlists-user-passwd/unix-os
+END
+unix_users.txt
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/60/trunk/wordlists-user-passwd/unix-os/unix_users.txt
+END
+unix_passwords.txt
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/60/trunk/wordlists-user-passwd/unix-os/unix_passwords.txt
+END

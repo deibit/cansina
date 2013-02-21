@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/60/trunk/wordlists-user-passwd/postgres
+END
+postgres_default_user.txt
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/60/trunk/wordlists-user-passwd/postgres/postgres_default_user.txt
+END
+postgres_default_userpass.txt
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/60/trunk/wordlists-user-passwd/postgres/postgres_default_userpass.txt
+END
+postgres_default_pass.txt
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/60/trunk/wordlists-user-passwd/postgres/postgres_default_pass.txt
+END

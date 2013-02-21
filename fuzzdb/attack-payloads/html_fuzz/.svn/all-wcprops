@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/128/trunk/attack-payloads/html_fuzz
+END
+html_tags.txt
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/128/trunk/attack-payloads/html_fuzz/html_tags.txt
+END
+javascript_events.txt
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/128/trunk/attack-payloads/html_fuzz/javascript_events.txt
+END

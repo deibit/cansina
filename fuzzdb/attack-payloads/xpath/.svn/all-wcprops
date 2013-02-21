@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/181/trunk/attack-payloads/xpath
+END
+xpath-injection.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/181/trunk/attack-payloads/xpath/xpath-injection.fuzz.txt
+END
+xpath.readme.txt
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/181/trunk/attack-payloads/xpath/xpath.readme.txt
+END

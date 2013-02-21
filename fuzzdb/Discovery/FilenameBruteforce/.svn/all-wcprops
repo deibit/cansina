@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/168/trunk/Discovery/FilenameBruteforce
+END
+Extensions.Common.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/162/trunk/Discovery/FilenameBruteforce/Extensions.Common.fuzz.txt
+END
+WordlistSkipfish.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/162/trunk/Discovery/FilenameBruteforce/WordlistSkipfish.fuzz.txt
+END
+Extensions.Mostcommon.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/162/trunk/Discovery/FilenameBruteforce/Extensions.Mostcommon.fuzz.txt
+END
+copy_of.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/162/trunk/Discovery/FilenameBruteforce/copy_of.fuzz.txt
+END
+Extensions.Skipfish.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/162/trunk/Discovery/FilenameBruteforce/Extensions.Skipfish.fuzz.txt
+END
+Extensions.Compressed.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/162/trunk/Discovery/FilenameBruteforce/Extensions.Compressed.fuzz.txt
+END
+3CharExtBrute.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/168/trunk/Discovery/FilenameBruteforce/3CharExtBrute.fuzz.txt
+END
+Extensions.Backup.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/162/trunk/Discovery/FilenameBruteforce/Extensions.Backup.fuzz.txt
+END

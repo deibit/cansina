@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/182/trunk/attack-payloads/ldap
+END
+ldap.readme.txt
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/182/trunk/attack-payloads/ldap/ldap.readme.txt
+END
+ldap-injection.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/182/trunk/attack-payloads/ldap/ldap-injection.fuzz.txt
+END

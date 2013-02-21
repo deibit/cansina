@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/170/trunk/attack-payloads/BizLogic
+END
+DebugParams.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/168/trunk/attack-payloads/BizLogic/DebugParams.fuzz.txt
+END
+CommonMethods.fuzz.txt
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/170/trunk/attack-payloads/BizLogic/CommonMethods.fuzz.txt
+END

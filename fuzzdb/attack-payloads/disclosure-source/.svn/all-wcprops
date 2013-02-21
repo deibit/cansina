@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/60/trunk/attack-payloads/disclosure-source
+END
+source-disc-cmd-exec-traversal.txt
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/!svn/ver/60/trunk/attack-payloads/disclosure-source/source-disc-cmd-exec-traversal.txt
+END
+source-disclosure-generic.txt
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/60/trunk/attack-payloads/disclosure-source/source-disclosure-generic.txt
+END
+source-disclosure-microsoft.txt
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/60/trunk/attack-payloads/disclosure-source/source-disclosure-microsoft.txt
+END
