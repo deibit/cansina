@@ -14,6 +14,9 @@ THREADS = 4
 USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; es-ES)"
 
 site = sys.argv[1]
+if site[-1] == '/':
+    site = site[:-1]
+
 payload = sys.argv[2]
 
 extension = ""
