@@ -3,7 +3,7 @@ import requests
 
 USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; es-ES)"
 
-class Visitador(threading.Thread):
+class Visitor(threading.Thread):
 
     def __init__(self, id, queue):
         threading.Thread.__init__(self)

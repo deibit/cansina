@@ -1,7 +1,5 @@
 import sqlite3
-import Queue
 import threading
-import os
 import time
 
 PREFIX = "data" + os.sep
@@ -36,7 +34,9 @@ class Manager(threading.Thread):
             })
 
         if not len(cursor.fetchone()) > 0:
-            cursor.execute("INSERT INTO requests VALUES (?,?,?,?,?,?,?,?)", task.to_database() + time.time())
+            cursor.execute("INSERT INTO requests VALUES (?,?,?,?,?,?,?,?)", \
+                task.to_database() + \
+                time.time())
             connection.commit()
 
     def __create_database(self, database_name):

@@ -5,15 +5,34 @@ import requests
 import sys
 import time
 import os
-import itertools
 import Queue
 import threading
+import urlparse
+import argparse
 
-from visitador import Visitador
+from visitor import Visitor
 from payload import Payload
 from task import Task
 
-THREADS = 4
+parser = argparse.ArgumentParser()
+parser.add_argument('-u', dest = 'target', \
+                        help = "target url", required = True)
+parser.add_argument('-p', dest = 'payload', help = "payload file to use", \
+                        required = True)
+parser.add_argument('-e', dest = 'extension', \
+                        help = "extension to use (default none)", default = "")
+parser.add_argument('-t', dest = 'threads', \
+                        help = "number of threads (default 4)", default = 4)
+args = parser.parse_args()
+
+target = args.target
+payload_file = args.payload
+extension = args.extension
+threads = args.threads
+
+print target, payload_file, extension, threads
+sys.exit()
+
 
 site = sys.argv[1]
 if site[-1] == '/':
@@ -49,7 +68,6 @@ lock = threading.Lock()
 if __name__ == '__main__':
     for n in range(0, THREADS):
         print "Starting thread number %s" % n
-        v = Visitador(n, queue)
         v.start()
     queue.join()
 

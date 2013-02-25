@@ -1,11 +1,12 @@
 import Queue
 
-import Task
+import task
 
-class Payload:
+class Payload(Queue.Queue):
     def __init__(self, payload_filename, extensions = []):
-        self.queue = Queue.Queue()
         self.extensions = extensions
         self.payload = ""
         with open(payload_filename) as payload:
             self.payload = payload.readlines()
+        for n in self.payload:
+            self.put(n)
