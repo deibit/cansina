@@ -35,5 +35,5 @@ nosetests.xml
 .pydevproject
 
 *.log
-*.DS_Store
+.DS_Store
 
