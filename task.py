@@ -1,6 +1,8 @@
+import os
+
 class Task:
 
-    def __init__(self, payload, target, resource, extension, response_code=0,\
+    def __init__(self, payload, target, resource, extension="", response_code=0,\
         response_size=0, response_time=0):
         self.payload = payload
         self.target = target
@@ -29,6 +31,7 @@ class Task:
         return self.target + self.resource + self.extension
 
     def print_report(self):
-        print "{0:3} {1:10} {2:30}".format( self.response_code, \
-                                            self.response_size, \
-                                            self.resource + self.extension)
+        print "{0:3} {1:8} {2:30}".format( self.response_code, \
+                                    self.response_size, \
+                                    self.target + self.resource + self.extension \
+                                    + os.linesep),

@@ -12,7 +12,9 @@ class Payload():
         # TODO support for multiple extensions via generators
         #
         for resource in self.payload:
-            resource = resource.replace('/', '')
             if not target[-1] == '/':
                 target = target + '/'
+            resource = resource.strip()
+            if resource[0] == '/':
+                resource = resource[1:]
             self.queue.put(Task(payload_filename, target, resource, extensions[0]))

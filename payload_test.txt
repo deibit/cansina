@@ -1,0 +1,8 @@
+admin
+resources
+images
+imgs
+img
+scripts
+robots.txt
+index
