@@ -36,4 +36,5 @@ nosetests.xml
 
 *.log
 .DS_Store
+data/*
 

@@ -1,37 +1,37 @@
 import threading
 import requests
+import time
+
+from task import Task
 
 USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; es-ES)"
 
 class Visitor(threading.Thread):
 
-    def __init__(self, id, queue):
+    def __init__(self, id, payload, dbmanager):
         threading.Thread.__init__(self)
-        self.queue = queue
         self.id = id
+        self.payload = payload
+        self.dbmanager = dbmanager
 
     def run(self):
-        while not self.queue.empty():
-            resource = self.queue.get()
-            self.visit(resource, extension)
-            self.queue.task_done()
+        while not self.payload.queue.empty():
+            self.visit(self.payload.queue.get())
+            self.payload.queue.task_done()
 
-    def visit(self, resource, extension):
+    def visit(self, task):
         try:
             headers = {"user-agent" : USER_AGENT}
-            resource = resource.strip()
-            sep = "/"
-            if len(resource) > 0:
-                if resource[0] == '/':
-                    sep = ""
-            r = requests.get("%s%s%s%s" % (site, sep, resource, extension), headers = headers)
-            lock.acquire()
-            current_req = current_req + 1
-            lock.release()
-            results.append((site + sep + resource + extension, r.headers['content-length'], r.status_code))
-            res = (resource + extension, r.headers['content-length'], r.status_code)
-            if not r.status_code in banned:
-                sys.stdout.write("(%s) [%s/%s] %s" % (self.id, current_req, total_req, format_result(res)))
+            now = time.time()
+            r = requests.get(task.get_complete_target())
+            after = time.time()
+            delta = after - now
+            task.response_code = r.status_code
+            task.response_size = len(r.content)
+            task.response_time = delta
+            self.dbmanager.queue.put(task)
+            task.print_report()
+
         except KeyboardInterrupt:
             sys.exit()
         except requests.ConnectionError, requests.Timeout:

@@ -1,18 +1,11 @@
-# TODO filter http codes from cmd-opt
-# TODO exception management
-
-import requests
 import sys
-import time
 import os
-import Queue
-import threading
-import urlparse
 import argparse
+import urlparse
 
 from visitor import Visitor
 from payload import Payload
-from task import Task
+from dbo import DBManager
 
 #
 # Parsing program options
@@ -29,29 +22,23 @@ parser.add_argument('-t', dest = 'threads', \
 args = parser.parse_args()
 
 target = args.target
-payload_file = args.payload
+payload_filename = args.payload
 extension = args.extension
 threads = args.threads
 
 #
 # Creating middle objects
 #
-payload_object = Payload(payload_file, extension)
-log_results = open("%s.log" % time.time(), 'w')
+payload = Payload(target, payload_filename, [extension])
+manager = DBManager(urlparse.urlparse(target).netloc.replace(':',''))
 
+#
+# Go
+#
+for n in range(0, threads):
+    print "Starting thread number %s" % n
+    v = Visitor(n, payload, manager)
+    v.start()
+payload.queue.join()
+del manager
 
-
-
-def format_result(cad):
-    return "{0[2]:^6} {0[1]:^10} {0[0]}{1}".format(cad, os.linesep)
-
-if __name__ == '__main__':
-    for n in range(0, THREADS):
-        print "Starting thread number %s" % n
-        v.start()
-    queue.join()
-
-for res in results:
-    log_results.writelines(format_result(res))
-
-log_results.close()
