@@ -3,6 +3,7 @@ import os
 import argparse
 import urlparse
 import Queue
+import time
 
 from visitor import Visitor
 from payload import Payload
@@ -39,12 +40,26 @@ manager = DBManager(urlparse.urlparse(target).netloc.replace(':',''), queue)
 # Go
 #
 manager.start()
-for n in range(0, threads):
-    print "Starting thread number %s" % n
-    v = Visitor(n, payload, queue)
-    v.start()
-payload.queue.join()
-queue.put(Task("STOP", "STOP", "STOP"))
-queue.join()
+try:
+    for n in range(0, threads):
+        print "Starting thread number %s" % n
+        v = Visitor(n, payload, queue)
+        v.daemon = True
+        v.start()
+    while not payload.queue.empty():
+        time.sleep(0.1)
+    # payload.queue.join()
+#     queue.put(Task("STOP", "STOP", "STOP"))
+#     queue.join()
+# except:
+#     pass
 
+except KeyboardInterrupt:
+    sys.stdout.write("Quitting by user...shutting down")
+    payload.queue.
+    sys.exit(1)
+
+finally:
+    queue.put(Task("STOP", "STOP", "STOP"))
+    queue.join()
 

@@ -7,7 +7,7 @@ class Payload():
         self.payload = ""
         with open(payload_filename) as payload:
             self.payload = payload.readlines()
-            self.len = len(self.payload)
+            self.size = len(self.payload)
         #
         # TODO support for multiple extensions via generators
         #

@@ -1,4 +1,5 @@
 import os
+import sys
 
 class Task:
 
@@ -21,17 +22,11 @@ class Task:
                 self.response_size,
                 self.response_time)
 
-    def to_console(self):
-        return "{0[0]:^6} {0[1]:^10} {0[0]}{1}".format( self.response_code, \
-                                                        self.response_size,
-                                                        self.resource + \
-                                                        self.extension)
-
     def get_complete_target(self):
         return self.target + self.resource + self.extension
 
     def print_report(self):
-        print "{0:3} {1:8} {2:30}".format( self.response_code, \
+        sys.stdout.write("{0} {1:^12} {2}".format( self.response_code, \
                                     self.response_size, \
                                     self.target + self.resource + self.extension \
-                                    + os.linesep),
+                                    + os.linesep))
