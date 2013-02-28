@@ -9,12 +9,12 @@ USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; es-ES)"
 SLEEP_TIME = 3
 
 class Visitor(multiprocessing.Process):
-
-    def __init__(self, id, payload, results):
+    def __init__(self, id, payload, results, banned=[]):
         multiprocessing.Process.__init__(self)
         self.id = id
         self.payload = payload
         self.results = results
+        self.banned = banned
 
     def run(self):
         while not self.payload.queue.empty():
@@ -27,12 +27,13 @@ class Visitor(multiprocessing.Process):
             now = time.time()
             r = requests.get(task.get_complete_target())
             after = time.time()
-            delta = after - now
+            delta = (after - now) * 1000
             task.response_code = r.status_code
             task.response_size = len(r.content)
             task.response_time = delta
             self.results.put(task)
-            task.print_report()
+            if str(task.response_code) in self.banned:
+                task.valid = False
 
         except requests.ConnectionError, requests.Timeout:
             sys.stdout.write("(%s) timeout - sleeping..." % self.id)

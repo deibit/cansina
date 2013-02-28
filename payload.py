@@ -1,14 +1,14 @@
-import multiprocessing
+from multiprocessing import JoinableQueue
 from task import Task
 
 class Payload():
+    size = 0
     def __init__(self, target, payload_filename, extensions = [""]):
-        self.queue = multiprocessing.JoinableQueue()
+        self.queue = JoinableQueue()
         self.payload = ""
-        self.size = 0
         with open(payload_filename) as payload:
             self.payload = payload.readlines()
-            self.size = len(self.payload)
+        Payload.size = len(self.payload)
         #
         # TODO support for multiple extensions via generators
         #

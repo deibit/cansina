@@ -10,7 +10,7 @@ SLEEP_TIME = 0.5
 
 class DBManager(multiprocessing.Process):
 
-    def __init__(self, database_name, queue):
+    def __init__(self, database_name, queue, payload_size):
         multiprocessing.Process.__init__(self)
         if not os.path.isfile(PREFIX + database_name + SUFIX):
             connection = sqlite3.connect(PREFIX + database_name + SUFIX)
@@ -32,19 +32,38 @@ class DBManager(multiprocessing.Process):
                 sys.exit()
         self.queue = queue
         self.database_name = database_name
+        self.payload_size = payload_size
 
     def run(self):
+        counter = 0
         while 1:
             if self.queue.empty():
                 time.sleep(SLEEP_TIME)
             else:
                 task = self.queue.get()
+                counter = counter + 1
                 if task.target == 'STOP':
                     self.queue.task_done()
                     break
                 else:
                     self.process(task)
                     self.queue.task_done()
+
+                    #
+                    # Terminal workout
+                    #
+                    percentage = counter * 100 / self.payload_size
+                    target = task.get_complete_target()
+                    linesep = ""
+                    if task.is_valid():
+                        linesep = os.linesep
+                    to_console = "{0:3}%  {1:^6} {2:10} {3}".format(percentage, task.response_code, task.response_size, target)
+                    sys.stdout.write(to_console + linesep)
+                    sys.stdout.flush()
+                    time.sleep(0.1)
+                    sys.stdout.write('\r')
+                    sys.stdout.write ("\x1b[0K")
+                    sys.stdout.flush()
 
     def process(self, task):
         connection = sqlite3.connect(PREFIX + self.database_name + SUFIX)
@@ -64,7 +83,7 @@ class DBManager(multiprocessing.Process):
         if not cursor.fetchone():
             if not task.response_code == 404:
                 cursor.execute("INSERT INTO requests VALUES (?,?,?,?,?,?,?,?)", \
-                    task.to_database() + (time.time(),))
+                    task.values() + (time.time(),))
                 connection.commit()
         connection.close()
 

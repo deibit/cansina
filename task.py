@@ -12,8 +12,9 @@ class Task:
         self.response_code = response_code
         self.response_size = response_size
         self.response_time = response_time
+        self.valid = True
 
-    def to_database(self):
+    def values(self):
         return (self.payload,
                 self.target,
                 self.resource,
@@ -25,8 +26,5 @@ class Task:
     def get_complete_target(self):
         return self.target + self.resource + self.extension
 
-    def print_report(self):
-        sys.stdout.write("{0} {1:^12} {2}".format( self.response_code, \
-                                    self.response_size, \
-                                    self.target + self.resource + self.extension \
-                                    + os.linesep))
+    def is_valid(self):
+        return self.valid
