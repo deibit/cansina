@@ -4,6 +4,7 @@ import argparse
 import urlparse
 import Queue
 import time
+import multiprocessing
 
 from visitor import Visitor
 from payload import Payload
@@ -32,34 +33,23 @@ threads = int(args.threads)
 #
 # Creating middle objects
 #
-queue = Queue.Queue()
+results = multiprocessing.JoinableQueue()
 payload = Payload(target, payload_filename, [extension])
-manager = DBManager(urlparse.urlparse(target).netloc.replace(':',''), queue)
+manager = DBManager(urlparse.urlparse(target).netloc.replace(':',''), results)
 
 #
 # Go
 #
+manager.daemon = True
 manager.start()
 try:
     for n in range(0, threads):
         print "Starting thread number %s" % n
-        v = Visitor(n, payload, queue)
+        v = Visitor(n, payload, results)
         v.daemon = True
         v.start()
-    while not payload.queue.empty():
+    while len(multiprocessing.active_children()) > 1:
         time.sleep(0.1)
-    # payload.queue.join()
-#     queue.put(Task("STOP", "STOP", "STOP"))
-#     queue.join()
-# except:
-#     pass
-
-except KeyboardInterrupt:
-    sys.stdout.write("Quitting by user...shutting down")
-    payload.queue.
-    sys.exit(1)
-
-finally:
-    queue.put(Task("STOP", "STOP", "STOP"))
-    queue.join()
-
+    results.join()
+except Exception as e:
+    print(e)

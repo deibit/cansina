@@ -1,17 +1,17 @@
 import sqlite3
-import threading
+import multiprocessing
 import time
 import os
-import Queue
+import sys
 
 PREFIX = "data" + os.sep
 SUFIX = ".sqlite"
-SLEEP_TIME = 1
+SLEEP_TIME = 0.5
 
-class DBManager(threading.Thread):
+class DBManager(multiprocessing.Process):
 
     def __init__(self, database_name, queue):
-        threading.Thread.__init__(self)
+        multiprocessing.Process.__init__(self)
         if not os.path.isfile(PREFIX + database_name + SUFIX):
             connection = sqlite3.connect(PREFIX + database_name + SUFIX)
             try:
@@ -67,6 +67,10 @@ class DBManager(threading.Thread):
                     task.to_database() + (time.time(),))
                 connection.commit()
         connection.close()
+
+        def terminate(self):
+            print "DB process %s terminated" % self.pid
+            multiprocessing.Process.terminate(self)
 
 
 

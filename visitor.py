@@ -1,4 +1,4 @@
-import threading
+import multiprocessing
 import requests
 import time
 import sys
@@ -8,13 +8,13 @@ from task import Task
 USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; es-ES)"
 SLEEP_TIME = 3
 
-class Visitor(threading.Thread):
+class Visitor(multiprocessing.Process):
 
-    def __init__(self, id, payload, queue):
-        threading.Thread.__init__(self)
+    def __init__(self, id, payload, results):
+        multiprocessing.Process.__init__(self)
         self.id = id
         self.payload = payload
-        self.queue = queue
+        self.results = results
 
     def run(self):
         while not self.payload.queue.empty():
@@ -31,9 +31,13 @@ class Visitor(threading.Thread):
             task.response_code = r.status_code
             task.response_size = len(r.content)
             task.response_time = delta
-            self.queue.put(task)
+            self.results.put(task)
             task.print_report()
 
         except requests.ConnectionError, requests.Timeout:
             sys.stdout.write("(%s) timeout - sleeping..." % self.id)
             time.sleep(SLEEP_TIME)
+
+    def terminate(self):
+        print "process %s terminated" % self.pid
+        multiprocessing.Process.terminate(self)

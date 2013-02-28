@@ -1,10 +1,11 @@
-import Queue
+import multiprocessing
 from task import Task
 
 class Payload():
     def __init__(self, target, payload_filename, extensions = [""]):
-        self.queue = Queue.Queue()
+        self.queue = multiprocessing.JoinableQueue()
         self.payload = ""
+        self.size = 0
         with open(payload_filename) as payload:
             self.payload = payload.readlines()
             self.size = len(self.payload)
