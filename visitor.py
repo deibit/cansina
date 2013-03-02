@@ -3,18 +3,16 @@ import requests
 import time
 import sys
 
-from task import Task
-
-USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; es-ES)"
 SLEEP_TIME = 3
 
 class Visitor(multiprocessing.Process):
-    def __init__(self, id, payload, results, banned=[]):
+    def __init__(self, id, payload, results, banned, user_agent):
         multiprocessing.Process.__init__(self)
         self.id = id
         self.payload = payload
         self.results = results
         self.banned = banned
+        self.user_agent = user_agent
 
     def run(self):
         while not self.payload.queue.empty():
@@ -23,7 +21,7 @@ class Visitor(multiprocessing.Process):
 
     def visit(self, task):
         try:
-            headers = {"user-agent" : USER_AGENT}
+            headers = {"user-agent" : self.user_agent}
             now = time.time()
             r = requests.get(task.get_complete_target())
             after = time.time()

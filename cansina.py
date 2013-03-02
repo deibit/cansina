@@ -2,14 +2,13 @@ import sys
 import os
 import argparse
 import urlparse
-import Queue
 import time
 import multiprocessing
 
 from visitor import Visitor
 from payload import Payload
 from dbo import DBManager
-from task import Task
+
 
 def _prepare_target(target):
     '''Examine target url complicance adding default handle (http://) and look for a final /'''
@@ -32,13 +31,18 @@ parser.add_argument('-t', dest = 'threads', type=int, \
                         help = "number of threads (default 4)", default = 4)
 parser.add_argument('-b', dest = 'banned', \
                         help = "banned response codes in format: 404,301,... (default none)", default = ",")
+USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; es-ES)"
+parser.add_argument('-a', dest = 'user_agent', \
+                        help = "the preferred user-agent (default provided)", default = USER_AGENT)
 args = parser.parse_args()
+
 
 target = _prepare_target(args.target)
 payload_filename = args.payload
 extension = args.extension
 threads = int(args.threads)
 banned = [n for n in args.banned.split(',')]
+user_agent = args.user_agent
 print("Banned extensions: %s" % " ".join(banned))
 print("Using payload: %s" % payload_filename)
 print("Using %s threads" % threads)
@@ -57,7 +61,7 @@ manager.daemon = True
 manager.start()
 try:
     for n in range(0, threads):
-        v = Visitor(n, payload, results, banned)
+        v = Visitor(n, payload, results, banned, user_agent)
         v.daemon = True
         v.start()
     while len(multiprocessing.active_children()) > 1:

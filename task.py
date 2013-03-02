@@ -1,6 +1,3 @@
-import os
-import sys
-
 class Task:
 
     def __init__(self, payload, target, resource, extension="", response_code=0,\
