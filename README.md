@@ -4,7 +4,9 @@ Cansina
 Cansina is a (yet another) Web Content Discovery Application.
 
 It takes general available dictionaries of common path and files used by web applications
-and make URL requests looking back to the server response code.
+and make URL requests looking back to the server response code. Cansina stores the information
+in a sqlite database (omitting 404 responses). One for every new url (think this as a project kind feature)
+and the same databse for every new payload on the same url.
 
 It tries to be simple and directed to use doing only one thing: Discover content.
 
