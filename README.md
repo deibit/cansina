@@ -14,6 +14,11 @@ to use in a serious pentesting session. If you are looking for a true tool take 
 
 Feature requests and comments are welcome.
 
+Use
+---
+
+python cansina.py -h
+
 Dependencies
 ------------
 
