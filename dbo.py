@@ -36,7 +36,9 @@ class DBManager(multiprocessing.Process):
 
     def run(self):
         counter = 0
-        print(os.linesep + "-%----CODE---------SIZE----URL--")
+        print("-------------------------------")
+        print(" %    CODE        SIZE    URL  ")
+        print("-------------------------------")
         while 1:
             if self.queue.empty():
                 time.sleep(SLEEP_TIME)
