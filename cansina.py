@@ -17,6 +17,17 @@ def _prepare_target(target):
     if not target.endswith('/'):
         target = target + '/'
     return target
+
+def _prepare_proxies(proxies):
+    if proxies:
+        proxies_dict = {}
+        for proxy in proxies:
+            if proxy.startswith('http://'):
+                proxies_dict['http'] = proxy
+            elif proxy.startswith('https://'):
+                proxies_dict['https'] = proxy
+        return proxies_dict
+    return {}
 #
 # Parsing program options
 #
@@ -30,10 +41,12 @@ parser.add_argument('-e', dest = 'extension', \
 parser.add_argument('-t', dest = 'threads', type=int, \
                         help = "number of threads (default 4)", default = 4)
 parser.add_argument('-b', dest = 'banned', \
-                        help = "banned response codes in format: 404,301,... (default none)", default = ",")
+                        help = "banned response codes in format: 404,301,... (default none)", default = "")
 USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; es-ES)"
 parser.add_argument('-a', dest = 'user_agent', \
                         help = "the preferred user-agent (default provided)", default = USER_AGENT)
+parser.add_argument('-P', dest = 'proxies', \
+                        help = "set a http and/or https proxy (ex: http://127.0.0.1:8080,https://...", default = "")
 args = parser.parse_args()
 
 
@@ -41,8 +54,10 @@ target = _prepare_target(args.target)
 payload_filename = args.payload
 extension = args.extension
 threads = int(args.threads)
-banned = [n for n in args.banned.split(',')]
+banned = args.banned.split(',')
 user_agent = args.user_agent
+proxy = _prepare_proxies(args.proxies.split(','))
+
 print("Banned extensions: %s" % " ".join(banned))
 print("Using payload: %s" % payload_filename)
 print("Using %s threads" % threads)
@@ -61,7 +76,7 @@ manager.daemon = True
 manager.start()
 try:
     for n in range(0, threads):
-        v = Visitor(n, payload, results, banned, user_agent)
+        v = Visitor(n, payload, results, banned, user_agent, proxy)
         v.daemon = True
         v.start()
     while len(multiprocessing.active_children()) > 1:

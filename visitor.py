@@ -6,13 +6,14 @@ import sys
 SLEEP_TIME = 3
 
 class Visitor(multiprocessing.Process):
-    def __init__(self, id, payload, results, banned, user_agent):
+    def __init__(self, id, payload, results, banned, user_agent, proxy={}):
         multiprocessing.Process.__init__(self)
         self.id = id
         self.payload = payload
         self.results = results
         self.banned = banned
         self.user_agent = user_agent
+        self.proxy = proxy
 
     def run(self):
         while not self.payload.queue.empty():
@@ -23,7 +24,11 @@ class Visitor(multiprocessing.Process):
         try:
             headers = {"user-agent" : self.user_agent}
             now = time.time()
-            r = requests.get(task.get_complete_target(), headers=headers)
+            r = None
+            if self.proxy:
+                r = requests.get(task.get_complete_target(), headers=headers, proxies=self.proxy)
+            else:
+                r = requests.get(task.get_complete_target(), headers=headers)
             after = time.time()
             delta = (after - now) * 1000
             task.response_code = r.status_code
