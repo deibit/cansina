@@ -23,7 +23,7 @@ class Visitor(multiprocessing.Process):
         try:
             headers = {"user-agent" : self.user_agent}
             now = time.time()
-            r = requests.get(task.get_complete_target())
+            r = requests.get(task.get_complete_target(), headers=headers)
             after = time.time()
             delta = (after - now) * 1000
             task.response_code = r.status_code
