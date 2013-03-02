@@ -41,7 +41,7 @@ parser.add_argument('-e', dest = 'extension', \
 parser.add_argument('-t', dest = 'threads', type=int, \
                         help = "number of threads (default 4)", default = 4)
 parser.add_argument('-b', dest = 'banned', \
-                        help = "banned response codes in format: 404,301,... (default none)", default = "")
+                        help = "banned response codes in format: 404,301,...(default none)", default = "")
 USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; es-ES)"
 parser.add_argument('-a', dest = 'user_agent', \
                         help = "the preferred user-agent (default provided)", default = USER_AGENT)
@@ -68,7 +68,7 @@ print("Using %s threads" % threads)
 results = multiprocessing.JoinableQueue()
 payload = Payload(target, payload_filename, [extension])
 manager = DBManager(urlparse.urlparse(target).netloc.replace(':',''), results, payload.size)
-print("Requests: %s / thread" % (payload.size / threads))
+print("Total requests %s  (%s/thread)" % (payload.size, payload.size / threads))
 #
 # Go
 #

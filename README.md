@@ -16,6 +16,15 @@ to use in a serious pentesting session. If you are looking for a true tool take 
 
 Feature requests and comments are welcome.
 
+Features
+--------
+
+- Threads (well, multiprocesses)
+- HTTP/S Proxy support (thanks to requests)
+- Data persistance (sqlite3)
+- (more planned)
+
+
 Use
 ---
 
