@@ -11,28 +11,36 @@ from payload import Payload
 from dbo import DBManager
 from task import Task
 
+def _prepare_target(target):
+    '''Examine target url complicance adding default handle (http://) and look for a final /'''
+    if not target.startswith('http://') or not target.startswith('https://'):
+        target = 'http://' + target
+    if not target.endswith('/'):
+        target = target + '/'
+    return target
 #
 # Parsing program options
 #
 parser = argparse.ArgumentParser()
 parser.add_argument('-u', dest = 'target', \
-                        help = "target url", required = True)
-parser.add_argument('-p', dest = 'payload', help = "payload file to use", \
+                        help = "target url (ex: http://www.hispasec.com/)", required = True)
+parser.add_argument('-p', dest = 'payload', help = "path to the payload file to use", \
                         required = True)
 parser.add_argument('-e', dest = 'extension', \
                         help = "extension to use (default none)", default = "")
 parser.add_argument('-t', dest = 'threads', type=int, \
                         help = "number of threads (default 4)", default = 4)
 parser.add_argument('-b', dest = 'banned', \
-                        help = "banned response codes (default None)", default = ",")
+                        help = "banned response codes in format: 404,301,... (default none)", default = ",")
 args = parser.parse_args()
 
-target = args.target
+target = _prepare_target(args.target)
 payload_filename = args.payload
 extension = args.extension
 threads = int(args.threads)
 banned = [n for n in args.banned.split(',')]
 print("Banned extensions: %s" % " ".join(banned))
+print("Using payload: %s" % payload_filename)
 print("Using %s threads" % threads)
 
 #

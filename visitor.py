@@ -36,7 +36,7 @@ class Visitor(multiprocessing.Process):
                 task.valid = False
 
         except requests.ConnectionError, requests.Timeout:
-            sys.stdout.write("(%s) timeout - sleeping..." % self.id)
+            sys.stdout.write("(%s) timeout - sleeping...\n" % self.id)
             time.sleep(SLEEP_TIME)
 
     def terminate(self):
