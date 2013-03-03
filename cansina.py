@@ -9,7 +9,7 @@ import socket
 from visitor import Visitor
 from payload import Payload
 from dbo import DBManager
-
+from inspector import Inspector
 
 def _check_domain(target):
     domain = urlparse.urlparse(target).hostname
@@ -74,6 +74,7 @@ proxy = _prepare_proxies(args.proxies.split(','))
 print("Banned extensions: %s" % " ".join(banned))
 print("Using payload: %s" % payload_filename)
 print("Using %s threads" % threads)
+print("Analizing fake 404...")
 
 #
 # Creating middle objects
@@ -83,6 +84,7 @@ print("Using %s threads" % threads)
 #   - payload: queue where visitors will get Tasks to do
 #
 #   - manager: process who is responsible of storing results from results queue
+#
 
 results = multiprocessing.JoinableQueue()
 payload = Payload(target, payload_filename, [extension])

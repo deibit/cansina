@@ -3,6 +3,8 @@ import requests
 import time
 import sys
 
+from task import Task
+
 SLEEP_TIME = 3
 
 class Visitor(multiprocessing.Process):
