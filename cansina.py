@@ -4,18 +4,30 @@ import argparse
 import urlparse
 import time
 import multiprocessing
+import socket
 
 from visitor import Visitor
 from payload import Payload
 from dbo import DBManager
 
 
+def _check_domain(target):
+    domain = urlparse.urlparse(target).hostname
+    print("checking " + domain)
+    try:
+        if socket.gethostbyname(domain):
+            pass
+    except Exception as e:
+        print("ERROR: Domain doesn't seems to resolve. Check URL")
+        sys.exit(1)
+
 def _prepare_target(target):
-    '''Examine target url complicance adding default handle (http://) and look for a final /'''
+    '''Examine target url compliance adding default handle (http://) and look for a final /'''
     if not target.startswith('http://') or not target.startswith('https://'):
         target = 'http://' + target
     if not target.endswith('/'):
         target = target + '/'
+    _check_domain(target)
     return target
 
 def _prepare_proxies(proxies):
@@ -28,9 +40,11 @@ def _prepare_proxies(proxies):
                 proxies_dict['https'] = proxy
         return proxies_dict
     return {}
+
 #
 # Parsing program options
 #
+
 parser = argparse.ArgumentParser()
 parser.add_argument('-u', dest = 'target', \
                         help = "target url (ex: http://www.hispasec.com/)", required = True)
@@ -49,7 +63,6 @@ parser.add_argument('-P', dest = 'proxies', \
                         help = "set a http and/or https proxy (ex: http://127.0.0.1:8080,https://...", default = "")
 args = parser.parse_args()
 
-
 target = _prepare_target(args.target)
 payload_filename = args.payload
 extension = args.extension
@@ -65,13 +78,22 @@ print("Using %s threads" % threads)
 #
 # Creating middle objects
 #
+#   - results: queue where visitors will store finished Tasks
+#
+#   - payload: queue where visitors will get Tasks to do
+#
+#   - manager: process who is responsible of storing results from results queue
+
 results = multiprocessing.JoinableQueue()
 payload = Payload(target, payload_filename, [extension])
-manager = DBManager(urlparse.urlparse(target).netloc.replace(':',''), results, payload.size)
+database_name = urlparse.urlparse(target).hostname
+manager = DBManager(database_name, results, payload.size)
 print("Total requests %s  (%s/thread)" % (payload.size, payload.size / threads))
+
 #
 # Go
 #
+
 manager.daemon = True
 manager.start()
 try:

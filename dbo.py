@@ -13,6 +13,8 @@ class DBManager(multiprocessing.Process):
     def __init__(self, database_name, queue, payload_size):
         multiprocessing.Process.__init__(self)
         if not os.path.isfile(PREFIX + database_name + SUFIX):
+            if not os.path.isdir('data'):
+                os.mkdir('data')
             connection = sqlite3.connect(PREFIX + database_name + SUFIX)
             try:
                 cursor = connection.cursor()
