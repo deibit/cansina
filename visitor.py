@@ -1,7 +1,10 @@
 import multiprocessing
-import requests
 import time
 import sys
+try:
+    import requests
+except:
+    print("requests module not found: try pip install requests or easy_install requests")
 
 from task import Task
 

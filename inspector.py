@@ -14,7 +14,7 @@ class Inspector:
     def __init__(self, target):
         self.target = target
 
-    def _give_it_a_try(self)
+    def _give_it_a_try(self):
         s = []
         for n in range(0,42):
             random.seed()
@@ -25,7 +25,7 @@ class Inspector:
         content = page.readlines()
         result = {'code':str(page.code),
                   'size':len(content),
-                  'md5':hashlib.md5("".join(content)).hexdigest()
+                  'md5':hashlib.md5("".join(content)).hexdigest(),
                   'content':content}
         return result
 
@@ -35,14 +35,13 @@ class Inspector:
     def _fire_a_404(self, target):
         first_result = self._give_it_a_try()
         if first_result['code'] == '404':
-            # Ok, resquest gave a 404 so we shouldn't find problems
+            # Ok, resquest gave a 404 so we should not find problems
             return ('', Inspector.TEST404_OK)
         if first_result['code'] == '200':
             # Mmm, we were given a 200, possible fake 404
             # Trying one more time
             second_result = self._give_it_a_try()
             if second_result['code'] == '200' and first_result['md5'] == second_result['md5']:
-                # Ok, the fake 200 page seems stable so we are going to spot it by md5
                 return (first_result['md5'], Inspector.TEST404_MD5)
                 # Well, neither is a 200 code nor is the same result so we back to diff mode
             else:
