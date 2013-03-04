@@ -19,6 +19,7 @@ class DBManager(multiprocessing.Process):
             try:
                 cursor = connection.cursor()
                 cursor.execute("CREATE TABLE requests (\
+                                line_number INTEGER, \
                                 payload TEXT,\
                                 url TEXT,\
                                 resource TEXT,\
@@ -59,6 +60,8 @@ class DBManager(multiprocessing.Process):
                     #
                     percentage = counter * 100 / self.payload_size
                     target = task.get_complete_target()
+                    if len(target) > 80:
+                        target = target[:80] + '...(etc)'
                     linesep = ""
                     if task.is_valid():
                         linesep = os.linesep
@@ -89,10 +92,11 @@ class DBManager(multiprocessing.Process):
                          })
         # TODO banned response code at user will
         if not cursor.fetchone():
-            if not task.response_code == 404:
-                cursor.execute("INSERT INTO requests VALUES (?,?,?,?,?,?,?,?)", \
-                    task.values() + (time.time(),))
-                connection.commit()
+            if not task.response_code == "404":
+                if task.is_valid():
+                    cursor.execute("INSERT INTO requests VALUES (?,?,?,?,?,?,?,?,?)", \
+                        task.values() + (time.time(),))
+                    connection.commit()
         connection.close()
 
         def terminate(self):

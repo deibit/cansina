@@ -1,7 +1,8 @@
 class Task:
 
-    def __init__(self, payload, target, resource, extension="", response_code=0,\
-        response_size=0, response_time=0):
+    def __init__(self, number, payload, target, resource, extension="", response_code=0,\
+        response_size=0, response_time=0, banned=[]):
+        self.id = number
         self.payload = payload
         self.target = target
         self.resource = resource
@@ -10,9 +11,16 @@ class Task:
         self.response_size = response_size
         self.response_time = response_time
         self.valid = True
+        self.banned = banned
+
+    def set_response_code(self, code):
+        self.response_code = str(code)
+        if self.response_code in self.banned:
+            self.valid = False
 
     def values(self):
-        return (self.payload,
+        return (self.id,
+                self.payload,
                 self.target,
                 self.resource,
                 self.extension,

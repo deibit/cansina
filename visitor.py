@@ -1,22 +1,24 @@
 import multiprocessing
 import time
 import sys
+import urllib
+
 try:
     import requests
 except:
-    print("requests module not found: try pip install requests or easy_install requests")
+    print("Python module requests not found")
+    sys.exit(1)
 
 from task import Task
 
 SLEEP_TIME = 3
 
 class Visitor(multiprocessing.Process):
-    def __init__(self, id, payload, results, banned, user_agent, proxy={}):
+    def __init__(self, id, payload, results, user_agent, proxy={}):
         multiprocessing.Process.__init__(self)
         self.id = id
         self.payload = payload
         self.results = results
-        self.banned = banned
         self.user_agent = user_agent
         self.proxy = proxy
 
@@ -36,16 +38,29 @@ class Visitor(multiprocessing.Process):
                 r = requests.get(task.get_complete_target(), headers=headers)
             after = time.time()
             delta = (after - now) * 1000
-            task.response_code = r.status_code
             task.response_size = len(r.content)
             task.response_time = delta
+            task.set_response_code(r.status_code)
             self.results.put(task)
-            if str(task.response_code) in self.banned:
-                task.valid = False
 
         except requests.ConnectionError, requests.Timeout:
             sys.stdout.write("(%s) timeout - sleeping...\n" % self.id)
             time.sleep(SLEEP_TIME)
+
+        except ValueError:
+            # Falling back to urllib
+            now = time.time()
+            r = urllib.urlopen(task.get_complete_target(), proxies=self.proxy)
+            after = time.time()
+            delta = (after - now) * 1000
+            task.set_response_code(r.code)
+            c = r.readlines()
+            task.response_time = delta
+            task.response_size = len(c)
+            self.results.put(task)
+
+        except Exception as e:
+            print e.args
 
     def terminate(self):
         print "process %s terminated" % self.pid

@@ -71,7 +71,7 @@ banned = args.banned.split(',')
 user_agent = args.user_agent
 proxy = _prepare_proxies(args.proxies.split(','))
 
-print("Banned extensions: %s" % " ".join(banned))
+print("Banned response codes: %s" % " ".join(banned))
 print("Using payload: %s" % payload_filename)
 print("Using %s threads" % threads)
 print("Analizing fake 404...")
@@ -87,7 +87,7 @@ print("Analizing fake 404...")
 #
 
 results = multiprocessing.JoinableQueue()
-payload = Payload(target, payload_filename, [extension])
+payload = Payload(target, payload_filename, [extension], banned=banned)
 database_name = urlparse.urlparse(target).hostname
 manager = DBManager(database_name, results, payload.size)
 print("Total requests %s  (%s/thread)" % (payload.size, payload.size / threads))
@@ -100,7 +100,7 @@ manager.daemon = True
 manager.start()
 try:
     for n in range(0, threads):
-        v = Visitor(n, payload, results, banned, user_agent, proxy)
+        v = Visitor(n, payload, results, user_agent, proxy)
         v.daemon = True
         v.start()
     while len(multiprocessing.active_children()) > 1:
