@@ -16,12 +16,12 @@ class Payload():
         #
         # TODO support for multiple extensions via generators
         #
-        id = 0
+        number = 0
         for resource in self.payload:
-            id = id + 1
+            number = number + 1
             if resource[0] == '/':
                 resource = resource[1:]
-            self.queue.put(Task(id, payload_filename, target, resource, extensions[0], banned=self.banned))
+            self.queue.put(Task(number, payload_filename, target, resource, extensions[0], banned=self.banned))
 
     def _comment(self, resource):
         '''Returns True is the resource starts with a comment sign'''

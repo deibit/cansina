@@ -13,7 +13,7 @@ from inspector import Inspector
 
 def _check_domain(target):
     domain = urlparse.urlparse(target).hostname
-    print("checking " + domain)
+    print("Checking " + domain)
     try:
         if socket.gethostbyname(domain):
             pass
@@ -74,7 +74,7 @@ proxy = _prepare_proxies(args.proxies.split(','))
 print("Banned response codes: %s" % " ".join(banned))
 print("Using payload: %s" % payload_filename)
 print("Using %s threads" % threads)
-print("Analizing fake 404...")
+# print("Analizing fake 404...")
 
 #
 # Creating middle objects

@@ -1,8 +1,8 @@
 class Task:
-
-    def __init__(self, number, payload, target, resource, extension="", response_code=0,\
-        response_size=0, response_time=0, banned=[]):
-        self.id = number
+    ''' This class stores information retrieved from/to the request'''
+    def __init__(self, number, payload, target, resource, extension=None,
+        response_code=0, response_size=0, response_time=0, banned=None):
+        self.number = number
         self.payload = payload
         self.target = target
         self.resource = resource
@@ -19,7 +19,7 @@ class Task:
             self.valid = False
 
     def values(self):
-        return (self.id,
+        return (self.number,
                 self.payload,
                 self.target,
                 self.resource,
