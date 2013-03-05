@@ -19,6 +19,8 @@ class Payload():
         id = 0
         for resource in self.payload:
             id = id + 1
+            if resource[0] == '/':
+                resource = resource[1:]
             self.queue.put(Task(id, payload_filename, target, resource, extensions[0], banned=self.banned))
 
     def _comment(self, resource):
