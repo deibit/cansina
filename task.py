@@ -1,11 +1,11 @@
 class Task:
     ''' This class stores information retrieved from/to the request'''
-    def __init__(self, number, payload, target, resource, extensions=None, banned_response_codes=None):
+    def __init__(self, number, payload, target, resource, extension, banned_response_codes):
         self.number = number
         self.payload = payload
         self.target = target
         self.resource = resource
-        self.extensions = extensions
+        self.extension = extension
         self.banned = banned_response_codes
 
         self.response_code = None
@@ -30,7 +30,7 @@ class Task:
                 self.response_time)
 
     def get_complete_target(self):
-        return self.target + self.resource
+        return self.target + self.resource + self.extension
 
     def is_valid(self):
         return self.valid

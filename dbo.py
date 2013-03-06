@@ -27,7 +27,7 @@ class DBManager(multiprocessing.Process):
                                 response_code TEXT,\
                                 response_size INTEGER,\
                                 response_time INTEGER,\
-                                timestamp INTEGER);")
+                                t_stamp INTEGER);")
                 connection.commit()
                 connection.close()
             except:
@@ -87,7 +87,7 @@ class DBManager(multiprocessing.Process):
                         response_code=:response_code",
                         {"url" : task.target,
                          "resource" : task.resource,
-                         "extension" : task.extensions,
+                         "extension" : task.extension,
                          "response_code" : task.response_code
                          })
         # TODO banned response code at user will

@@ -43,7 +43,12 @@ def _prepare_proxies(proxies):
 
 def _populate_list_with_file(file_name):
     with open(file_name, 'r') as f:
-        return f.readlines()
+        tmp_list = f.readlines()
+    clean_list = []
+    for e in tmp_list:
+        e = e.strip()
+        clean_list.append(e)
+    return clean_list
 
 #
 # Parsing program options
@@ -56,8 +61,6 @@ parser.add_argument('-p', dest = 'payload', help = "path to the payload file to 
                         required = True)
 parser.add_argument('-e', dest = 'extension', \
                         help = "extension to use (default none)", default = "")
-parser.add_argument('-E', dest = 'extension_filename', \
-                        help = "extension file to use (default none)", default = None)
 parser.add_argument('-t', dest = 'threads', type=int, \
                         help = "number of threads (default 4)", default = 4)
 parser.add_argument('-b', dest = 'banned', \
@@ -76,16 +79,7 @@ payload_filename = args.payload
 payload_list = _populate_list_with_file(payload_filename)
 payload_list.append(payload_filename)
 
-# Processing extension and extension file
-extension_filename = args.extension_filename
-extension_list = []
-if extension_filename:
-    extension_list = _populate_list_with_file(extension_filename)
-
-extension = args.extension
-if extension:
-    extension_list.insert(0, extension)
-
+extension = args.extension.split(',')
 
 threads = int(args.threads)
 banned_response_codes = args.banned.split(',')
@@ -108,10 +102,11 @@ print("Using %s threads" % threads)
 #
 
 results = multiprocessing.JoinableQueue()
-payload = Payload(target, payload_list, extension_list, banned_response_codes)
+payload = Payload(target, payload_list, extension, banned_response_codes)
+payload_size = payload.size * len(extension)
 database_name = urlparse.urlparse(target).hostname
-manager = DBManager(database_name, results, payload.size)
-print("Total requests %s  (%s/thread)" % (payload.size, payload.size / threads))
+manager = DBManager(database_name, results, payload_size)
+print("Total requests %s  (%s/thread)" % (payload_size, payload_size / threads))
 
 #
 # Go
