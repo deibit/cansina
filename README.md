@@ -22,6 +22,7 @@ Features
 - Threads (well, multiprocesses)
 - HTTP/S Proxy support (thanks to requests)
 - Data persistance (sqlite3)
+- Support for multiextensions list (-e php,asp,aspx,txt...) 
 - (more planned)
 
 Use
