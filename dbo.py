@@ -87,7 +87,7 @@ class DBManager(multiprocessing.Process):
                         response_code=:response_code",
                         {"url" : task.target,
                          "resource" : task.resource,
-                         "extension" : task.extension,
+                         "extension" : task.extensions,
                          "response_code" : task.response_code
                          })
         # TODO banned response code at user will

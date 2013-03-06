@@ -41,6 +41,10 @@ def _prepare_proxies(proxies):
         return proxies_dict
     return {}
 
+def _populate_list_with_file(file_name):
+    with open(file_name, 'r') as f:
+        return f.readlines()
+
 #
 # Parsing program options
 #
@@ -52,6 +56,8 @@ parser.add_argument('-p', dest = 'payload', help = "path to the payload file to 
                         required = True)
 parser.add_argument('-e', dest = 'extension', \
                         help = "extension to use (default none)", default = "")
+parser.add_argument('-E', dest = 'extension_filename', \
+                        help = "extension file to use (default none)", default = None)
 parser.add_argument('-t', dest = 'threads', type=int, \
                         help = "number of threads (default 4)", default = 4)
 parser.add_argument('-b', dest = 'banned', \
@@ -64,14 +70,29 @@ parser.add_argument('-P', dest = 'proxies', \
 args = parser.parse_args()
 
 target = _prepare_target(args.target)
+
+# Processing payload
 payload_filename = args.payload
+payload_list = _populate_list_with_file(payload_filename)
+payload_list.append(payload_filename)
+
+# Processing extension and extension file
+extension_filename = args.extension_filename
+extension_list = []
+if extension_filename:
+    extension_list = _populate_list_with_file(extension_filename)
+
 extension = args.extension
+if extension:
+    extension_list.insert(0, extension)
+
+
 threads = int(args.threads)
-banned = args.banned.split(',')
+banned_response_codes = args.banned.split(',')
 user_agent = args.user_agent
 proxy = _prepare_proxies(args.proxies.split(','))
 
-print("Banned response codes: %s" % " ".join(banned))
+print("Banned response codes: %s" % " ".join(banned_response_codes))
 print("Using payload: %s" % payload_filename)
 print("Using %s threads" % threads)
 # print("Analizing fake 404...")
@@ -87,7 +108,7 @@ print("Using %s threads" % threads)
 #
 
 results = multiprocessing.JoinableQueue()
-payload = Payload(target, payload_filename, [extension], banned=banned)
+payload = Payload(target, payload_list, extension_list, banned_response_codes)
 database_name = urlparse.urlparse(target).hostname
 manager = DBManager(database_name, results, payload.size)
 print("Total requests %s  (%s/thread)" % (payload.size, payload.size / threads))

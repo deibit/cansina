@@ -29,19 +29,22 @@ class Visitor(multiprocessing.Process):
 
     def visit(self, task):
         try:
-            headers = {"user-agent" : self.user_agent}
-            now = time.time()
-            r = None
-            if self.proxy:
-                r = requests.get(task.get_complete_target(), headers=headers, proxies=self.proxy)
-            else:
-                r = requests.get(task.get_complete_target(), headers=headers)
-            after = time.time()
-            delta = (after - now) * 1000
-            task.response_size = len(r.content)
-            task.response_time = delta
-            task.set_response_code(r.status_code)
-            self.results.put(task)
+            for extension in task.extensions:
+                if not extension[0] == '.':
+                    extension = '.' + extension
+                headers = {"user-agent" : self.user_agent}
+                now = time.time()
+                r = None
+                if self.proxy:
+                    r = requests.get(task.get_complete_target() + extension, headers=headers, proxies=self.proxy)
+                else:
+                    r = requests.get(task.get_complete_target() + extension, headers=headers)
+                after = time.time()
+                delta = (after - now) * 1000
+                task.response_size = len(r.content)
+                task.response_time = delta
+                task.set_response_code(r.status_code)
+                self.results.put(task)
 
         except requests.ConnectionError, requests.Timeout:
             sys.stdout.write("(%s) timeout - sleeping...\n" % self.id)
