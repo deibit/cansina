@@ -23,7 +23,9 @@ def _check_domain(target):
 
 def _prepare_target(target):
     '''Examine target url compliance adding default handle (http://) and look for a final /'''
-    if not target.startswith('http://') or not target.startswith('https://'):
+    if target.startswith('http://') or target.startswith('https://'):
+        pass
+    else:
         target = 'http://' + target
     if not target.endswith('/'):
         target = target + '/'
