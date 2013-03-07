@@ -6,13 +6,12 @@ Cansina is a (yet another) Web Content Discovery Application.
 It takes general available dictionaries of common path and files used by web applications
 and make URL requests looking back to the server response code. Cansina stores the information
 in a sqlite database (omitting 404 responses). One for every new url (think this as a kind of projects feature)
-and the same databse for every new payload on the same url.
+and the same database for every new payload on the same url.
 
 It aims to be (very) simple and directed to use doing only one thing: Discover content.
 
 The app is far from being finished, probably is poorly coded and I wouldn't recommend it
-to use in a serious pentesting session. If you are looking for a true tool take a look at
-[wfuzz](http://www.edge-security.com/wfuzz.php)
+to use in a serious pentesting session.
 
 Feature requests and comments are welcome.
 
@@ -25,8 +24,8 @@ Features
 - Support for multiextensions list (-e php,asp,aspx,txt...)
 - (more planned)
 
-Use
----
+Some use cases
+--------------
 
 python cansina.py -h
 
