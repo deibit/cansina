@@ -1,0 +1,2550 @@
+<!DOCTYPE html>
+<html lang="es">
+ <head>
+  <title>
+   Hispasec - Seguridad Inform&aacute;tica
+  </title>
+  <meta name="description" content="Hispasec Sistemas - Seguridad Inform&aacute;tica" />
+  <meta name="keywords" content="Hispasec Sistemas, Seguridad, Virus de la polic&iacute;a, Troyanos, una al d&iacute;a" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link href="css/bootstrap.css" rel="stylesheet" />
+  <link href="css/bootstrap-responsive.css" rel="stylesheet" />
+  <link href="css/style.css" rel="stylesheet" />
+  <link href="fancybox/jquery.fancybox.css" rel="stylesheet" />
+  <script src="js/jquery.min.js">
+  </script>
+  <script>
+   $.ajaxSetup ({cache: false});
+  </script>
+  <script type="text/javascript">
+   //Detect lenguage        
+        function getBrowserLang() {
+           var llang = new String;
+           if (navigator.language){
+              llang = navigator.language;
+           } else {
+              llang = navigator.browserLanguage;
+           }
+           return llang;
+        }
+        lang = getBrowserLang()
+        if (lang.indexOf('es')==-1){
+            location.href="http://hispasec.com/index-en.html"
+        }
+     
+
+//Google Analytics
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-35708552-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+  </script>
+ </head>
+ <body>
+  <header>
+   <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+     <div class="container">
+      <a class="brand" href="http://hispasec.com" style="padding-left:41px;">
+       <img src="img/HS_logo_trans.png" alt="Hispasec Sistemas" />
+      </a>
+      <a class="lang" href="/index-es.html">
+       <img src="img/bandera_spain.png" alt="" />
+      </a>
+      <a class="lang" href="/index-en.html">
+       <img src="img/bandera_uk.png" alt="" />
+      </a>
+     </div>
+    </div>
+   </div>
+  </header>
+  <div class="container wrapper">
+   <div id="navbar-example" class="navbar navbar-static">
+    <div class="navbar-inner">
+     <div class="container" style="width: auto;">
+      <ul class="nav pull-left">
+       <li class="active" id="tab-init">
+        <a href="#index-tab" data-toggle="tab" onclick="hideServices();" style="margin-left: 0px;">
+         <img src="img/glyphicons_free/glyphicons/png/glyphicons_020_home.png" alt="Home" />
+         Inicio
+        </a>
+       </li>
+       <li>
+        <a href="#index-tab" data-toggle="tab" onclick="chargeService();" id="bottomServ">
+         <img src="img/glyphicons_free/glyphicons/png/glyphicons_270_shield.png" alt="Servicios" />
+         Servicios
+        </a>
+       </li>
+       <li>
+        <a href="#hispasec-tab" data-toggle="tab">
+         <img src="img/glyphicons_free/glyphicons/png/glyphicons_195_circle_info.png" alt="Hispasec" />
+         Hispasec
+        </a>
+       </li>
+       <li>
+        <a href="#tools-tab" data-toggle="tab">
+         <img src="img/glyphicons_free/glyphicons/png/glyphicons_280_settings.png" alt="Herramientas" />
+         Herramientas
+        </a>
+       </li>
+       <li>
+        <a href="#contacto-tab" data-toggle="tab">
+         <img src="img/glyphicons_free/glyphicons/png/glyphicons_010_envelope.png" alt="Contacto" />
+         Contacto
+        </a>
+       </li>
+      </ul>
+      <ul class="nav pull-right" style="margin-right: 0;">
+       <li>
+        <a href="http://laboratorio.blogs.hispasec.com/">
+         <img rel="tooltip" title="Blog del laboratorio" data-placement="bottom" src="img/glyphicons_free/glyphicons/png/glyphicons_365_blogger.png" alt="Blog" />
+        </a>
+       </li>
+      </ul>
+     </div>
+    </div>
+   </div>
+   <!-- Contenido Tabs -->
+   <div class="tab-content content">
+    <!-- Index -->
+    <div id="index-tab" class="content tab-pane fade active in">
+     <div id="banners" class="row-fluid">
+      <div id="myCarousel" class="carousel slide">
+       <div class="carousel-inner">
+        <div class="item" style="cursor: pointer;">
+         <img src="img/carrusel/carru3_es.png" width="1200" alt="Hispasec FeedBank" onclick="$('#Sfeedbank').click();" />
+        </div>
+        <div class="active item" style="cursor: pointer;">
+         <img src="img/carrusel/carru4_es.png" width="1200" alt="Hispasec UDYAT" onclick="$('#Sudyat').click();" />
+        </div>
+       </div>
+       <a class="carousel-control left" href="#myCarousel" data-slide="prev">
+        &lsaquo;
+       </a>
+       <a class="carousel-control right" href="#myCarousel" data-slide="next">
+        &rsaquo;
+       </a>
+      </div>
+     </div>
+     <div id="news" class="row-fluid">
+      <div class="page-header">
+       <h3 class="pull-left">
+        <a href="http://unaaldia.hispasec.com/" class="pull-right" style="color: #02528B;">
+         Una al d&iacute;a
+        </a>
+       </h3>
+       <div class="enlaces">
+        <a href="https://twitter.com/unaaldia">
+         <img rel="tooltip" title="Twitter de Una Al D&iacute;a" data-placement="bottom" src="img/glyphicons_free/glyphicons/png/glyphicons_392_twitter.png" alt="Hispasec Twitter" />
+        </a>
+        <a href="http://feeds.feedburner.com/hispasec/zCAd">
+         <img rel="tooltip" title="RSS de Una Al D&iacute;a" data-placement="bottom" src="img/glyphicons_free/glyphicons/png/glyphicons_397_rss.png" alt="Hispasec RSS" />
+        </a>
+       </div>
+       <form class="pull-right" style="margin:5px">
+        <div class="input-append">
+         <input id="appendedInputButton" type="text" placeholder="Reciba gratis una-al-d&iacute;a" />
+         <button class="btn btn-primary" type="button" onclick="window.location.href = 'mailto:unaaldia-request@hispasec.com?subject=subscribe'">
+          <i class="icon-envelope icon-white">
+          </i>
+         </button>
+        </div>
+       </form>
+       <div class="clearfix">
+       </div>
+      </div>
+      <ul id="unaaldia" class="clearfix">
+      </ul>
+      <h5>
+       <a href="http://unaaldia.hispasec.com/" class="muted pull-right">
+        Consultar Una al d&iacute;a anteriores.
+        <img src="img/UAD_icon.png" alt="image una-al-dia logo" style="margin-bottom:20px;" />
+       </a>
+      </h5>
+     </div>
+     <div id="services-tab">
+      <div class="page-header">
+       <h3>
+        Servicios
+       </h3>
+      </div>
+      <ul class="nav nav-tabs">
+       <li onclick="showServices();">
+        <a href="#antitrojan" data-toggle="tab" id="Sfeedbank">
+         <h3>
+          <img rel="tooltip" title="Reciba informes en tiempo real con la informaci&oacute;n necesaria para desactivar los troyanos que afecten a su entidad bancaria" src="img/serv-logo/feedbank_60.png" alt="Feed Bank" />
+         </h3>
+        </a>
+       </li>
+       <li onclick="showServices();" id="Ssana">
+        <a href="#sana" data-toggle="tab">
+         <h3>
+          <img rel="tooltip" title="Reciba en tiempo real informaci&oacute;n sobre las vulnerabilidades que realmente afectan a sus sistemas y c&oacute;mo solucionarlas" src="img/serv-logo/sana_60.png" alt="Sana" />
+         </h3>
+        </a>
+       </li>
+       <li onclick="showServices();">
+        <a href="#antifraud" data-toggle="tab" id="Santifraude">
+         <h3>
+          <img rel="tooltip" title="Conozca, prevenga y neutralice las amenazas (phishing, troyanos, pharming...) que afectan a su entidad" src="img/serv-logo/antifraude_60.png" alt="Antifraude" />
+         </h3>
+        </a>
+       </li>
+       <li onclick="showServices();">
+        <a href="#auditoria" data-toggle="tab" id="Sauditoria">
+         <h3>
+          <img rel="tooltip" title="Conozca las vulnerabilidades en sus sistemas y reciba un informe t&eacute;cnico con la soluci&oacute;n a sus problemas" src="img/serv-logo/auditorias_60.png" alt="Auditor&iacute;a" />
+         </h3>
+         <h3>
+         </h3>
+        </a>
+       </li>
+       <li onclick="showServices();">
+        <a href="#udyat" data-toggle="tab" id="Sudyat">
+         <h3>
+          <img rel="tooltip" title="Monitorice su marca en tiempo real en Internet, clasificando cada menci&oacute;n y accediendo a c&oacute;modas estad&iacute;sticas gr&aacute;ficas" src="img/serv-logo/udyat_60.png" alt="Udyat" />
+         </h3>
+        </a>
+       </li>
+      </ul>
+      <!-- Contenido tabs -->
+      <div id="services-content" class="tab-content">
+       <!-- Contenido servicios cargados por JS -->
+       <div class="tab-pane active in fade">
+       </div>
+       <!-- Hace falta para el fade -->
+       <!-- FeedBank -->
+       <div id="antitrojan" class="tab-pane fade hide">
+        <div class="row-fluid">
+         <div class="page-header" style="margin-top: 0;">
+          <h1>
+           Feed Bank
+           <small>
+            Servicio gratuito de notificaci&oacute;n autom&aacute;tica de reportes de troyano.
+           </small>
+          </h1>
+         </div>
+         <div class="row-fluid">
+          <div class="span9">
+           <div class="row-fluid">
+            <div class="span2">
+             <img src="img/serv-logo/feedbank_sq.png" class="img-polaroid" alt="Feed Bank Servicio gratuito de notificaci&oacute;n autom&aacute;tica de reportes de troyano." />
+            </div>
+            <div class="span10">
+             <p>
+              Hispasec Feed Bank es un
+              <strong>
+               servicio gratuito y automatizado de notificaci&oacute;n
+              </strong>
+              de troyanos bancarios que informa sobre la existencia de muestras que est&aacute;n afectando a su entidad.
+             </p>
+             <p>
+              Con este servicio queremos informar a las entidades bancarias de la actividad fraudulenta real que gira en torno a sus clientes. Este tipo de alerta permite tomar medidas para la eliminaci&oacute;n de la amenaza, de esta forma conseguiremos dar un mejor servicio al cliente final y dar un mayor valor a la imagen de marca.
+             </p>
+             <p>
+              La informaci&oacute;n en los informes emitidos contendr&aacute; detalles t&eacute;cnicos e informaci&oacute;n de inter&eacute;s sobre el funcionamiento y comunicaci&oacute;n con su infraestructura de servidores de la muestra analizada. Esta informaci&oacute;n puede ser ampliada con nuestro
+              <strong>
+               servicio antitroyanos
+              </strong>
+              que incluye la eliminaci&oacute;n de las infraestructuras relacionadas con el mismo.
+             </p>
+             <p>
+              La informaci&oacute;n enviada por el sistema se compone de dos informes:
+             </p>
+            </div>
+           </div>
+           <div class="row-fluid">
+            <div class="span12">
+             <div class="page-header" style="margin: 10px 0; cursor:pointer;" data-toggle="collapse" data-target="#feedbank-content-1">
+              <h4>
+               Resumen ejecutivo
+              </h4>
+             </div>
+             <div id="feedbank-content-1" class="in collapse">
+              <p>
+               Documento PDF con la informaci&oacute;n de mayor inter&eacute;s sobre la muestra analizada:
+              </p>
+              <ul>
+               <li>
+                <strong>
+                 Descripci&oacute;n del fichero:
+                </strong>
+                <br />
+                <small>
+                 Informaci&oacute;n &uacute;til para la identificaci&oacute;n de la muestra.
+                </small>
+               </li>
+               <li>
+                <strong>
+                 Descripci&oacute;n de la familia de troyano
+                </strong>
+                <br />
+                <small>
+                 Breve descripci&oacute;n de la familia a la que pertenece el troyano, navegadores afectados, t&eacute;cnicas de monitorizaci&oacute;n y captura de datos.
+                </small>
+               </li>
+               <li>
+                <strong>
+                 Infraestructura
+                </strong>
+                <br />
+                <small>
+                 URLs utilizadas por el troyano para la descarga de ficheros de configuraci&oacute;n, env&iacute;o de datos robados, pharming, etc.
+                </small>
+               </li>
+               <li>
+                <strong>
+                 An&aacute;lisis antivirus
+                </strong>
+                <br />
+                <small>
+                 Resultado de analizar la muestra con diversos motores antivirus en el momento de la detecci&oacute;n.
+                </small>
+               </li>
+               <li>
+                <strong>
+                 Conexiones de red
+                </strong>
+                <br />
+                <small>
+                 Conexiones realizadas por la muestra durante su ejecuci&oacute;n.
+                </small>
+               </li>
+               <li>
+                <strong>
+                 Resoluciones DNS
+                </strong>
+                <br />
+                <small>
+                 Peticiones DNS llevadas a cabo por los diversos procesos que se encontraban en ejecuci&oacute;n durante la ejecucui&oacute;n de la muestra.
+                </small>
+               </li>
+              </ul>
+             </div>
+             <div class="page-header" style="margin: 10px 0; cursor:pointer;" data-toggle="collapse" data-target="#feedbank-content-2">
+              <h4>
+               Informe t&eacute;cnico
+              </h4>
+             </div>
+             <div id="feedbank-content-2" class="in collapse">
+              <p>
+               Contiene toda la informaci&oacute;n disponible en el resumen pero de forma m&aacute;s detallada, adem&aacute;s de incluir las siguientes secciones adicionales:
+              </p>
+              <ul>
+               <li>
+                <strong>
+                 Ficheros creados por la muestra
+                </strong>
+               </li>
+               <li>
+                <strong>
+                 Informaci&oacute;n obtenida de un an&aacute;lisis est&aacute;tico de la muestra
+                </strong>
+                <br />
+                <small>
+                 DLL y funciones importadas, funciones exportadas, PE resources, etc.
+                </small>
+               </li>
+               <li>
+                <strong>
+                 Comportamiento de la muestra
+                </strong>
+                <ul>
+                 <li>
+                  Procesos lanzados.
+                 </li>
+                 <li>
+                  Funciones llamadas por cada proceso hijo.
+                 </li>
+                 <li>
+                  Resumen de ficheros, claves de registro y Mutexes creados, modificados o borrados por el troyano.
+                 </li>
+                </ul>
+               </li>
+               <li>
+                <strong>
+                 Descripci&oacute;n detallada de la familia del troyano.
+                </strong>
+               </li>
+               <li>
+                <strong>
+                 Pruebas
+                </strong>
+                <br />
+                <small>
+                 Se trata de una serie de archivos que permiten un estudio m&aacute;s profundo de la muestra por parte de:
+                </small>
+                <ul>
+                 <li>
+                  Tr&aacute;fico de red de la muestra.
+                 </li>
+                 <li>
+                  Archivos de configuraci&oacute;n (p.e.: Archivo de configuraci&oacute;n de Zeus).
+                 </li>
+                 <li>
+                  Ficheros hosts.
+                 </li>
+                 <li>
+                  Volcado de memoria del proceso.
+                 </li>
+                 <li>
+                  etc.
+                 </li>
+                </ul>
+               </li>
+              </ul>
+             </div>
+            </div>
+           </div>
+          </div>
+          <div class="span3">
+           <div style="width: 225px; margin-bottom: 15px;">
+            <button class="btn btn-block btn-primary" onclick="loadModal('FeedBank', 1);">
+             Solicitar informaci&oacute;n
+            </button>
+            <button class="btn btn-block btn-primary" onclick="loadModal('FeedBank', 0);">
+             Darse de alta
+            </button>
+           </div>
+           <p style="margin-top: 10px; align: center;">
+            <a href="resources/report.pdf">
+             <img src="img/informeFeedBank.png" alt="feedbank report" />
+             <small>
+              Descargue un ejemplo.
+             </small>
+            </a>
+           </p>
+           <blockquote>
+            <img src="img/double_quotes_top.png" alt="" />
+            Reciba informes en tiempo real con la informaci&oacute;n necesaria para desactivar los troyanos que afecten a su entidad bancaria
+            <img src="img/double_quotes_bottom.png" alt="" />
+           </blockquote>
+          </div>
+         </div>
+        </div>
+       </div>
+       <!-- Sana -->
+       <div id="sana" class="tab-pane fade hide">
+        <div class="row-fluid">
+         <div class="page-header" style="margin-top: 0;">
+          <h1>
+           Sana
+           <small>
+            Servicio de An&aacute;lisis, Notificaci&oacute;n y Alertas
+           </small>
+          </h1>
+         </div>
+         <div class="row-fluid">
+          <div class="span9">
+           <div class="row-fluid">
+            <div class="span2">
+             <img src="img/serv-logo/sana_sq.png" class="img-polaroid" alt="Sana Servicio de An&aacute;lisis, Notificaci&oacute;n y Alertas" />
+            </div>
+            <div class="span10">
+             <p>
+              El Servicio de An&aacute;lisis, Notificaci&oacute;n y Alertas (SANA) forma parte de la historia de Hispasec como uno de los
+              <strong>
+               servicios m&aacute;s longevos y mejor considerados
+              </strong>
+              por nuestros clientes.
+             </p>
+             <p>
+              SANA proporciona un
+              <strong>
+               sistema completo de alertas
+              </strong>
+              sobre vulnerabilidades, actualizaciones y parches de software en t&eacute;rminos de seguridad inform&aacute;tica, permitiendo saber en todo momento las posibles vulnerabilidades que puedan afectar a los productos que su entidad o empresa usan a diario.
+             </p>
+            </div>
+           </div>
+           <div class="row-fluid">
+            <div class="span12">
+             <div class="page-header" style="margin: 10px 0; cursor:pointer;" data-toggle="collapse" data-target="#sana-content-1">
+              <h4>
+               Alerta temprana de vulnerabilidades
+              </h4>
+             </div>
+             <div id="sana-content-1" class="in collapse">
+              <p>
+               Cada cliente recibe de manera
+               <strong>
+                r&aacute;pida y personalizada
+               </strong>
+               tantas alertas como fallos hayan sido detectados para los productos monitorizados. Para sistemas m&aacute;s complejos, disponemos de una completa API que permite personalizar y adaptar este servicio a sus necesidades.
+              </p>
+              <p>
+               En cada alerta se proporciona
+               <strong>
+                toda la informaci&oacute;n necesaria
+               </strong>
+               as&iacute; como los parches disponibles en ese momento o las posibles contramedidas, todo ello en un servicio activo 24/7.
+              </p>
+             </div>
+             <div class="page-header" style="margin: 10px 0; cursor:pointer;" data-toggle="collapse" data-target="#sana-content-2">
+              <h4>
+               Hist&oacute;rico completo
+              </h4>
+             </div>
+             <div id="sana-content-2" class="in collapse">
+              <p>
+               Informe del hist&oacute;rico de vulnerabilidades para cada cliente, donde consultar de manera c&oacute;moda las vulnerabilidades que le afectan, permitiendo
+               <strong>
+                consultas en base a cualquier caracter&iacute;stica
+               </strong>
+               de la alerta.
+              </p>
+              <p>
+               El portal, tambi&eacute;n permite
+               <strong>
+                catalogar las vulnerabilidades
+               </strong>
+               a los administradores, de forma que puedan conocer qu&eacute; fallos han sido corregidos en su sistema, est&aacute;n pendientes de gestionar, o a&uacute;n no han sido tratados.
+              </p>
+              <p>
+               Todo ello
+               <strong>
+                integrado en nuestro panel de servicios CSIRT,
+               </strong>
+               ofreciendo estad&iacute;sticas completas para presentaciones ejecutivas.
+              </p>
+             </div>
+            </div>
+           </div>
+          </div>
+          <div class="span3">
+           <!--<div class="page-header" style="margin: 0 0 5px 0;">
+                                            <h4 style="text-align:center">Capturas</h4>
+                                        </div>-->
+           <div style="width: 225px; margin-bottom: 15px;">
+            <button class="btn btn-block btn-primary" onclick="loadModal('Sana', 1);">
+             Solicitar informaci&oacute;n
+            </button>
+            <button class="btn btn-block btn-primary" onclick="loadModal('Sana', 0);">
+             Solicitar demo
+            </button>
+           </div>
+           <a class="fancybox" rel="gallery-sana" href="img/serv/imgSana1.png">
+            <img src="img/serv/imgSana1-100.png" class="img-polaroid" alt="servicio sana hispasec" />
+           </a>
+           <a class="fancybox" rel="gallery-sana" href="img/serv/imgSana2.png">
+            <img src="img/serv/imgSana2-100.png" class="img-polaroid" alt="servicio sana hispasec" />
+           </a>
+           <a class="fancybox" rel="gallery-sana" href="img/serv/imgSana3.png">
+            <img src="img/serv/imgSana3-100.png" class="img-polaroid" alt="servicio sana hispasec" />
+           </a>
+           <a class="fancybox" rel="gallery-sana" href="img/serv/imgSana4.png">
+            <img src="img/serv/imgSana4-100.png" class="img-polaroid" alt="servicio sana hispasec" />
+           </a>
+           <blockquote>
+            <img src="img/double_quotes_top.png" alt="" />
+            Reciba en tiempo real informaci&oacute;n sobre las vulnerabilidades que realmente afectan a sus sistemas y c&oacute;mo solucionarlas
+            <img src="img/double_quotes_bottom.png" alt="" />
+           </blockquote>
+          </div>
+         </div>
+        </div>
+       </div>
+       <!-- Antifruad -->
+       <div id="antifraud" class="tab-pane fade hide">
+        <div class="row-fluid">
+         <div class="page-header" style="margin-top: 0;">
+          <h1>
+           Antifraude
+           <small>
+            Servicio de incidentes de fraude online 24/7
+           </small>
+          </h1>
+         </div>
+         <div class="row-fluid">
+          <div class="span9">
+           <div class="row-fluid">
+            <div class="span2">
+             <img src="img/serv-logo/antifraude_sq.png" class="img-polaroid" alt="Antifraude Servicio de incidentes de fraude online 24/7" />
+            </div>
+            <div class="span10">
+             <p>
+             </p>
+             <p>
+              Antifraude aglutina los servicios de Antiphishing, Antitroyanos y An&aacute;lisis forense. Antifraude est&aacute; conformado por un equipo de personas que dan servicio
+              <strong>
+               24/7
+              </strong>
+              con el fin de atender sus incidencias con la mayor celeridad posible.
+             </p>
+             <p>
+              El servicio de antifraude permite gestionar todos sus incidentes de seguridad de forma sencilla,
+              <strong>
+               neutralizando la amenaza
+              </strong>
+              (phishing, troyano, etc.) y monitorizando sus componentes en tiempo real.
+             </p>
+            </div>
+           </div>
+           <div class="row-fluid">
+            <div class="span12">
+             <div class="page-header" style="margin: 10px 0; cursor:pointer;" data-toggle="collapse" data-target="#antifraude-content-1">
+              <h4>
+               Antiphishing
+              </h4>
+             </div>
+             <div id="antifraude-content-1" class="in collapse">
+              <p>
+               Este servicio est&aacute; orientado principalmente a
+               <strong>
+                entidades bancarias, as&iacute; como a portales de compraventa y transacciones online.
+               </strong>
+               Hispasec ha desplegado un amplio conjunto de sensores dedicados a detectar r&eacute;plicas fraudulentas de portales de transacciones online.
+              </p>
+              <p>
+               El servicio de antiphishing
+               <strong>
+                emite alertas cada vez que se detecta una infraestructura de este tipo
+               </strong>
+               e inicia el tratamiento de neutralizaci&oacute;n con su equipode 24/7, con el objetivo de
+               <strong>
+                cerrar las p&aacute;ginas fraudulentas.
+               </strong>
+              </p>
+              <p>
+               El objetivo de eliminar la p&aacute;gina del fraude est&aacute; garantizado. Adem&aacute;s se realiza un an&aacute;lisis exhaustivo del perfil del atacante, se estudian las contramedidas posibles, se envenena el canal fraudulento mientras est&aacute; activo y se comunican los casos a las autoridades competentes.
+              </p>
+              <p>
+               Todos los casos quedan documentados en su espacio corporativo y
+               <strong>
+                se correlacionan en una serie de gr&aacute;ficas ejecutivas.
+               </strong>
+              </p>
+             </div>
+             <div class="page-header" style="margin: 10px 0; cursor:pointer;" data-toggle="collapse" data-target="#antifraude-content-2">
+              <h4>
+               Antitroyano
+              </h4>
+             </div>
+             <div id="antifraude-content-2" class="in collapse">
+              <p>
+               Se trata de un servicio orientado a
+               <strong>
+                entidades bancarias y portales de compraventa online.
+               </strong>
+               La entidad es monitorizada en nuestros sistemas. Si nuestro proceso autom&aacute;tico de detecci&oacute;n alerta sobre un potencial malware que afecta a la entidad, pasa a ser estudiado por un equipo de analistas que realizan
+               <strong>
+                ingenier&iacute;a inversa sobre la muestra.
+               </strong>
+              </p>
+              <p>
+               Una vez confirmado que el troyano afecta a la entidad, se emite la alerta correspondiente y se procede a
+               <strong>
+                cerrar los puntos de recogida de datos robados o cualquier punto sobre el que se sostenga la infraestructura del troyano.
+               </strong>
+              </p>
+              <p>
+               Asimismo, el estudio del binario permite revelar
+               <strong>
+                contramedidas que se pueden implementar en el portal de banca electr&oacute;nica
+               </strong>
+               con el fin de mitigar el efecto de determinadas familias de malware bancario.
+              </p>
+             </div>
+             <div class="page-header" style="margin: 10px 0; cursor:pointer;" data-toggle="collapse" data-target="#antifraude-content-3">
+              <h4>
+               An&aacute;lisis forense
+              </h4>
+             </div>
+             <div id="antifraude-content-3" class="in collapse">
+              <p>
+               Gracias al estudio de los
+               <strong>
+                sistemas infectados,
+               </strong>
+               se puede conocer en detalle el vector de ataque que el malware est&aacute; aprovechando para infectar a los equipos. Tambi&eacute;n los m&eacute;todos de inyecci&oacute;n web, perpetuaci&oacute;n de la muestra en el sistema, cifrado, ocultaci&oacute;n, etc. Todas estas caracter&iacute;sticas permiten
+               <strong>
+                conocer el perfil del malware que ataca a la entidad,
+               </strong>
+               y redunda en mejores m&eacute;todos de detecci&oacute;n de familias y variantes, adem&aacute;s de en una posible
+               <strong>
+                implementaci&oacute;n de m&eacute;todos para poder mitigar las amenazas.
+               </strong>
+               Por &uacute;ltimo, permite alertar a los clientes preventivamente sobre c&oacute;mo detectar un comportamiento sospechoso en sus sistemas.
+              </p>
+             </div>
+            </div>
+           </div>
+          </div>
+          <div class="span3">
+           <!--<div class="page-header" style="margin: 0 0 5px 0;">
+                                            <h4 style="text-align:center">Capturas</h4>
+                                        </div>-->
+           <div style="width: 225px; margin-bottom: 15px;">
+            <button class="btn btn-block btn-primary" onclick="loadModal('Antifraude', 1);">
+             Solicitar informaci&oacute;n
+            </button>
+            <button class="btn btn-block btn-primary" onclick="loadModal('Antifraude', 0);">
+             Solicitar demo
+            </button>
+           </div>
+           <a class="fancybox" rel="gallery-antifraude" href="img/serv/imgAntifraude1.png">
+            <img src="img/serv/imgAntifraude1-100.png" class="img-polaroid" alt="servicio antifraude hispasec" />
+           </a>
+           <a class="fancybox" rel="gallery-antifraude" href="img/serv/imgAntifraude2.png">
+            <img src="img/serv/imgAntifraude2-100.png" class="img-polaroid" alt="servicio antifraude hispasec" />
+           </a>
+           <a class="fancybox" rel="gallery-antifraude" href="img/serv/imgAntifraude3.png">
+            <img src="img/serv/imgAntifraude3-100.png" class="img-polaroid" alt="servicio antifraude hispasec" />
+           </a>
+           <blockquote>
+            <img src="img/double_quotes_top.png" alt="" />
+            Conozca, prevenga y neutralice las amenazas (phishing, troyanos, pharming...) que afectan a su entidad
+            <img src="img/double_quotes_bottom.png" alt="" />
+           </blockquote>
+          </div>
+         </div>
+        </div>
+       </div>
+       <!-- Auditoría -->
+       <div id="auditoria" class="tab-pane fade hide">
+        <div class="row-fluid">
+         <div class="page-header" style="margin-top: 0;">
+          <h1>
+           Auditor&iacute;a
+           <small>
+            Servicio de auditor&iacute;a de sistemas
+           </small>
+          </h1>
+         </div>
+         <div class="row-fluid">
+          <div class="span9">
+           <div class="row-fluid">
+            <div class="span2">
+             <img src="img/serv-logo/auditorias_sq.png" class="img-polaroid" alt="Auditor&iacute;a Servicio de auditor&iacute;a de sistemas" />
+            </div>
+            <div class="span10">
+             <p>
+              <strong>
+               Los servicios de auditor&iacute;a de Hispasec
+              </strong>
+              comprenden el estudio de los sistemas para gestionar las vulnerabilidades que pudieran estar presentes.
+             </p>
+             <p>
+              Una vez localizadas, las anomal&iacute;as se documentan, se informa de los resultados a los responsables y se establecen medidas proactivas de refuerzo, siguiendo siempre un proceso secuencial que permita que los sistemas mejoren su seguridad aprendiendo de los errores pasados.
+             </p>
+             <p>
+              Las auditor&iacute;as de sus sistemas le permiten conocer en el momento de su realizaci&oacute;n cu&aacute;l es la situaci&oacute;n exacta de sus activos de informaci&oacute;n, en cuanto a protecci&oacute;n, control y medidas de seguridad. Una auditor&iacute;a de sistemas es
+              <strong>
+               una radiograf&iacute;a completa de la situaci&oacute;n de sus sistemas.
+              </strong>
+             </p>
+            </div>
+           </div>
+           <div class="row-fluid">
+            <div class="span12">
+             <div class="page-header" style="margin: 10px 0; cursor:pointer;" data-toggle="collapse" data-target="#auditoria-content-1">
+              <h4>
+               Fases del servicio
+              </h4>
+             </div>
+             <div id="auditoria-content-1" class="in collapse">
+              <p>
+               Los servicios de auditor&iacute;a constan de las siguientes fases:
+               <ul style="list-style:disc">
+                <li>
+                 <strong>
+                  Enumeraci&oacute;n
+                 </strong>
+                 de redes, topolog&iacute;a y protocolos.
+                </li>
+                <li>
+                 <strong>
+                  Identificaci&oacute;n
+                 </strong>
+                 de sistemas y dispositivos.
+                </li>
+                <li>
+                 <strong>
+                  An&aacute;lisis
+                 </strong>
+                 de servicios y aplicaciones.
+                </li>
+                <li>
+                 <strong>
+                  Detecci&oacute;n,
+                 </strong>
+                 comprobaci&oacute;n y evaluaci&oacute;n de vulnerabilidades.
+                </li>
+                <li>
+                 Medidas espec&iacute;ficas de
+                 <strong>
+                  correcci&oacute;n.
+                 </strong>
+                </li>
+                <li>
+                 Control perimetral en tiempo real con tecnolog&iacute;a propia
+                 <strong>
+                  Sensor Scan Network.
+                 </strong>
+                </li>
+                <li>
+                 <strong>
+                  Recomendaciones
+                 </strong>
+                 sobre implantaci&oacute;n de medidas proactivas.
+                </li>
+               </ul>
+              </p>
+             </div>
+             <div class="page-header" style="margin: 10px 0; cursor:pointer;" data-toggle="collapse" data-target="#auditoria-content-2">
+              <h4>
+               Tipos de auditor&iacute;a
+              </h4>
+             </div>
+             <div id="auditoria-content-2" class="in collapse">
+              <p>
+               Los servicios de auditor&iacute;a pueden ser de distinta &iacute;ndole:
+               <ul style="list-style:disc">
+                <li>
+                 <strong>
+                  Auditor&iacute;a interna.
+                 </strong>
+                 En este tipo de auditor&iacute;a se contrasta el nivel de seguridad y privacidad de las redes locales y corporativas de car&aacute;cter interno.
+                </li>
+                <li>
+                 <strong>
+                  Auditor&iacute;a perimetral.
+                 </strong>
+                 En este tipo de estudio se analiza el per&iacute;metro de la red local o corporativa, y se estudia el grado de seguridad que ofrece a las entradas exteriores.
+                </li>
+                <li>
+                 <strong>
+                  Test de intrusi&oacute;n.
+                 </strong>
+                 El test de intrusi&oacute;n es un m&eacute;todo de auditor&iacute;a mediante el que se intenta acceder a los sistemas, para comprobar el nivel de resistencia a la intrusi&oacute;n no deseada. Es un complemento interesante a la auditor&iacute;a perimetral.
+                </li>
+                <li>
+                 <strong>
+                  An&aacute;lisis forense.
+                 </strong>
+                 El an&aacute;lisis forense es una metodolog&iacute;a de estudio apta para el an&aacute;lisis a posteriori de incidentes, mediante la cual se trata de reconstruir c&oacute;mo se ha penetrado en el sistema, a la par que se valoran los da&ntilde;os ocasionados. Si los da&ntilde;os han provocado la inoperabilidad del sistema, el an&aacute;lisis se denomina an&aacute;lisis postmortem.
+                </li>
+                <li>
+                 <strong>
+                  Auditor&iacute;a de aplicaciones Web.
+                 </strong>
+                 Entendida como el an&aacute;lisis externo de las aplicaciones web, comprobando vulnerabilidades como la inyecci&oacute;n de c&oacute;digo sql, verificaci&oacute;n de existencia y anulaci&oacute;n de posibilidades de Cross Site Scripting (XSS), etc.
+                </li>
+                <li>
+                 <strong>
+                  Auditor&iacute;a de c&oacute;digo de aplicaciones.
+                 </strong>
+                 An&aacute;lisis del c&oacute;digo tanto de aplicaciones de p&aacute;ginas Web como de cualquier tipo de aplicaci&oacute;n, independientemente del lenguaje empleado.
+                </li>
+               </ul>
+              </p>
+             </div>
+             <div class="page-header" style="margin: 10px 0; cursor:pointer;" data-toggle="collapse" data-target="#auditoria-content-3">
+              <h4>
+              </h4>
+             </div>
+             <div id="auditoria-content-3" class="in collapse">
+             </div>
+            </div>
+           </div>
+          </div>
+          <div class="span3">
+           <div style="width: 225px; margin-bottom: 15px;">
+            <button class="btn btn-block btn-primary" onclick="loadModal('Auditoria', 1);">
+             Solicitar informaci&oacute;n
+            </button>
+           </div>
+           <blockquote>
+            <img src="img/double_quotes_top.png" atl="" />
+            Conozca las vulnerabilidades en sus sistemas y reciba un informe t&eacute;cnico con la soluci&oacute;n a sus problemas
+            <img src="img/double_quotes_bottom.png" atl="" />
+           </blockquote>
+          </div>
+         </div>
+        </div>
+       </div>
+       <!-- Udyat -->
+       <div id="udyat" class="tab-pane fade hide">
+        <div class="row-fluid">
+         <div class="page-header" style="margin-top: 0;">
+          <h1>
+           Udyat
+           <small>
+            URL Diction Yielding and Analysis Telescope
+           </small>
+          </h1>
+         </div>
+         <div class="row-fluid">
+          <div class="span9">
+           <div class="row-fluid">
+            <div class="span2">
+             <img src="img/serv-logo/udyat_sq.png" class="img-polaroid" alt="Udyat URL Diction Yielding and Analysis Telescope" />
+            </div>
+            <div class="span10">
+             <p>
+              Potente ara&ntilde;a de contenidos desarrollada por Hispasec que
+              <strong>
+               registra cualquier menci&oacute;n
+              </strong>
+              de su empresa en Internet.
+             </p>
+             <p>
+              Posee indexaci&oacute;n en
+              <strong>
+               tiempo real
+              </strong>
+              de los servicios online m&aacute;s importantes: Google, Twitter, Facebook, LinkedIn, Blogger, permitiendo generar
+              <strong>
+               alertas personalizadas.
+              </strong>
+             </p>
+             <p>
+              Podr&aacute; manejar su imagen corporativa y adelantarse a la propagaci&oacute;n de cualquier tipo de menci&oacute;n de su identidad online.
+             </p>
+            </div>
+           </div>
+           <div class="row-fluid">
+            <div class="span12">
+             <div class="page-header" style="margin: 10px 0; cursor:pointer;" data-toggle="collapse" data-target="#udyat-content-1">
+              <h4>
+               Clasificaci&oacute;n de los contenidos detectados
+              </h4>
+             </div>
+             <div id="udyat-content-1" class="in collapse">
+              <p>
+               UDYAT posee un eficiente
+               <strong>
+                clasificador l&eacute;xico capaz de discernir aquellos contenidos que puedan afectar a la imagen de la entidad
+               </strong>
+               bajo consideraci&oacute;n.
+              </p>
+              <p>
+               L&oacute;gicamente, la clasificaci&oacute;n sem&aacute;ntica autom&aacute;tica puede dar lugar a falsos positivos o categorizaciones incorrectas. Para evitar esto, el contenido supuestamente ofensivo es revisado por un analista que
+               <strong>
+                valida la alerta y revisa su categorizaci&oacute;n.
+               </strong>
+              </p>
+              <p>
+               Este tratamiento da como resultado un listado conciso, ordenado y estructurado por categor&iacute;as fijas que pueden ser ampliadas por parte del receptor del servicio.
+              </p>
+             </div>
+             <div class="page-header" style="margin: 10px 0; cursor:pointer;" data-toggle="collapse" data-target="#udyat-content-2">
+              <h4>
+               Resumen ejecutivo del servicio
+              </h4>
+             </div>
+             <div id="udyat-content-2" class="in collapse">
+              <p>
+               Adem&aacute;s de las notificaciones individuales, el servicio incluye un apartado de presentaciones ejecutivas. Se trata de un resumen gr&aacute;fico, ideal para exposiciones a las capas gerenciales de la organizaci&oacute;n.
+              </p>
+              <p>
+               Incluye las siguientes gr&aacute;ficas y tablas:
+               <ul style="list-style-type: disc;">
+                <li>
+                 N&uacute;mero de alertas al mes seg&uacute;n
+                 <strong>
+                  categor&iacute;as
+                 </strong>
+                </li>
+                <li>
+                 N&uacute;mero de alertas por mes seg&uacute;n
+                 <strong>
+                  medio de publicaci&oacute;n
+                 </strong>
+                 : prensa, Facebook, Twitter, etc.
+                </li>
+                <li>
+                 Gr&aacute;ficas de
+                 <strong>
+                  preponderancia de categor&iacute;as
+                 </strong>
+                 y medio de publicaci&oacute;n.
+                </li>
+                <li>
+                 Tablas con las alertas
+                 <strong>
+                  m&aacute;s ofensivas
+                 </strong>
+                 para cada categor&iacute;a.
+                </li>
+               </ul>
+              </p>
+             </div>
+             <div class="page-header" style="margin: 10px 0; cursor:pointer;" data-toggle="collapse" data-target="#udyat-content-3">
+              <h4>
+               Automatizaci&oacute;n mediante API
+              </h4>
+             </div>
+             <div id="udyat-content-3" class="in collapse">
+              <p>
+               Las alertas pueden ser consultadas en tiempo real mediante una API basada en peticiones HTTP. Esto permite replicar la base de datos de notificaciones en remoto para
+               <strong>
+                integrarla en otros servicios, productos o portales de agregaci&oacute;n de eventos de seguridad.
+               </strong>
+              </p>
+              <p>
+               Dado que la interfaz est&aacute; basada en una tecnolog&iacute;a est&aacute;ndar (HTTP), se puede interactuar con ella con cualquier lenguaje de programaci&oacute;n.
+              </p>
+             </div>
+            </div>
+           </div>
+          </div>
+          <div class="span3">
+           <div style="width: 225px; margin-bottom: 15px;">
+            <button class="btn btn-block btn-primary" onclick="loadModal('Udyat', 1);">
+             Solicitar informaci&oacute;n
+            </button>
+            <button class="btn btn-block btn-primary" onclick="loadModal('Udyat', 0);">
+             Solicitar demo
+            </button>
+           </div>
+           <a class="fancybox" rel="gallery-udyat" href="img/serv/imgUdyat1.png">
+            <img src="img/serv/imgUdyat1-100.png" class="img-polaroid" alt="servicio udyat hispasec" />
+           </a>
+           <a class="fancybox" rel="gallery-udyat" href="img/serv/imgUdyat2.png">
+            <img src="img/serv/imgUdyat2-100.png" class="img-polaroid" alt="servicio udyat hispasec" />
+           </a>
+           <a class="fancybox" rel="gallery-udyat" href="img/serv/imgUdyat3.png">
+            <img src="img/serv/imgUdyat3-100.png" class="img-polaroid" alt="servicio udyat hispasec" />
+           </a>
+           <a class="fancybox" rel="gallery-udyat" href="img/serv/imgUdyat4.png">
+            <img src="img/serv/imgUdyat4-100.png" class="img-polaroid" alt="servicio udyat hispasec" />
+           </a>
+           <blockquote>
+            <img src="img/double_quotes_top.png" alt="" />
+            Monitorice su marca en tiempo real en Internet, clasificando cada menci&oacute;n y accediendo a c&oacute;modas estad&iacute;sticas gr&aacute;ficas
+            <img src="img/double_quotes_bottom.png" alt="" />
+           </blockquote>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="clearfix">
+     </div>
+    </div>
+    <!-- Hispasec -->
+    <div id="hispasec-tab" class="content tab-pane fade">
+     <div class="row-fluid">
+      <div class="tab-content span9">
+       <!-- Orígenes -->
+       <div class="tab-pane fade in active" id="origenyfilosofia-tab">
+        <div class="page-header" style="margin: 0 0 10px; padding:0;">
+         <h3 style="margin-top:0;">
+          Or&iacute;genes y Filosof&iacute;a
+         </h3>
+        </div>
+        <div>
+         <h4 style="color: #02528B !important;">
+          Origen
+         </h4>
+         <p>
+          Hispasec nace a finales de 1998 con el lanzamiento de
+          <strong>
+           'una-al-d&iacute;a', el primer servicio diario de informaci&oacute;n t&eacute;cnica en espa&ntilde;ol sobre seguridad inform&aacute;tica,
+          </strong>
+          creado por un grupo de especialistas con el prop&oacute;sito de divulgar y concienciar a los usuarios de la importancia de este sector en el campo de las nuevas tecnolog&iacute;as de la informaci&oacute;n.
+         </p>
+         <p>
+          El &eacute;xito cosechado por 'una-al-d&iacute;a' y el resto de acciones p&uacute;blicas emprendidas por Hispasec (an&aacute;lisis, comparativas, desarrollos, etc.) origina, de forma espont&aacute;nea, una demanda de servicios por parte de profesionales y empresas.
+         </p>
+         <p>
+          Para responder a esta demanda, se crea el
+          <strong>
+           laboratorio de seguridad inform&aacute;tica, Hispasec, en el a&ntilde;o 2000
+          </strong>
+          <strong>
+           . Hispasec es una empresa de marcado car&aacute;cter t&eacute;cnico, sin capital externo ni supeditaci&oacute;n a intereses ajenos, gestionada &iacute;ntegramente por los fundadores de Hispasec.
+          </strong>
+         </p>
+         <p>
+          Lejos de desviarse del prop&oacute;sito original, el rumbo adoptado por Hispasec permite mantener y aumentar los servicios p&uacute;blicos y gratuitos para la comunidad, as&iacute; como atender la demanda creciente de profesionales y empresas.
+         </p>
+         <h4 style="color: #02528B !important;">
+          Filosof&iacute;a
+         </h4>
+         <strong>
+          Seguridad, nuestra raz&oacute;n de ser
+         </strong>
+         <p>
+          Hispasec naci&oacute; por y para la seguridad de las tecnolog&iacute;as de la informaci&oacute;n. Desde su origen se ha especializado en sus diferentes &aacute;reas y concentra su inversi&oacute;n en crecer de forma din&aacute;mica seg&uacute;n criterios puramente t&eacute;cnicos, siendo su principal activo el equipo humano y sus conocimientos.
+         </p>
+         <strong>
+          Diferentes puntos de vista y un &uacute;nico prop&oacute;sito
+         </strong>
+         <p>
+          Un equipo multidisciplinar, compuesto por especialistas en las principales plataformas tecnol&oacute;gicas y &aacute;reas de la seguridad, permite afrontar los proyectos desde distintas perspectivas complementarias para encontrar la soluci&oacute;n id&oacute;nea seg&uacute;n el perfil y las necesidades de nuestros clientes.
+         </p>
+         <strong>
+          Laboratorio independiente de terceras empresas y productos
+         </strong>
+         <p>
+          Hispasec no distribuye productos de terceros ni tiene intereses econ&oacute;micos relacionados con ellos, condici&oacute;n indispensable para acometer los an&aacute;lisis con el rigor, independencia y objetividad necesarios, sin que ning&uacute;n inter&eacute;s comercial adultere el proceso en perjuicio de nuestros clientes.
+         </p>
+         <strong>
+          Consultor&iacute;a experta y trasferencia del conocimiento
+         </strong>
+         <p>
+          Hispasec se enorgullece de trabajar 'codo con codo' con nuestros clientes, con un servicio personalizado, donde se pone especial &eacute;nfasis en ofrecer al cliente (in)formaci&oacute;n cr&iacute;tica y establecer v&iacute;as de contacto permanente que permitan su actualizaci&oacute;n, para participar de forma activa en el proceso constante de mantener la seguridad.
+         </p>
+        </div>
+       </div>
+       <!-- Publicaciones -->
+       <div class="tab-pane fade" id="publicaciones-tab">
+        <div class="page-header" style="margin: 0 0 10px; padding:0;">
+         <h3 style="margin-top:0;">
+          Publicaciones
+         </h3>
+        </div>
+        <div>
+         <ul>
+          <li style="padding-bottom: 10px;">
+           <strong>
+           </strong>
+           <strong>
+            Una al d&iacute;a: 12 a&ntilde;os de seguridad inform&aacute;tica
+           </strong>
+           <ul>
+            <li>
+             <a href="resources/UADv2.0.pdf">
+              <img src="img/adobe_icon.gif" alt="icon pdf" />
+              Una al d&iacute;a: 12 a&ntilde;os de seguridad inform&aacute;tica
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li style="padding-bottom: 10px;">
+           <strong>
+            19/03/2012
+           </strong>
+           Estudio t&eacute;cnico del troyano de la polic&iacute;a
+           <ul>
+            <li>
+             <a href="resources/Troyano_policia.pdf">
+              <img src="img/adobe_icon.gif" alt="icon pdf" />
+              Estudio t&eacute;cnico del troyano de la polic&iacute;a
+             </a>
+            </li>
+            <li>
+             <a href="resources/police_trojan.pdf">
+              <img src="img/adobe_icon.gif" alt="icon pdf" />
+              Whitepaper: Trojan police
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li style="padding-bottom: 10px;">
+           <strong>
+            03/08/2011
+           </strong>
+           &#191;Cu&aacute;nto tardan los grandes fabricantes de software en arreglar una vulnerabilidad? (Edici&oacute;n V2 2005-2011)
+           <ul>
+            <li>
+             <a href="resources/Hispasec_Estudio_Vulnerabilidades_v2.pdf">
+              <img src="img/adobe_icon.gif" alt="icon pdf" />
+              Estudio Comparativo de Vulnerabilidades
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li style="padding-bottom: 10px;">
+           <strong>
+            02/09/2010
+           </strong>
+           Estudio de troyano Tap Sanake Android
+           <ul>
+            <li>
+             <a href="resources/Troyano_android_tab_snake.pdf">
+              <img src="img/adobe_icon.gif" alt="icon pdf" />
+              Estudio Troyano 'Tap Snake'
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li style="padding-bottom: 10px;">
+           <strong>
+            11/08/2010
+           </strong>
+           Estudio de troyano Android
+           <ul>
+            <li>
+             <a href="resources/troyano_android.pdf">
+              <img src="img/adobe_icon.gif" alt="icon pdf" />
+              Estudio Trojan-SMS.AndroidOS.FakePlayer.a
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li style="padding-bottom: 10px;">
+           <strong>
+            21/09/2009
+           </strong>
+           &#191;Cu&aacute;nto tardan los grandes fabricantes de software en arreglar una vulnerabilidad?
+           <ul>
+            <li>
+             <a href="resources/Hispasec_Estudio_Vulnerabilidades.pdf">
+              <img src="img/adobe_icon.gif" alt="icon pdf" />
+              Estudio Comparativo de Vulnerabilidades
+             </a>
+            </li>
+           </ul>
+          </li>
+         </ul>
+        </div>
+       </div>
+       <!-- Comercial -->
+       <div class="tab-pane fade" id="comercial-tab">
+        <div class="page-header" style="margin: 0 0 10px; padding:0;">
+         <h3 style="margin-top:0;">
+          Cat&aacute;logo de servicios
+         </h3>
+        </div>
+        <div>
+         <ul>
+          <li style="padding-bottom: 10px;">
+           <strong>
+            Informaci&oacute;n de Hispasec
+           </strong>
+           Servicios de seguridad de la informaci&oacute;n
+           <ul>
+            <li>
+             <a href="resources/comercial/HISPASEC_Brochure.pdf">
+              <img src="img/adobe_icon.gif" alt="icon pdf" />
+              Descargar
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li style="padding-bottom: 10px;">
+           <strong>
+            Informaci&oacute;n comercial Antifraude
+           </strong>
+           Documento comercial sobre los servicios relacionados con Antifraude
+           <ul>
+            <li>
+             <a href="resources/comercial/Antifraude.pdf">
+              <img src="img/adobe_icon.gif" alt="icon pdf" />
+              Descargar
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li style="padding-bottom: 10px;">
+           <strong>
+            Informaci&oacute;n comercial Auditor&iacute;as
+           </strong>
+           Documento comercial sobre los servicios de Auditor&iacute;as
+           <ul>
+            <li>
+             <a href="resources/comercial/Auditorias.pdf">
+              <img src="img/adobe_icon.gif" alt="icon pdf" />
+              Descargar
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li style="padding-bottom: 10px;">
+           <strong>
+            Informaci&oacute;n comercial Sana
+           </strong>
+           Documento comercial sobre el servicio SANA
+           <ul>
+            <li>
+             <a href="resources/comercial/SANA.pdf">
+              <img src="img/adobe_icon.gif" alt="icon pdf" />
+              Descargar
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li style="padding-bottom: 10px;">
+           <strong>
+            Informaci&oacute;n comercial Udyat
+           </strong>
+           Documento comercial sobre el servicio de Udyat
+           <ul>
+            <li>
+             <a href="resources/comercial/Udyat.pdf">
+              <img src="img/adobe_icon.gif" alt="icon pdf" />
+              Descargar
+             </a>
+            </li>
+           </ul>
+          </li>
+         </ul>
+        </div>
+       </div>
+       <!-- Equipo -->
+       <div class="tab-pane fade" id="equipo-tab">
+        <div class="page-header" style="margin: 0 0 10px; padding:0;">
+         <h3 style="margin-top:0;">
+          Responsables del laboratorio
+         </h3>
+        </div>
+        <div>
+        </div>
+        <div class="row-fluid">
+         <div class="span6" style="margin-bottom: 30px;">
+          <div class="span12">
+           <div class="span4" style="padding: 0 20px 10px 0 !important;">
+            <img src="img/avatar/ssantos.jpg" class="img-polaroid" alt="Sergio de los Santos -Hispasec Sistemas" style="width:100px" />
+            <div style="margin-top: 5px;">
+             <div class="span2" style="width: 24px; margin-left:17px;">
+              <span class="email2">
+               ssantos
+              </span>
+             </div>
+             <div class="span2" style="width: 24px;">
+              <a href="http://es.linkedin.com/pub/sergio-de-los-santos/29/ab8/276">
+               <img src="img/glyphicons_free/glyphicons/png/glyphicons_377_linked_in.png" alt="icon linkedyn" />
+              </a>
+             </div>
+             <div class="span2" style="width: 24px;">
+              <a href="https://twitter.com/ssantosv">
+               <img src="img/glyphicons_free/glyphicons/png/glyphicons_392_twitter.png" alt="icon twitter" />
+              </a>
+             </div>
+            </div>
+           </div>
+           <h4>
+            Sergio de los Santos
+           </h4>
+           <small>
+            Responsable de Una-al-d&iacute;a y consultor&iacute;a
+           </small>
+           <p>
+           </p>
+           <p>
+            Responsable de Una al d&iacute;a, consultor&iacute;a general y de la gesti&oacute;n t&eacute;cnica de incidentes en sistemas Windows que ocurran a nuestros clientes.
+            <br />
+            Es autor de varios libros. El &uacute;ltimo
+            <a href="http://unaaldia.hispasec.com/2011/09/libro-seguridad-en-windows-secretos.html">
+             M&aacute;xima seguridad en Windows: Secretos T&eacute;cnicos
+            </a>
+           </p>
+          </div>
+         </div>
+         <div class="span6" style="margin-bottom: 30px;">
+          <div class="span12">
+           <div class="span4" style="padding: 0 20px 10px 0 !important;">
+            <img src="img/avatar/dgarcia.jpg" class="img-polaroid" alt="David Garc&iacute;a -Hispasec Sistemas" style="width:100px" />
+            <div style="margin-top: 5px;">
+             <div class="span2" style="width: 24px; margin-left:17px;">
+              <span class="email2">
+               dgarcia
+              </span>
+             </div>
+             <div class="span2" style="width: 24px;">
+              <a href="http://es.linkedin.com/pub/david-garc%C3%ADa-n%C3%BA%C3%B1ez/11/a41/363">
+               <img src="img/glyphicons_free/glyphicons/png/glyphicons_377_linked_in.png" alt="icon linkedyn" />
+              </a>
+             </div>
+             <div class="span2" style="width: 24px;">
+              <a href="https://twitter.com/dgn1729">
+               <img src="img/glyphicons_free/glyphicons/png/glyphicons_392_twitter.png" alt="icon twitter" />
+              </a>
+             </div>
+            </div>
+           </div>
+           <h4>
+            David Garc&iacute;a
+           </h4>
+           <small>
+            Responsable de Auditor&iacute;as
+           </small>
+           <p>
+           </p>
+           <p>
+            Gestiona al equipo de auditor&iacute;as. Hispasec cuenta con un equipo
+                                  multidisciplinar especializado en cada &aacute;rea de auditor&iacute;a. Tambi&eacute;n se
+                                  encargan de analizar las &uacute;ltimas vulnerabilidades que salen a la luz.
+           </p>
+          </div>
+         </div>
+        </div>
+        <div class="row-fluid">
+         <div class="span6" style="margin-bottom: 30px;">
+          <div class="span12">
+           <div class="span4" style="padding: 0 20px 10px 0 !important;">
+            <img src="img/avatar/framirez.jpg" class="img-polaroid" alt="Fernando Denis Ram&iacute;rez -Hispasec Sistemas" style="width:100px" />
+            <div style="margin-top: 5px;">
+             <div class="span2" style="width: 24px; margin-left:17px;">
+              <span class="email2">
+               framirez
+              </span>
+             </div>
+             <div class="span2" style="width: 24px;">
+              <a href="http://es.linkedin.com/pub/fernando-denis-ram%C3%ADrez-guerrero/29/846/6a1">
+               <img src="img/glyphicons_free/glyphicons/png/glyphicons_377_linked_in.png" alt="icon linkedyn" />
+              </a>
+             </div>
+             <div class="span2" style="width: 24px;">
+              <a href="https://twitter.com/fdrg21">
+               <img src="img/glyphicons_free/glyphicons/png/glyphicons_392_twitter.png" alt="icon twitter" />
+              </a>
+             </div>
+            </div>
+           </div>
+           <h4>
+            Fernando Denis Ram&iacute;rez
+           </h4>
+           <small>
+            Responsable de Antifraude
+           </small>
+           <p>
+           </p>
+           <p>
+            Coordinador del equipo Antifraude. Responsable de los servicios SANA, Antifraude y Udyat.
+           </p>
+          </div>
+         </div>
+         <div class="span6" style="margin-bottom: 30px;">
+          <div class="span12">
+           <div class="span4" style="padding: 0 20px 10px 0 !important;">
+            <img src="img/avatar/jrascon.jpg" class="img-polaroid" alt="Javier Rasc&oacute;n -Hispasec Sistemas" style="width:100px" />
+            <div style="margin-top: 5px;">
+             <div class="span2" style="width: 24px; margin-left:17px;">
+              <span class="email2">
+               jrascon
+              </span>
+             </div>
+             <div class="span2" style="width: 24px;">
+              <a href="http://es.linkedin.com/in/jrascon">
+               <img src="img/glyphicons_free/glyphicons/png/glyphicons_377_linked_in.png" alt="icon linkedyn" />
+              </a>
+             </div>
+             <div class="span2 opacity" style="width: 24px;">
+              <img src="img/glyphicons_free/glyphicons/png/glyphicons_392_twitter.png" alt="icon twitter" />
+             </div>
+            </div>
+           </div>
+           <h4>
+            Javier Rasc&oacute;n
+           </h4>
+           <small>
+            Responsable de Malware
+           </small>
+           <p>
+           </p>
+           <p>
+            Es el responsable del servicio Anti Troyanos de Hispasec. Gestiona un equipo con el que analizan diariamente las muestras que afectan a nuestros clientes, y est&aacute; detr&aacute;s del software que usamos para la detecci&oacute;n de las mismas.
+           </p>
+          </div>
+         </div>
+        </div>
+       </div>
+       <!-- Copyright -->
+       <div class="tab-pane fade" id="copy-tab">
+        <div class="page-header" style="margin: 0 0 10px; padding:0;">
+         <h3 style="margin-top:0;">
+          Copyright
+         </h3>
+        </div>
+        <div>
+         <br />
+         Todas las noticias Hispasec una-al-dia est&aacute;n protegidas por las leyes del copyright.
+         <br />
+         <ul>
+          <li>
+           Se permite la copia y utilizaci&oacute;n para usos
+           <strong>
+            privados.
+           </strong>
+          </li>
+          <br />
+          <li>
+           Para uso
+           <strong>
+            p&uacute;blico y no lucatrivo,
+           </strong>
+           se permite la reproducci&oacute;n &iacute;ntegra y sin alteraciones de este documento, con menci&oacute;n de autor y URL completa.
+          </li>
+          <br />
+          <li>
+           Se
+           <strong>
+            proh&iacute;be expresamente
+           </strong>
+           <strong>
+            la copia o utilizaci&oacute;n para uso lucrativo y la copia o utilizaci&oacute;n parcial de su contenido sin expresa autorizaci&oacute;n, por escrito, de su autor o autores.
+           </strong>
+          </li>
+          <br />
+         </ul>
+         En caso de duda consulte a
+         <span class="email">
+          info
+         </span>
+         .
+         <br />
+         <br />
+         <br />
+        </div>
+       </div>
+       <!-- Claves publicas -->
+       <div class="tab-pane fade" id="clavepublica-tab">
+        <div class="page-header" style="margin: 0 0 10px; padding:0;">
+         <h3 style="margin-top:0;">
+          Claves P&uacute;blicas
+         </h3>
+        </div>
+        <div>
+        </div>
+        <ul>
+         <li>
+          <a href="resources/public/NoticiasHispasec2012.asc">
+           <img src="img/key.png" alt="icon key" />
+           Clave p&uacute;blica de env&iacute;o de noticias - 2012
+          </a>
+         </li>
+         <li>
+          <a href="resources/public/NoticiasHispasec2011.asc">
+           <img src="img/key.png" alt="icon key" />
+           Clave p&uacute;blica de env&iacute;o de noticias - 2011
+          </a>
+         </li>
+         <li>
+          <a href="resources/public/NoticiasHispasec2010.asc">
+           <img src="img/key.png" alt="icon key" />
+           Clave p&uacute;blica de env&iacute;o de noticias - 2010
+          </a>
+         </li>
+         <li>
+          <a href="resources/public/NoticiasHispasec2009.asc">
+           <img src="img/key.png" alt="icon key" />
+           Clave p&uacute;blica de env&iacute;o de noticias - 2009
+          </a>
+         </li>
+         <li>
+          <a href="resources/public/NoticiasHispasec2008.asc">
+           <img src="img/key.png" alt="icon key" />
+           Clave p&uacute;blica de env&iacute;o de noticias - 2008
+          </a>
+         </li>
+         <li>
+          <a href="resources/public/NoticiasHispasec2007.asc">
+           <img src="img/key.png" alt="icon key" />
+           Clave p&uacute;blica de env&iacute;o de noticias - 2007
+          </a>
+         </li>
+         <li>
+          <a href="resources/public/NoticiasHispasec2006.asc">
+           <img src="img/key.png" alt="icon key" />
+           Clave p&uacute;blica de env&iacute;o de noticias - 2006
+          </a>
+         </li>
+         <li>
+          <a href="resources/public/NoticiasHispasec2005.asc">
+           <img src="img/key.png" alt="icon key" />
+           Clave p&uacute;blica de env&iacute;o de noticias - 2005
+          </a>
+         </li>
+         <li>
+          <a href="resources/public/NoticiasHispasec2004.asc">
+           <img src="img/key.png" alt="icon key" />
+           Clave p&uacute;blica de env&iacute;o de noticias - 2004
+          </a>
+         </li>
+         <li>
+          <a href="resources/public/NoticiasHispasec2003.asc">
+           <img src="img/key.png" alt="icon key" />
+           Clave p&uacute;blica de env&iacute;o de noticias - 2003
+          </a>
+         </li>
+         <li>
+          <a href="resources/public/NoticiasHispasec2002.asc">
+           <img src="img/key.png" alt="icon key" />
+           Clave p&uacute;blica de env&iacute;o de noticias - 2002
+          </a>
+         </li>
+         <li>
+          <a href="resources/public/NoticiasHispasec2001.asc">
+           <img src="img/key.png" alt="icon key" />
+           Clave p&uacute;blica de env&iacute;o de noticias - 2001
+          </a>
+         </li>
+        </ul>
+       </div>
+      </div>
+      <div class="span3">
+       <ul id="navigation-column" class="nav nav-list well" style="padding-top:0;">
+        <li class="nav-header">
+         <h4>
+          Hispasec
+         </h4>
+        </li>
+        <li class="active">
+         <a href="#origenyfilosofia-tab" data-toggle="tab">
+          <i class="icon-arrow-right">
+          </i>
+          Or&iacute;genes y Filosof&iacute;a
+         </a>
+        </li>
+        <li>
+         <a href="#publicaciones-tab" data-toggle="tab">
+          <i class="icon-arrow-right">
+          </i>
+          Publicaciones
+         </a>
+        </li>
+        <li>
+         <a href="#comercial-tab" data-toggle="tab">
+          <i class="icon-arrow-right">
+          </i>
+          Cat&aacute;logo de servicios
+         </a>
+        </li>
+        <li>
+         <a href="#equipo-tab" data-toggle="tab">
+          <i class="icon-arrow-right">
+          </i>
+          Responsables del laboratorio
+         </a>
+        </li>
+        <li>
+         <a href="#copy-tab" data-toggle="tab">
+          <i class="icon-arrow-right">
+          </i>
+          Copyright
+         </a>
+        </li>
+        <li>
+         <a href="#clavepublica-tab" data-toggle="tab">
+          <i class="icon-arrow-right">
+          </i>
+          Claves P&uacute;blicas
+         </a>
+        </li>
+       </ul>
+      </div>
+     </div>
+    </div>
+    <!-- Herramientas -->
+    <div id="tools-tab" class="content tab-pane fade">
+     <div class="row-fluid">
+      <div class="tab-content span9">
+       <!-- Herramienta1 -->
+       <div class="tab-pane fade in active" id="tool1-tab">
+        <div class="page-header" style="margin: 0 0 10px; padding:0;">
+         <h3 style="margin-top:0;">
+          WinLockLess
+          <a href="resources/soft/winlockless.exe" class="btn btn-success btn-small pull-right" style="margin-top:10px;">
+           Descargar
+           <i class="icon-download icon-white">
+           </i>
+          </a>
+         </h3>
+        </div>
+        <div class="row-fluid">
+         <div class="span3">
+          <img src="img/herramientas/winlockless-logo.png" class="img-polaroid pull-left" style="margin: 0 10px 0 0;" alt="tools WinLockLess hisasec" />
+         </div>
+         <div class="span9">
+          <div class="accordion" id="accordion1">
+           <div class="accordion-group">
+            <div class="accordion-heading">
+             <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse1">
+              <h4>
+               Descripci&oacute;n
+              </h4>
+             </a>
+            </div>
+            <div id="collapse1" class="accordion-body collapse in">
+             <div class="accordion-inner">
+              <p>
+               Evita que los programas modifiquen ciertos puntos del sistema para que se lancen de forma autom&aacute;tica en el inicio de Windows. Se ha intentado que sea bastante sencillo: niega con un solo click el permiso de crear subclaves y establecer el valor (y en algunos casos, de borrar) sobre estas ramas implicadas en el arranque de Windows.
+              </p>
+              <ul>
+               <li>
+                HKCU\Software\Microsoft\Windows\CurrentVersion\Run
+               </li>
+               <li>
+                HKLM\Software\Microsoft\Windows\CurrentVersion\Run
+               </li>
+               <li>
+                HKCU\Software\Microsoft\Windows NT\CurrentVersion\WinLogon
+               </li>
+               <li>
+                HKLM\Software\Microsoft\Windows NT\CurrentVersion\WinLogon
+               </li>
+               <li>
+                HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run
+               </li>
+               <li>
+                HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run
+               </li>
+               <li>
+                HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnceEx
+               </li>
+               <li>
+                HKLM\Software\Microsoft\Windows\CurrentVersion\RunOnceEx
+               </li>
+               <li>
+                HKCU\Software\Microsoft\Windows NT\CurrentVersion\Windows
+               </li>
+               <li>
+                SYSTEM\CurrentControlSet\Control\SafeBoot
+               </li>
+              </ul>
+              <p>
+               Evitando no solo crear sublclaves y establecer valores, sino tambi&eacute;n que se borre. Con esto nos aseguramos de que siempre podremos entrar en el modo seguro. Las claves son protegidas tanto en su versi&oacute;n 'nativa' de 64 bits como en las virtualizadas de 32 bits (bajo Wow6432node). Esto quiere decir que proteger&iacute;a tanto de programas nativos compilados en 64 bits como los de 32. Por ahora existe poco malware compilado de forma nativa para 64 bits, pero ser&aacute; com&uacute;n en el futuro. Si las ramas no existen, las crea y establece los permisos para proteger as&iacute; al usuario.
+              </p>
+             </div>
+            </div>
+            <div class="accordion-group">
+             <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse2">
+               <h4>
+                &#191;Por qu&eacute; esas claves?
+               </h4>
+              </a>
+             </div>
+             <div id="collapse2" class="accordion-body collapse in">
+              <div class="accordion-inner">
+               <p>
+                Estas son las claves m&aacute;s conocidas que suelen modificar los troyanos para iniciarse con el sistema y bloquearlo. Hay muchos otros puntos de inicio, pero que no son utilizados por la mayor&iacute;a del malware. Por ejemplo, el malware de la polic&iacute;a, SpyEye, zbot... todos usan normalmente alguna de esas ramas para arrancarse al inicio. En &uacute;ltima instancia, al proteger el modo seguro, el usuario se asegura de que siempre podr&aacute; entrar en ese modo sin alteraciones.
+                <br />
+                <br />
+                Siempre se aplicar&aacute;n las reglas para el usuario bajo cuyo contexto se lanza el programa. Esto quiere decir que si se usan varios usuarios en el sistema, se debe lanzar para cada uno de ellos. Eso s&iacute;, el programa requerir&aacute; privilegios de administrador para modificar algunos permisos.
+                <br />
+                <br />
+                El programa permite tanto aplicar los cambios como revertirlos. As&iacute;, si el usuario necesita modificar esas ramas leg&iacute;timamente, solo debe revertir temporalmente el bloqueo.
+                <br />
+                <br />
+               </p>
+              </div>
+             </div>
+            </div>
+            <div class="accordion-group">
+             <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse3">
+               <h4>
+                &#191;Qu&eacute; no hace el programa?
+               </h4>
+              </a>
+             </div>
+             <div id="collapse3" class="accordion-body collapse in">
+              <div class="accordion-inner">
+               <p>
+                El programa no es un antivirus ni evitar&aacute; ninguna infecci&oacute;n. S&oacute;lo evitar&aacute; que, buena parte del malware conocido, bloquee el acceso al sistema al arrancarse con &eacute;l. Por supuesto, no est&aacute;n contemplados todos puntos de arranque de Windows usados por el malware, pero s&iacute; las m&aacute;s relevantes.
+                <br />
+                <br />
+                El programa queda residente, pero no es necesario que lo haga. De hecho, no se recomienda. Si queda residente es para recordar al usuario que ha aplicado los permisos y, dado el caso, revertirlos c&oacute;modamente.
+                <br />
+                <br />
+                No se instala. Tan solo es una interfaz c&oacute;moda para aplicar ciertos permisos en el registro, que pueden ayudar a evitar que algunas variantes de malware se arranquen con el sistema y no permitan su uso ni su arranque en modo seguro. Esto quiere decir que, si el usuario queda infectado, el troyano podr&aacute; hacer lo que quiera y necesite en el sistema durante la primera ejecuci&oacute;n. Aplicar WinLockLess impedir&aacute; (en algunos casos) que se arranque en el siguiente reinicio, pero el usuario deber&aacute; todav&iacute;a desinfectar su m&aacute;quina.
+                <br />
+                <br />
+                El programa tampoco detiene la ejecuci&oacute;n actual del troyano (antes de un reinicio) ni lo borra de su ubicaci&oacute;n en el disco duro. Solo impide que se copie en los puntos de inicio de Windows.
+                <br />
+                <br />
+                Por supuesto, un malware en un momento dado puede modificar los permisos aplicados por el programa, eliminar la protecci&oacute;n, y establecerse en las ramas del registro. Incluso ejecutarse como SYSTEM... Pero no es habitual que el malware act&uacute;e de esa manera actualmente, ni se preocupe demasiado por los permisos (excepto cuando no es administrador, en cuyo caso busca la configuraci&oacute;n del usuario).
+                <br />
+                <br />
+               </p>
+              </div>
+             </div>
+            </div>
+            <div class="accordion-group">
+             <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse4">
+               <h4>
+                &#191;C&oacute;mo debo usarlo?
+               </h4>
+              </a>
+             </div>
+             <div id="collapse4" class="accordion-body collapse in">
+              <div class="accordion-inner">
+               <p>
+                Simplemente se ejecuta, se aplican los cambios en las ramas deseadas, y poco m&aacute;s. El usuario no debe notar ninguna incidencia en su sistema. Es cierto que ciertos programas leg&iacute;timos querr&aacute;n escribir en el registro, especialmente en:
+                <br />
+                <div class="regkeys">
+                 HKCU\Software\Microsoft\Windows\CurrentVersion\Run
+                </div>
+                Para arrancarse con Windows. Si los cambios fueron aplicados, WinLockLess se lo impedir&aacute;. En ese caso, el usuario deber&aacute; revertir las modificaciones en el registro (pulsando sobre el bot&oacute;n correspondiente), instalar el programa deseado, y volver a aplicar las modificaciones.
+                <br />
+                <br />
+                El programa tambi&eacute;n sirve para evitar que los programas en general se arranquen al inicio (algo que suele ser molesto para usuarios iniciados).
+                <br />
+                <br />
+               </p>
+              </div>
+             </div>
+            </div>
+            <div class="accordion-group">
+             <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse5">
+               <h4>
+                &#191;Qu&eacute; necesito para ejecutarlo?
+               </h4>
+              </a>
+             </div>
+             <div id="collapse5" class="accordion-body collapse in">
+              <div class="accordion-inner">
+               <p>
+                Se necesita como m&iacute;nimo la versi&oacute;n 4 de .NET (disponible en
+                <a href="http://www.microsoft.com/download/en/details.aspx?id=31">
+                 http://www.microsoft.com/download/en/details.aspx?id=31
+                </a>
+                ). Los usuarios de Vista y 7 es probable que ya la tengan instalada.
+                      La raz&oacute;n de usar esta versi&oacute;n del framework (entre otras) es el trato nativo a ramas de 64 bits en el registro. WinLockLess. Ha sido programado por Sergio de los Santos en C#, y el dise&ntilde;o es de Jose Mesa. Por supuesto, no se ofrece ninguna garant&iacute;a de que bloquee la activaci&oacute;n en el arranque de futuras versiones de ning&uacute;n tipo de troyano.
+                <br />
+                <br />
+               </p>
+              </div>
+             </div>
+            </div>
+            <div class="accordion-group">
+             <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse6">
+               <h4>
+                Ejecut&eacute; WinLockLess y aun as&iacute; el troyano se ha lanzado en el arranque. &#191;Qu&eacute; ha pasado?
+               </h4>
+              </a>
+             </div>
+             <div id="collapse6" class="accordion-body collapse in">
+              <div class="accordion-inner">
+               <p>
+                Es posible. Los troyanos que bloquean el ordenador pueden usar decenas de t&eacute;cnicas para lanzarse en el inicio. WinLockLess solo cubre las m&aacute;s comunes. Tambi&eacute;n es posible que se haya lanzado con un usuario diferente al infectado. Tambi&eacute;n, hipot&eacute;ticamente pero no probable, el troyano ha podido eliminar primero los permisos y luego escribirse en la carpeta.
+                <br />
+                <br />
+                En cualquier caso, por supuesto, es una capa m&aacute;s que no debe crear una falsa sensaci&oacute;n de seguridad. Se deben seguir usados los m&eacute;todos de prevenci&oacute;n tanto reactivos como preventivos habituales.
+                <br />
+                <br />
+               </p>
+              </div>
+             </div>
+            </div>
+            <div class="accordion-group">
+             <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse7">
+               <h4>
+                &#161;Windows me advierte al ejecutarlo de que puede ser peligroso!
+               </h4>
+              </a>
+             </div>
+             <div id="collapse7" class="accordion-body collapse in">
+              <div class="accordion-inner">
+               <p>
+                Esto es porque ha sido descargado de Internet, es un ejecutable, y no est&aacute; firmado.
+                <br />
+                <br />
+                <img src="img/herramientas/winlockless.png" />
+                <br />
+                <small>
+                 El MD5 de esta versi&oacute;n es bd885f24ec7bbc544e40372f62fe7007 y el SHA1 09fd4c7020252450d960b66d72c709a4e4bd894c.
+                </small>
+               </p>
+              </div>
+             </div>
+            </div>
+            <div class="accordion-group">
+             <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse8">
+               <h4>
+                M&aacute;s informaci&oacute;n
+               </h4>
+              </a>
+             </div>
+             <div id="collapse8" class="accordion-body collapse in">
+              <div class="accordion-inner">
+               <p>
+                <a href="http://unaaldia.hispasec.com/2012/04/hispasec-presenta-winlockless.html">
+                 Una-al-d&iacute;a: Hispasec presenta WinLockLess
+                </a>
+               </p>
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+       <div class="tab-pane fade in active" id="tool2-tab">
+        <div class="page-header" style="margin: 0 0 10px; padding:0;">
+         <h3 style="margin-top:0;">
+          FWRulez
+          <a href="resources/soft/fwrulezsetup.exe" class="btn btn-success btn-small pull-right" style="margin-top:10px;">
+           Descargar
+           <i class="icon-download icon-white">
+           </i>
+          </a>
+         </h3>
+        </div>
+        <div class="row-fluid">
+         <div class="span3">
+          <img src="img/herramientas/fwrulez-logo.png" class="img-polaroid pull-left" style="margin: 0 10px 0 0;" alt="tools FWRulez hisasec" />
+         </div>
+         <div class="span9">
+          <div class="accordion" id="accordion2">
+           <div class="accordion-group">
+            <div class="accordion-heading">
+             <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse2-1">
+              <h4>
+               Descripci&oacute;n
+              </h4>
+             </a>
+            </div>
+            <div id="collapse2-1" class="accordion-body collapse in">
+             <div class="accordion-inner">
+              <p>
+               FWRulez no es una herramienta que monitorice las conexiones. Interact&uacute;a y simplifica la interfaz del cortafuegos de Windows, para aprovecharla mejor. No permitir&aacute; bloquear o desbloquear puertos din&aacute;micamente, etc. Solo crea reglas para programas, directamente con el bot&oacute;n derecho del rat&oacute;n.
+              </p>
+              <p>
+               B&aacute;sicamente, funciona de dos maneras:
+               <ul>
+                <li>
+                 Ejecut&aacute;ndolo directamente (y a&ntilde;adiendo un programa).
+                </li>
+                <li>
+                 Con el men&uacute; contextual.
+                </li>
+               </ul>
+               A&ntilde;ade dos opciones a este men&uacute;
+               <ul>
+                <li>
+                 'FWRulez file': Para a&ntilde;adir ficheros ejecutables.
+                </li>
+                <li>
+                 'FWRulez exes in folder': Incluir&aacute; todos los ejecutables en el directorio y subdirectorios en las reglas definidas.
+                </li>
+               </ul>
+               <img src="img/herramientas/fwrulez.png" />
+              </p>
+             </div>
+            </div>
+            <div class="accordion-group">
+             <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion4" href="#collapse2">
+               <h4>
+                M&aacute;s informaci&oacute;n
+               </h4>
+              </a>
+             </div>
+             <div id="collapse8" class="accordion-body collapse in">
+              <div class="accordion-inner">
+               <p>
+                <a href="http://unaaldia.hispasec.com/2012/06/hispasec-presenta-fwrulez-herramienta.html">
+                 Hispasec presenta FWRulez: Herramienta que facilita la administraci&oacute;n de Windows Advanced Firewall
+                </a>
+               </p>
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+       <div class="tab-pane fade in active" id="tool3-tab">
+        <div class="page-header" style="margin: 0 0 10px; padding:0;">
+         <h3 style="margin-top:0;">
+          MIC Bypass Checker
+          <a href="resources/soft/micbypasscheck.exe" class="btn btn-success btn-small pull-right" style="margin-top:10px;">
+           Descargar
+           <i class="icon-download icon-white">
+           </i>
+          </a>
+         </h3>
+        </div>
+        <div class="row-fluid">
+         <div class="span3">
+          <img src="img/herramientas/mic4.png" class="img-polaroid pull-left" style="margin: 0 10px 0 0;" alt="tools MIC Bypass Checker hisasec" />
+         </div>
+         <div class="span9">
+          <div class="accordion" id="accordion3">
+           <div class="accordion-group">
+            <div class="accordion-heading">
+             <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse1">
+              <h4>
+               Descripci&oacute;n
+              </h4>
+             </a>
+            </div>
+            <div id="collapse1" class="accordion-body collapse in">
+             <div class="accordion-inner">
+              <p>
+               El modo protegido de Internet Explorer es, en realidad, el uso de control de integridad aplicado al navegador de Microsoft. Una especie de sandbox. Esta funcionalidad aporta una medida extra de seguridad a Internet Explorer, adem&aacute;s de ser, junto a Chrome de los pocos navegadores que la utilizan. Pero en Internet Explorer existe una forma 'por dise&ntilde;o' de eludirla. Hemos creado una peque&ntilde;a herramienta que permite vigilar qu&eacute; aplicaciones se pueden 'saltar' la sandbox.
+              </p>
+              <p>
+               Mic Bypass Checker es una peque&ntilde;a herramienta (no demasiado elaborada est&eacute;ticamente) que, simplemente, recorre esa lista de programas y muestra de forma c&oacute;moda sus pol&iacute;ticas. Un c&oacute;digo de colores ayuda a diferenciar qu&eacute; pol&iacute;tica tiene cada programa. Adem&aacute;s, marcar&aacute; en rojo las rutas a programas que no existen. Por ejemplo, ciertos programas desinstalados pueden 'olvidar' el eliminar esa rama. Estos pueden ser eliminados sin problemas. El programa tambi&eacute;n permite grabar un fichero con la informaci&oacute;n.
+               <img src="img/herramientas/mic4.png" />
+              </p>
+             </div>
+            </div>
+            <div class="accordion-group">
+             <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapse2">
+               <h4>
+                M&aacute;s informaci&oacute;n
+               </h4>
+              </a>
+             </div>
+             <div id="collapse8" class="accordion-body collapse in">
+              <div class="accordion-inner">
+               <p>
+                <a href="http://unaaldia.hispasec.com/2012/05/utilidad-para-vigilar-el-uso-del-modo.html">
+                 Una-al-d&iacute;a: Utilidad para vigilar el uso del Modo Protegido en Internet Explorer
+                </a>
+               </p>
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+       <div class="tab-pane fade in active" id="tool4-tab">
+        <div class="page-header" style="margin: 0 0 10px; padding:0;">
+         <h3 style="margin-top:0;">
+          Office Signature Checker
+          <a href="resources/soft/osc.exe" class="btn btn-success btn-small pull-right" style="margin-top:10px;">
+           Descargar
+           <i class="icon-download icon-white">
+           </i>
+          </a>
+         </h3>
+        </div>
+        <div class="row-fluid">
+         <div class="span3">
+          <img src="img/herramientas/office_sign_checker-01.png" class="img-polaroid pull-left" style="margin: 0 10px 0 0;" alt="tools Office Signature Checker hisasec" />
+         </div>
+         <div class="span9">
+          <div class="accordion" id="accordion4">
+           <div class="accordion-group">
+            <div class="accordion-heading">
+             <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse1">
+              <h4>
+               Descripci&oacute;n
+              </h4>
+             </a>
+            </div>
+            <div id="collapse1" class="accordion-body collapse in">
+             <div class="accordion-inner">
+              <p>
+               Una herramienta para comprobar la firma de documentos Office (sin necesidad de ejecutarlos). Si bien Windows permite comprobar la firma de los ejecutables antes de lanzarlos, por ahora no hab&iacute;a forma c&oacute;moda de verificar un certificado de un documento Office sin tener que abrirlo y, por tanto, exponerse a ciertos riesgos. Office Signature Checker hace esa peque&ntilde;a labor.
+              </p>
+              <p>
+               La aplicaci&oacute;n es muy simple, y no pretende m&aacute;s que concienciar un poco sobre la importancia de verificar los ficheros (ejecutables o no) antes de lanzarlos. Los documentos de Office a partir de 2007 son en realidad un archivo ZIP, que contiene informaci&oacute;n XML. La aplicaci&oacute;n extrae el certificado, lo almacena en los archivos temporales, y lo muestra por pantalla. Si el documento est&aacute; firmado por m&aacute;s de un usuario, mostrar&aacute; todos los certificados. Hace uso de la librer&iacute;a DotNetZip. Modifica el men&uacute; contextual de las siguientes ramas:
+               <ul>
+                <li>
+                 HKLM 'SOFTWARE\Classes\Excel.Sheet.12\
+                </li>
+                <li>
+                 HKLM 'SOFTWARE\Classes\Word.Document.12\
+                </li>
+                <li>
+                 HKLM 'SOFTWARE\Classes\PowerPoint.Show.12\
+                </li>
+                <li>
+                 HKLM 'SOFTWARE\Classes\Access.Application.12\
+                </li>
+               </ul>
+               Por tanto, la opci&oacute;n 'Check Certifcates' se mostrar&aacute; sobre los archivos Excel, Word, PowerPoint y Access 2007.
+              </p>
+             </div>
+            </div>
+            <div class="accordion-group">
+             <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion4" href="#collapse2">
+               <h4>
+                M&aacute;s informaci&oacute;n
+               </h4>
+              </a>
+             </div>
+             <div id="collapse8" class="accordion-body collapse in">
+              <div class="accordion-inner">
+               <p>
+                <a href="http://unaaldia.hispasec.com/2012/07/hispasec-presenta-office-signature.html">
+                 Una-al-d&iacute;a: Hispasec presenta Office Signature Checker
+                </a>
+               </p>
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+       <div class="tab-pane fade in active" id="tool5-tab">
+        <div class="page-header" style="margin: 0 0 10px; padding:0;">
+         <h3 style="margin-top:0;">
+          RegistryDate
+          <a href="resources/soft/RegistryDate.exe" class="btn btn-success btn-small pull-right" style="margin-top:10px;">
+           Descargar
+           <i class="icon-download icon-white">
+           </i>
+          </a>
+         </h3>
+        </div>
+        <div class="row-fluid">
+         <div class="span3">
+          <img src="img/herramientas/registry_control_2.png" class="img-polaroid pull-left" style="margin: 0 10px 0 0;" alt="tools RegistryDate hisasec" />
+         </div>
+         <div class="span9">
+          <div class="accordion" id="accordion1">
+           <div class="accordion-group">
+            <div class="accordion-heading">
+             <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse1">
+              <h4>
+               Descripci&oacute;n
+              </h4>
+             </a>
+            </div>
+            <div id="collapse1" class="accordion-body collapse in">
+             <div class="accordion-inner">
+              <p>
+               Hemos creado una herramienta muy sencilla. Simplemente, se especifica en l&iacute;nea de comando la rama que se desea consultar y muestra la fecha de &uacute;ltima modificaci&oacute;n. Permite tambi&eacute;n buscar ramas modificadas entre dos fechas. Esto es muy &uacute;til para an&aacute;lisis forenses. Por ejemplo, para saber en qu&eacute; momento se a&ntilde;adi&oacute; una clave a la rama
+              </p>
+              <ul>
+               <li>
+                HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion
+               </li>
+              </ul>
+              <p>
+               Se podr&iacute;a hacer una b&uacute;squeda del tipo:
+               <br />
+               RegistryDate.exe HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion 27-11-2012:12.00 27-11-2012:12.14 y buscar&aacute; todas las ramas que hayan sido modificadas durante ese periodo de tiempo(entre las 12.00 y y las 12.14 del 27-11-2012).
+               <br />
+               Como se puede observar, el formato de fechas y el tipo de programa est&aacute; inspirado en macmatch.exe, una herramienta muy usada en forenses, que permite conocer entre qu&eacute; fechas se ha creado, accedido o modificado los ficheros.
+              </p>
+             </div>
+            </div>
+            <div class="accordion-group">
+             <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse2">
+               <h4>
+                &#191;Por qu&eacute; dos versiones?
+               </h4>
+              </a>
+             </div>
+             <div id="collapse2" class="accordion-body collapse in">
+              <div class="accordion-inner">
+               <p>
+                Estas son las claves m&aacute;s conocidas que suelen modificar los troyanos para iniciarse con el sistema y bloquearlo. Hay muchos otros puntos de inicio, pero que no son utilizados por la mayor&iacute;a del malware. Por ejemplo, el malware de la polic&iacute;a, SpyEye, zbot... todos usan normalmente alguna de esas ramas para arrancarse al inicio. En &uacute;ltima instancia, al proteger el modo seguro, el usuario se asegura de que siempre podr&aacute; entrar en ese modo sin alteraciones.
+                <br />
+                <br />
+                Siempre se aplicar&aacute;n las reglas para el usuario bajo cuyo contexto se lanza el programa. Esto quiere decir que si se usan varios usuarios en el sistema, se debe lanzar para cada uno de ellos. Eso s&iacute;, el programa requerir&aacute; privilegios de administrador para modificar algunos permisos.
+                <br />
+                <br />
+                El programa permite tanto aplicar los cambios como revertirlos. As&iacute;, si el usuario necesita modificar esas ramas leg&iacute;timamente, solo debe revertir temporalmente el bloqueo.
+                <br />
+                <br />
+               </p>
+               <p>
+                La raz&oacute;n es la siguiente. Actualmente la mayor&iacute;a de los sistemas operativos Windows 7, tienen (aprovechan) una arquitectura de 64 bits. No as&iacute; los XP (aunque se lanz&oacute; XP de 64 bits, no es muy popular). Todav&iacute;a existen muchas aplicaciones compiladas para 32 bits para mantener la "compatibilidad hacia atr&aacute;s". As&iacute; que para lidiar con esto, Microsoft "virtualiza" muchas ramas del registro. Por ejemplo, una muy conocida (por ser usada por malware) es:
+                <ul>
+                 <li>
+                  HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+                 </li>
+                </ul>
+               </p>
+               <p>
+                En un Windows de 64 bits, aqu&iacute; escribir&aacute;n solo las aplicaciones compiladas espec&iacute;ficamente con 64 bits. En la imagen, todas las aplicaciones son de 64 bits nativas.
+               </p>
+               <img src="http://2.bp.blogspot.com/-HA6c1V4QKOc/UMY5aN8-9ZI/AAAAAAAABqc/r04qNIzG2HQ/s640/reg64.png" />
+               <p>
+                <ul>
+                 <li>
+                  HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run
+                 </li>
+                </ul>
+                En la imagen, todas las aplicaciones son de 32 bits.
+                <img src="http://4.bp.blogspot.com/-JHmaoRgMu0g/UMY5i8JLe4I/AAAAAAAABqk/NzXcP07V2eQ/s640/reg32.png" />
+                Pero las aplicaciones de 32 bits (la mayor&iacute;a del malware y muchos programas), no "ver&aacute;n" esa rama. Si intentan acceder a
+                <ul>
+                 <li>
+                  HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+                 </li>
+                </ul>
+                , ser&aacute;n autom&aacute;ticamente redirigidos a
+                <ul>
+                 <li>
+                  HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run
+                 </li>
+                </ul>
+                Por esta raz&oacute;n, existe RegistrDate64.exe que, si bien es una aplicaci&oacute;n compilada en 32 bits, est&aacute; especialmente creada para acceder a esas ramas de 64 bits. Por tanto RegistryDate.exe y RegistryDate64.exe pueden devolver datos diferentes aunque parezca que acceden a la misma rama.
+                <img src="http://3.bp.blogspot.com/-MxSW3B3P_Fc/UMY5rvAZDKI/AAAAAAAABqs/dMtsdhNhFXc/s640/cmdreg.png" />
+                En realidad, la primera (si se mira en el editor regedit) devolver&aacute; la fecha de
+HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run
+y la segunda, de HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+
+Esperamos que sea &uacute;til para los analistas que realicen forenses. Puede ser descargada desde:
+                <a href="http://www.hispasec.com/resources/soft/RegistryDate.zip">
+                 aqu&iacute;
+                </a>
+               </p>
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="span3">
+       <ul id="navigation-column" class="nav nav-list well" style="padding-top:0;">
+        <li class="nav-header">
+         <h4>
+          Herramientas
+         </h4>
+        </li>
+        <li class="active">
+         <a href="#tool1-tab" data-toggle="tab">
+          <i class="icon-arrow-right">
+          </i>
+          WinLockLess
+         </a>
+        </li>
+        <li class="">
+         <a href="#tool2-tab" data-toggle="tab">
+          <i class="icon-arrow-right">
+          </i>
+          FWRulez
+         </a>
+        </li>
+        <li class="">
+         <a href="#tool3-tab" data-toggle="tab">
+          <i class="icon-arrow-right">
+          </i>
+          MIC Bypass Checker
+         </a>
+        </li>
+        <li class="">
+         <a href="#tool4-tab" data-toggle="tab">
+          <i class="icon-arrow-right">
+          </i>
+          Office Signature Checker
+         </a>
+        </li>
+        <li class="">
+         <a href="#tool5-tab" data-toggle="tab">
+          <i class="icon-arrow-right">
+          </i>
+          RegistryDate
+         </a>
+        </li>
+       </ul>
+      </div>
+     </div>
+    </div>
+    <!-- Contacto -->
+    <div id="contacto-tab" class="content tab-pane fade">
+     <div class="page-header" style="margin: 0 0 10px; padding:0;">
+      <h3 style="margin-top:0;">
+       Contacto
+      </h3>
+     </div>
+     <div class="row-fluid" style="margin-bottom: 20px;">
+      <div class="span5">
+       <h4>
+        Escr&iacute;banos
+       </h4>
+       <fieldset>
+        <div class="control-group">
+         <div class="controls">
+          <label class="control-label" for="contactAsunto">
+           Asunto
+          </label>
+          <input class="span10" id="contactAsunto" name="contactAsunto" type="text" placeholder="Asunto" />
+         </div>
+         <div class="controls">
+          <label class="control-label" for="textarea">
+           Su mensaje
+          </label>
+          <textarea class="span10" id="textarea" name="textarea" rows="6" placeholder="Su mensaje">
+          </textarea>
+         </div>
+         <button class="btn btn-primary" onclick="javascript:contactFromWeb();">
+          Enviar mensaje
+         </button>
+        </div>
+       </fieldset>
+      </div>
+      <div class="span7">
+       <div class="row-fluid">
+        <h4>
+         Direcci&oacute;n
+        </h4>
+        <address>
+         Hispasec Sistemas S.L.
+         <br />
+         Avda Juan López Peñalver, 17
+         <br />
+         Edificio Centro de Empresas CEPTA, planta 3.
+         <br />
+         Parque Tecnológico de Andalucía
+         <br />
+         29590 Campanillas (Málaga)
+         <br />
+         España
+         <br />
+        </address>
+       </div>
+       <div class="row-fluid">
+        <div class="span4">
+         <h4>
+          Tel&eacute;fono
+         </h4>
+         <address>
+          Telf: (+34) 952 020 494
+          <br />
+         </address>
+        </div>
+        <div class="span8">
+         <h4>
+          Correos de inter&eacute;s
+         </h4>
+         <table class="contact-emails">
+          <tr>
+           <th>
+            Informaci&oacute;n General:
+           </th>
+           <td>
+            <span class="email">
+             info
+            </span>
+           </td>
+          </tr>
+          <tr>
+           <th>
+            Laboratorio T&eacute;cnico:
+           </th>
+           <td>
+            <span class="email">
+             laboratorio
+            </span>
+           </td>
+          </tr>
+          <tr>
+           <th>
+            Comercial:
+           </th>
+           <td>
+            <span class="email">
+             comercial
+            </span>
+           </td>
+          </tr>
+          <tr>
+           <th>
+            Medios de comunicaci&oacute;n:
+           </th>
+           <td>
+            <span class="email">
+             medios
+            </span>
+           </td>
+          </tr>
+          <tr>
+           <th>
+            Recursos Humanos:
+           </th>
+           <td>
+            <span class="email">
+             empleo
+            </span>
+           </td>
+          </tr>
+          <tr>
+           <th>
+            Webmaster:
+           </th>
+           <td>
+            <span class="email">
+             webmaster
+            </span>
+           </td>
+          </tr>
+         </table>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <footer>
+    Hispasec | Copyright © 1998-
+   </footer>
+  </div>
+  <!-- Modal FeedBank -->
+  <div class="modal hide" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width:800px; margin-left:-335px;padding: 0px;">
+   <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+     x
+    </button>
+    <h3 id="modalLabel">
+    </h3>
+    <div id="confirmation-message" style="position:absolute; z-index:1040;width:100%; top:20px;" class="hide">
+     <div class="alert alert-success" style="width:400px; margin:auto;">
+      <button type="button" class="close" data-dismiss="alert">
+       &times;
+      </button>
+      <i class="icon-ok">
+      </i>
+      Mensaje enviado correctamente.
+     </div>
+    </div>
+    <div id="error-message" style="position:absolute; z-index:1040;width:100%; top:20px;" class="hide">
+     <div class="alert alert-error" style="width:400px; margin:auto;">
+      <button type="button" class="close" data-dismiss="alert">
+       &times;
+      </button>
+      <i class="icon-fire">
+      </i>
+      Captcha incorrecto.
+     </div>
+    </div>
+   </div>
+   <form id="feedBank" style="margin:0;" action="/form" method="GET">
+    <div class="modal-body" style="padding:0;">
+     <div class="pull-left" style="border-right: 1px solid #EEE;margin-left:0px; width:350px;">
+      <div class="row-fluid" style="padding: 10px;">
+       <label class="control-label" for="entityName">
+        Entidad:
+       </label>
+       <input type="text" id="entityName" class="input span11" name="entityName" placeholder="Planet Express" required="required" />
+       <label class="control-label" for="website">
+        Web:
+       </label>
+       <input type="text" id="website" class="input span11" name="website" placeholder="http://planetexpress.net" required="required" />
+       <label class="control-label" for="contactPerson">
+        Persona de contacto:
+       </label>
+       <input type="text" id="contactPerson" class="input span11" name="contactPerson" placeholder="Hubert Farnsworth" required="required" />
+       <label class="control-label" for="email">
+        Email
+       </label>
+       <input type="email" id="email" class="input span11" name="email" placeholder="hubert.farnsworth@planetexpress.net" required="required" />
+       <label class="control-label" for="email">
+        Tel&eacute;fono
+       </label>
+       <input type="text" id="tlf" class="input span11" name="tlf" placeholder="+34 902 11 22 33" required="required" />
+       <script type="text/javascript" src="http://www.google.com/recaptcha/api/challenge?k=6LejEdYSAAAAAC1OYPGoZLsZjPBgIpYyqDeE11yw">
+       </script>
+       <noscript>
+        <iframe src="http://www.google.com/recaptcha/api/noscript?k=6LejEdYSAAAAAC1OYPGoZLsZjPBgIpYyqDeE11yw" height="300" width="500" frameborder="0">
+        </iframe>
+        <br />
+        <textarea name="recaptcha_challenge_field" rows="3" cols="40">
+        </textarea>
+        <input type="hidden" name="recaptcha_response_field" value="manual_challenge" />
+       </noscript>
+       <select class="hide" id="type_contact_form" name="type_contact_form">
+        <option value="FeedBank">
+         Feed Bank
+        </option>
+        <option value="Sana">
+         Sana
+        </option>
+        <option value="Antifraude">
+         Antifraude
+        </option>
+        <option value="Auditoria">
+         Auditorias
+        </option>
+        <option value="Udyat">
+         Udyat
+        </option>
+       </select>
+       <select class="hide" id="mode_contact_form" name="mode_contact_form">
+        <option value="moreinfo">
+         Mas info
+        </option>
+        <option value="socdemo">
+         Soc Demo
+        </option>
+       </select>
+      </div>
+     </div>
+     <div class="pull-left" style="width:347px;">
+      <div class="page-header" style="padding: 10px; margin:0 0 10px 0;">
+       <h4>
+        Descripci&oacute;n:
+       </h4>
+      </div>
+      <div style="padding: 10px;" id="modal_descriptionshort">
+      </div>
+     </div>
+    </div>
+    <div class="modal-footer">
+     <button class="btn pull-left" data-dismiss="modal" aria-hidden="true" id="modalClose">
+      Cerrar
+     </button>
+     <button class="btn btn-primary pull-right" type="submit" onclick="checkNotifyHref();">
+      Suscribir
+     </button>
+    </div>
+   </form>
+  </div>
+  <!-- Scripts -->
+  <script src="js/web.js">
+  </script>
+  <script src="js/bootstrap.js">
+  </script>
+  <script src="fancybox/jquery.fancybox.js">
+  </script>
+  <script>
+   $(document).ready(function(){
+    
+        
+            uadLoad();
+        
+        $.ajaxSetup ({cache: true});
+        ready();
+
+    });
+  </script>
+  <script type="text/javascript">
+   function loadModal( service, type )
+        {
+            $("#modal").modal();
+            $('#type_contact_form').val( service );
+            $('#mode_contact_form').val( type );
+
+            if (type==1){
+                alt = "Solicitar informaci&oacute;n";
+            }
+            else if(type==0){
+                alt = "Solicitar demo";
+            }
+            switch(service)
+            {
+                case "FeedBank":
+                    $('#modalDemo').modal();
+                    $('#modal_descriptionshort').html( "<p>This service sends to the email provided, real time automated technical reports about <strong>banking trojans attacking</strong> your company's clients. This means, whose malicious behaviour is triggered when the victim visits your site.</p><p>The information within these reports covers <strong>relevant technical details</strong> and valuable data about how the trojan works and how it communicates with its mothership servers.</p><p>The number of reports sent depends on the nature and prevalence of trojans targeting your company, hence the feed's volume may fluctuate.</p><p>Download a <a>sample report</a>.</p>" );
+                    $('#modal_descriptionshort').append( "" );                    
+                    $('#modalLabel').html( alt + " - " + "Feed Bank" );
+
+                    $("#modal_descriptionshort a").attr("href", "resources/report.pdf");
+                    break;
+                case "Sana":
+                    $('#modalDemo').modal();
+                    $('#modal_descriptionshort').html( "Reciba en tiempo real informaci&oacute;n sobre las vulnerabilidades que realmente afectan a sus sistemas y c&oacute;mo solucionarlas" );
+                    $('#modalLabel').html( alt + " - " + "Sana" );
+                    break;
+                case "Antifraude":
+                    $('#modalDemo').modal();
+                    $('#modal_descriptionshort').html( alt + " - " + "Conozca, prevenga y neutralice las amenazas (phishing, troyanos, pharming...) que afectan a su entidad" );
+                    $('#modalLabel').html( alt + " - " + "Antifraude" );
+                    break;
+                case "Udyat":
+                    $('#modalDemo').modal();
+                    $('#modal_descriptionshort').html( alt + " - " + "Monitorice su marca en tiempo real en Internet, clasificando cada menci&oacute;n y accediendo a c&oacute;modas estad&iacute;sticas gr&aacute;ficas" );
+                    $('#modalLabel').html( alt + " - " + "Udyat" );
+                    break;                    
+            }
+        }
+  </script>
+ </body>
+</html>

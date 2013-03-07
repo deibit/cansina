@@ -40,8 +40,8 @@ class DBManager(multiprocessing.Process):
     def run(self):
         counter = 0
         print(os.linesep)
-        print("     | COD |    SIZE   | (line) |")
-        print("---------------------------------")
+        print("     | COD |    SIZE   | (line) | time |")
+        print("----------------------------------------")
         while 1:
             if self.queue.empty():
                 time.sleep(SLEEP_TIME)
@@ -65,10 +65,10 @@ class DBManager(multiprocessing.Process):
                     linesep = ""
                     if task.is_valid():
                         linesep = os.linesep
-                    to_format = "{0: <3}% | {1: ^3} | {2: >9} | {3: >6} | {4}"
+                    to_format = "{0: <3}% | {1: ^3} | {2: >9} | {3: >6} | {4: >4} | {5}"
                     to_console = to_format.format(percentage, task.response_code,
                                                 task.response_size, task.number,
-                                                target)
+                                                int(task.response_time) ,target)
                     sys.stdout.write(to_console + linesep)
                     sys.stdout.flush()
                     time.sleep(0.1)
