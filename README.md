@@ -30,16 +30,20 @@ Use
 
 python cansina.py -h
 
-*Basic use*
+**Basic use**
+
 cansina.py -u www.hispasec.com -p payload_filename
 
-*Banning HTTP responde codes to output*
+**Banning HTTP responde codes to output**
+
 cansina.py -u www.hispasec.com -p payload_filename -b 404,400,500
 
-*Adding a .php extension to every record in payload*
+**Adding a .php extension to every record in payload**
+
 cansina.py -u www.hispasec.com -p payload_filename -e php
 
-*Adding a list of extensions*
+**Adding a list of extensions**
+
 cansina.py -u www.hispasec.com -p payload_filename -e php,asp,aspx
 
 Dependencies
