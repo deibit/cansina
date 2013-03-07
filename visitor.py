@@ -42,8 +42,11 @@ class Visitor(multiprocessing.Process):
             task.response_time = delta
             task.set_response_code(r.status_code)
             if r.history and r.history[0]:
-                task.location = r.url
-                task.set_response_code(r.history[0].status_code)
+                if r.url == task.get_complete_target() + '/':
+                    pass
+                else:
+                    task.location = r.url
+                    task.set_response_code(r.history[0].status_code)
             self.results.put(task)
 
         except requests.ConnectionError, requests.Timeout:

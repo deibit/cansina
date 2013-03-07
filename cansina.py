@@ -67,7 +67,7 @@ parser.add_argument('-e', dest = 'extension', \
 parser.add_argument('-t', dest = 'threads', type=int, \
                         help = "number of threads (default 4)", default = 4)
 parser.add_argument('-b', dest = 'banned', \
-                        help = "banned response codes in format: 404,301,...(default none)", default = "")
+                        help = "banned response codes in format: 404,301,...(default none)", default = "404")
 USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; es-ES)"
 parser.add_argument('-a', dest = 'user_agent', \
                         help = "the preferred user-agent (default provided)", default = USER_AGENT)
