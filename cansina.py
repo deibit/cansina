@@ -1,3 +1,4 @@
+#!/usr/bin/env python -B
 import sys
 import os
 import argparse
@@ -62,7 +63,7 @@ parser.add_argument('-u', dest = 'target', \
 parser.add_argument('-p', dest = 'payload', help = "path to the payload file to use", \
                         required = True)
 parser.add_argument('-e', dest = 'extension', \
-                        help = "extension to use (default none)", default = "")
+                        help = "extension list to use ex: php,asp,...(default none)", default = "")
 parser.add_argument('-t', dest = 'threads', type=int, \
                         help = "number of threads (default 4)", default = 4)
 parser.add_argument('-b', dest = 'banned', \

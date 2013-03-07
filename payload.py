@@ -16,6 +16,8 @@ class Payload():
             # Asigning a line number to every payload-line
             # Cleaning spurious / of some payloads
             # Add . in extensions if it lacks
+            if resource and resource[0] == '#':
+                continue
             if resource and resource[0] == '/':
                 resource = resource[1:]
             for extension in self.extension:
