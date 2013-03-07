@@ -64,6 +64,8 @@ class DBManager(multiprocessing.Process):
 
                     percentage = counter * 100 / self.payload_size
                     target = task.resource + task.extension
+                    if len(target) > 80:
+                        target = target[:80] + "...(cont)"
                     if task.location:
                         target = target + " -> " + task.location
                     linesep = ""
