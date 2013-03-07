@@ -32,23 +32,23 @@ python cansina.py -h
 
 **Basic use**
 
-cansina.py -u www.hispasec.com -p payload_filename
+cansina.py -u target_site_url -p payload_filename
 
 **Banning HTTP responde codes to output**
 
-cansina.py -u www.hispasec.com -p payload_filename -b 404,400,500
+cansina.py -u target_site_url -p payload_filename -b 404,400,500
 
 **Adding a .php extension to every record in payload**
 
-cansina.py -u www.hispasec.com -p payload_filename -e php
+cansina.py -u target_site_url -p payload_filename -e php
 
 **Adding a list of extensions**
 
-cansina.py -u www.hispasec.com -p payload_filename -e php,asp,aspx
+cansina.py -u target_site_url -p payload_filename -e php,asp,aspx
 
 **Inspecting content**
 
-cansina.py -u www.hispasec.com -p payload_filename -c look_for
+cansina.py -u target_site_url -p payload_filename -c look_for
 
 
 Dependencies
