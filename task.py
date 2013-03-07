@@ -8,6 +8,7 @@ class Task:
         self.extension = extension
         self.banned = banned_response_codes
 
+        self.location = ""
         self.response_code = None
         self.response_size = None
         self.response_time = None
@@ -27,7 +28,8 @@ class Task:
                 self.extension,
                 self.response_code,
                 self.response_size,
-                self.response_time)
+                self.response_time,
+                self.location)
 
     def get_complete_target(self):
         return self.target + self.resource + self.extension

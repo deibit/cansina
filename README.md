@@ -22,13 +22,25 @@ Features
 - Threads (well, multiprocesses)
 - HTTP/S Proxy support (thanks to requests)
 - Data persistance (sqlite3)
-- Support for multiextensions list (-e php,asp,aspx,txt...) 
+- Support for multiextensions list (-e php,asp,aspx,txt...)
 - (more planned)
 
 Use
 ---
 
 python cansina.py -h
+
+*Basic use*
+cansina.py -u www.hispasec.com -p payload_filename
+
+*Banning HTTP responde codes to output*
+cansina.py -u www.hispasec.com -p payload_filename -b 404,400,500
+
+*Adding a .php extension to every record in payload*
+cansina.py -u www.hispasec.com -p payload_filename -e php
+
+*Adding a list of extensions*
+cansina.py -u www.hispasec.com -p payload_filename -e php,asp,aspx
 
 Dependencies
 ------------

@@ -27,6 +27,7 @@ class DBManager(multiprocessing.Process):
                                 response_code TEXT,\
                                 response_size INTEGER,\
                                 response_time INTEGER,\
+                                location TEXT, \
                                 t_stamp INTEGER);")
                 connection.commit()
                 connection.close()
@@ -40,8 +41,8 @@ class DBManager(multiprocessing.Process):
     def run(self):
         counter = 0
         print(os.linesep)
-        print("     | COD |    SIZE   | (line) | time |")
-        print("----------------------------------------")
+        print(" % | COD |    SIZE   | (line) | time |")
+        print("--------------------------------------")
         while 1:
             if self.queue.empty():
                 time.sleep(SLEEP_TIME)
@@ -58,14 +59,15 @@ class DBManager(multiprocessing.Process):
                     #
                     # Terminal workout
                     #
+
                     percentage = counter * 100 / self.payload_size
-                    target = task.get_complete_target()
-                    if len(target) > 80:
-                        target = target[:80] + '...(etc)'
+                    target = task.resource + task.extension
+                    if task.location:
+                        target = target + " -> " + task.location
                     linesep = ""
                     if task.is_valid():
                         linesep = os.linesep
-                    to_format = "{0: <3}% | {1: ^3} | {2: >9} | {3: >6} | {4: >4} | {5}"
+                    to_format = "{0: >2} | {1: ^3} | {2: >9} | {3: >6} | {4: >4} | {5}"
                     to_console = to_format.format(percentage, task.response_code,
                                                 task.response_size, task.number,
                                                 int(task.response_time) ,target)
@@ -94,7 +96,7 @@ class DBManager(multiprocessing.Process):
         if not cursor.fetchone():
             if not task.response_code == "404":
                 if task.is_valid():
-                    cursor.execute("INSERT INTO requests VALUES (?,?,?,?,?,?,?,?,?)", \
+                    cursor.execute("INSERT INTO requests VALUES (?,?,?,?,?,?,?,?,?,?)", \
                         task.values() + (time.time(),))
                     connection.commit()
         connection.close()
