@@ -22,6 +22,7 @@ Features
 - HTTP/S Proxy support (thanks to requests)
 - Data persistance (sqlite3)
 - Support for multiextensions list (-e php,asp,aspx,txt...)
+- Content inspector (will watch for a specific string inside web page content)
 - (more planned)
 
 Some use cases
@@ -44,6 +45,11 @@ cansina.py -u www.hispasec.com -p payload_filename -e php
 **Adding a list of extensions**
 
 cansina.py -u www.hispasec.com -p payload_filename -e php,asp,aspx
+
+**Inspecting content**
+
+cansina.py -u www.hispasec.com -p payload_filename -c look_for
+
 
 Dependencies
 ------------

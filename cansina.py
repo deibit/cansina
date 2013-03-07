@@ -73,7 +73,11 @@ parser.add_argument('-a', dest = 'user_agent', \
                         help = "the preferred user-agent (default provided)", default = USER_AGENT)
 parser.add_argument('-P', dest = 'proxies', \
                         help = "set a http and/or https proxy (ex: http://127.0.0.1:8080,https://...", default = "")
+parser.add_argument('-c', dest = 'content', \
+                        help = "inspect content looking for a particular string", default = "")
 args = parser.parse_args()
+
+print("")
 
 target = _prepare_target(args.target)
 
@@ -89,10 +93,14 @@ banned_response_codes = args.banned.split(',')
 user_agent = args.user_agent
 proxy = _prepare_proxies(args.proxies.split(','))
 
+content = args.content
+if content:
+    print("Content inspection selected")
+
 print("Banned response codes: %s" % " ".join(banned_response_codes))
+print("Extensions to probe: %s" % " ".join(extension))
 print("Using payload: %s" % payload_filename)
 print("Using %s threads" % threads)
-# print("Analizing fake 404...")
 
 #
 # Creating middle objects
@@ -105,7 +113,7 @@ print("Using %s threads" % threads)
 #
 
 results = multiprocessing.JoinableQueue()
-payload = Payload(target, payload_list, extension, banned_response_codes)
+payload = Payload(target, payload_list, extension, banned_response_codes, content)
 payload_size = payload.size * len(extension)
 database_name = urlparse.urlparse(target).hostname
 manager = DBManager(database_name, results, payload_size)

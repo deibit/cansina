@@ -4,6 +4,8 @@ import time
 import os
 import sys
 
+from bcolors import BColors
+
 PREFIX = "data" + os.sep
 SUFIX = ".sqlite"
 SLEEP_TIME = 0.5
@@ -40,7 +42,7 @@ class DBManager(multiprocessing.Process):
 
     def run(self):
         counter = 0
-        print(os.linesep)
+        print("")
         print(" % | COD |    SIZE   | (line) | time |")
         print("--------------------------------------")
         while 1:
@@ -67,10 +69,19 @@ class DBManager(multiprocessing.Process):
                     linesep = ""
                     if task.is_valid():
                         linesep = os.linesep
-                    to_format = "{0: >2} | {1: ^3} | {2: >9} | {3: >6} | {4: >4} | {5}"
+                    color = ""
+                    if task.response_code == "200":
+                        color = BColors.GREEN
+                    if task.response_code == "301" or task.response_code == "302":
+                        color = BColors.YELLOW
+                    if task.response_code == "500":
+                        color = BColors.RED
+                    if task.content_detected:
+                        color = BColors.MAGENTA
+                    to_format = color + "{0: >2} | {1: ^3} | {2: >9} | {3: >6} | {4: >4} | {5}" + BColors.ENDC
                     to_console = to_format.format(percentage, task.response_code,
                                                 task.response_size, task.number,
-                                                int(task.response_time) ,target)
+                                                int(task.response_time), target)
                     sys.stdout.write(to_console + linesep)
                     sys.stdout.flush()
                     time.sleep(0.1)

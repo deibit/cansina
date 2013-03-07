@@ -38,9 +38,12 @@ class Visitor(multiprocessing.Process):
                 r = requests.get(task.get_complete_target(), headers=headers)
             after = time.time()
             delta = (after - now) * 1000
-            task.response_size = len(r.content)
+            tmp_content = r.content
+            task.response_size = len(tmp_content)
             task.response_time = delta
             task.set_response_code(r.status_code)
+            if task.content and (task.content in tmp_content) and not task.response_code == '404':
+                task.content_has_detected(True)
             if r.history and r.history[0]:
                 if r.url == task.get_complete_target() + '/':
                     pass

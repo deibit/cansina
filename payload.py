@@ -2,13 +2,14 @@ from multiprocessing import JoinableQueue
 from task import Task
 
 class Payload():
-    def __init__(self, target, payload, extension, banned_response_codes):
+    def __init__(self, target, payload, extension, banned_response_codes, content):
         self.payload_filename = payload.pop()
         self.payload = payload
         self.extension = extension
         self.banned_response_codes = banned_response_codes
         self.queue = JoinableQueue()
         self.size = len(self.payload)
+        self.content = content
 
         number = 0
         for resource in self.payload:
@@ -24,7 +25,7 @@ class Payload():
                 if extension and not extension[0] == '.':
                     extension = '.' + extension
                 self.queue.put(Task(number, self.payload_filename, target, resource,
-                                    extension, self.banned_response_codes))
+                                    extension, self.banned_response_codes, self.content))
 
     def _comment(self, resource):
         '''Returns True is the resource starts with a comment sign'''
