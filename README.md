@@ -64,4 +64,10 @@ Thanks for the lists
 - [Dirbuster](https://sourceforge.net/projects/dirbuster/)
 - [fuzzdb](https://code.google.com/p/fuzzdb/)
 
+License information
+-------------------
 
+Copyright (C) 2013 David García (daganu@gmail.com)
+
+License: GNU General Public License, version 3 or later; see LICENSE.txt
+         included in this archive for details.
