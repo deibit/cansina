@@ -3,13 +3,13 @@ from task import Task
 
 class Payload():
     def __init__(self, target, payload, extension, banned_response_codes, content):
-        self.payload_filename = payload.pop()
         self.payload = payload
         self.extension = extension
         self.banned_response_codes = banned_response_codes
         self.queue = JoinableQueue()
-        self.size = len(self.payload)
-        self.content = content
+        self.payload_size = len(self.payload)
+
+        payload_filename = payload.pop()
 
         number = 0
         for resource in self.payload:
@@ -24,8 +24,8 @@ class Payload():
             for extension in self.extension:
                 if extension and not extension[0] == '.':
                     extension = '.' + extension
-                self.queue.put(Task(number, self.payload_filename, target, resource,
-                                    extension, self.banned_response_codes, self.content))
+                self.queue.put(Task(number, payload_filename, self. payload_size, target, resource,
+                                    extension, banned_response_codes, content))
 
     def _comment(self, resource):
         '''Returns True is the resource starts with a comment sign'''

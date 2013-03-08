@@ -114,9 +114,9 @@ print("Using %s threads" % threads)
 
 results = multiprocessing.JoinableQueue()
 payload = Payload(target, payload_list, extension, banned_response_codes, content)
-payload_size = payload.size * len(extension)
+payload_size = payload.payload_size * len(extension)
 database_name = urlparse.urlparse(target).hostname
-manager = DBManager(database_name, results, payload_size)
+manager = DBManager(database_name, results)
 print("Total requests %s  (%s/thread)" % (payload_size, payload_size / threads))
 
 #
