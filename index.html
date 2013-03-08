@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Cansina by deibit</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Cansina</h1>
+        <p>Cansina is a (yet another) Web Content Discovery Application.</p>
+
+        <p class="view"><a href="https://github.com/deibit/cansina">View the Project on GitHub <small>deibit/cansina</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/deibit/cansina/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/deibit/cansina/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/deibit/cansina">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>Cansina</h1>
+
+<p>Cansina is a (yet another) Web Content Discovery Application.</p>
+
+<p>It takes general available dictionaries of common path and files used by web applications
+and make URL requests looking back to the server response code. Cansina stores the information
+in a sqlite database (omitting 404 responses). One for every new url (think this as a kind of projects feature)
+and the same database for every new payload on the same url.</p>
+
+<p>It aims to be (very) simple and directed to use doing only one thing: Discover content.</p>
+
+<p>The app is far from being finished, probably is poorly coded and I wouldn't recommend it
+to use in a serious pentesting session.</p>
+
+<p>Feature requests and comments are welcome.</p>
+
+<h2>Features</h2>
+
+<ul>
+<li>Threads (well, multiprocesses)</li>
+<li>HTTP/S Proxy support (thanks to requests)</li>
+<li>Data persistance (sqlite3)</li>
+<li>Support for multiextensions list (-e php,asp,aspx,txt...)</li>
+<li>Content inspector (will watch for a specific string inside web page content)</li>
+<li>(more planned)</li>
+</ul><h2>Some use cases</h2>
+
+<p>python cansina.py -h</p>
+
+<p><strong>Basic use</strong></p>
+
+<p>cansina.py -u target_site_url -p payload_filename</p>
+
+<p><strong>Banning HTTP responde codes to output</strong></p>
+
+<p>cansina.py -u target_site_url -p payload_filename -b 404,400,500</p>
+
+<p><strong>Adding a .php extension to every record in payload</strong></p>
+
+<p>cansina.py -u target_site_url -p payload_filename -e php</p>
+
+<p><strong>Adding a list of extensions</strong></p>
+
+<p>cansina.py -u target_site_url -p payload_filename -e php,asp,aspx</p>
+
+<p><strong>Inspecting content</strong></p>
+
+<p>cansina.py -u target_site_url -p payload_filename -c look_for</p>
+
+<h2>Dependencies</h2>
+
+<ul>
+<li><a href="https://github.com/kennethreitz/requests">requests</a></li>
+<li>Python 2.7 (I didn't test it before or above 2.7 version)</li>
+</ul><h2>Thanks for the lists</h2>
+
+<ul>
+<li><a href="http://www.edge-security.com/wfuzz.php">wfuzz</a></li>
+<li><a href="https://sourceforge.net/projects/dirbuster/">Dirbuster</a></li>
+<li><a href="https://code.google.com/p/fuzzdb/">fuzzdb</a></li>
+</ul>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/deibit">deibit</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
