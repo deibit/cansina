@@ -3,7 +3,7 @@ Cansina
 
 Cansina is a (yet another) Web Content Discovery Application.
 
-It takes general available dictionaries of common path and files used by web applications
+It takes general available lists of common path and files used by web applications
 and make URL requests looking back to the server response code. Cansina stores the information
 in a sqlite database (omitting 404 responses). One for every new url (think this as a kind of projects feature)
 and the same database for every new payload on the same url.
@@ -12,6 +12,9 @@ It aims to be (very) simple and directed to use doing only one thing: Discover c
 
 The app is far from being finished, probably is poorly coded and I wouldn't recommend it
 to use in a serious pentesting session.
+
+Lists from: wfuzz, fuzzdb and DirBuster are included in this repository for convenience but are
+not part of the project. You can use whatever list you want.
 
 Feature requests and comments are welcome.
 
