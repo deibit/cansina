@@ -14,13 +14,15 @@ from task import Task
 SLEEP_TIME = 3
 
 class Visitor(multiprocessing.Process):
-    def __init__(self, id, payload, results, user_agent, proxy={}):
+    def __init__(self, id, payload, results, user_agent, proxy, discriminator, banned_location):
         multiprocessing.Process.__init__(self)
         self.id = id
         self.payload = payload
         self.results = results
         self.user_agent = user_agent
         self.proxy = proxy
+        self.discriminator = discriminator
+        self.banned_location = banned_location
 
     def run(self):
         while not self.payload.queue.empty():
@@ -39,6 +41,9 @@ class Visitor(multiprocessing.Process):
             after = time.time()
             delta = (after - now) * 1000
             tmp_content = r.content
+            # If discriminator is found we mark it 404
+            if self.discriminator and self.discriminator in tmp_content:
+                r.status_code = '404'
             task.response_size = len(tmp_content)
             task.response_time = delta
             task.set_response_code(r.status_code)
@@ -49,7 +54,10 @@ class Visitor(multiprocessing.Process):
                     pass
                 else:
                     task.location = r.url
-                    task.set_response_code(r.history[0].status_code)
+                    if task.location == self.banned_location:
+                        task.set_response_code('404')
+                    else:
+                        task.set_response_code(r.history[0].status_code)
             self.results.put(task)
 
         except requests.ConnectionError, requests.Timeout:

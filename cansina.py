@@ -72,9 +72,13 @@ USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; es-ES)"
 parser.add_argument('-a', dest = 'user_agent', \
                         help = "the preferred user-agent (default provided)", default = USER_AGENT)
 parser.add_argument('-P', dest = 'proxies', \
-                        help = "set a http and/or https proxy (ex: http://127.0.0.1:8080,https://...", default = "")
+                        help = "set a http and/or https proxy (ex: http://127.0.0.1:8080,https://...", default="")
 parser.add_argument('-c', dest = 'content', \
                         help = "inspect content looking for a particular string", default = "")
+parser.add_argument('-d', dest = 'discriminator', \
+                        help = "if this string if found it will be treated as a 404", default = None)
+parser.add_argument('-D', dest = 'autodiscriminator', \
+                        help = "check for fake 404 (warning: machine decision)", action="store_true", default=False)
 args = parser.parse_args()
 
 print("")
@@ -97,8 +101,26 @@ content = args.content
 if content:
     print("Content inspection selected")
 
-print("Banned response codes: %s" % " ".join(banned_response_codes))
-print("Extensions to probe: %s" % " ".join(extension))
+discriminator = args.discriminator
+if discriminator:
+    print("Discriminator active")
+
+autodiscriminator = args.autodiscriminator
+autodiscriminator_location = None
+if autodiscriminator:
+    print("Launching autodiscriminator")
+    i = Inspector(target)
+    r = i.check_this()
+    if r[1] == Inspector.TEST404_URL:
+        autodiscriminator_location = r[0]
+        print("404 ---> 302 ----> " + autodiscriminator_location)
+
+if not banned_response_codes == ['']:
+    print("Banned response codes: %s" % " ".join(banned_response_codes))
+
+if not extension == ['']:
+    print("Extensions to probe: %s" % " ".join(extension))
+
 print("Using payload: %s" % payload_filename)
 print("Using %s threads" % threads)
 
@@ -127,7 +149,7 @@ manager.daemon = True
 manager.start()
 try:
     for n in range(0, threads):
-        v = Visitor(n, payload, results, user_agent, proxy)
+        v = Visitor(n, payload, results, user_agent, proxy, discriminator, autodiscriminator_location)
         v.daemon = True
         v.start()
     while len(multiprocessing.active_children()) > 1:
