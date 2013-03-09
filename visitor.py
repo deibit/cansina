@@ -14,9 +14,9 @@ from task import Task
 SLEEP_TIME = 3
 
 class Visitor(multiprocessing.Process):
-    def __init__(self, id, payload, results, user_agent, proxy, discriminator, banned_location):
+    def __init__(self, number, payload, results, user_agent, proxy, discriminator, banned_location):
         multiprocessing.Process.__init__(self)
-        self.id = id
+        self.id = number
         self.payload = payload
         self.results = results
         self.user_agent = user_agent
@@ -52,13 +52,16 @@ class Visitor(multiprocessing.Process):
 
             task.set_response_code(r.status_code)
 
+            # Look for interesting content
             if task.content and (task.content in tmp_content) and not task.response_code == '404':
                 task.content_has_detected(True)
 
+            # Look for a redirection
             if r.history and r.history[0]:
                 if r.url == task.get_complete_target() + '/':
                     pass
                 else:
+                    # We dont want those pesky 404 relocations
                     task.location = r.url
                     if task.location == self.banned_location:
                         task.set_response_code('404')
@@ -71,7 +74,7 @@ class Visitor(multiprocessing.Process):
             time.sleep(SLEEP_TIME)
 
         except ValueError:
-            # Falling back to urllib
+            # Falling back to urllib (requests doesnt want freak chars)
             now = time.time()
             r = urllib.urlopen(task.get_complete_target(), proxies=self.proxy)
             after = time.time()

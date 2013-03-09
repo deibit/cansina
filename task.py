@@ -37,6 +37,9 @@ class Task:
                 self.location)
 
     def get_complete_target(self):
+        if '***' in self.target:
+            self.target.replace('***', self.resource)
+            return self.target + self.extension
         return self.target + self.resource + self.extension
 
     def is_valid(self):

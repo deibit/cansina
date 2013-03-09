@@ -8,8 +8,8 @@ class Console:
 
     @staticmethod
     def header():
-        header = os.linesep + " % | COD |    SIZE   | (line) | time |" \
-        + os.linesep + "--------------------------------------" + os.linesep
+        header = os.linesep + " % | COD |    SIZE    | (line) | time |" \
+        + os.linesep + "---------------------------------------" + os.linesep
         sys.stdout.write(header)
 
     @staticmethod
@@ -28,13 +28,15 @@ class Console:
         color = ""
         if task.response_code == "200":
             color = BColors.GREEN
+        if task.response_code == "403":
+            color = BColors.LBLUE
         if task.response_code == "301" or task.response_code == "302":
             color = BColors.YELLOW
         if task.response_code == "500":
             color = BColors.RED
         if task.content_detected:
             color = BColors.MAGENTA
-        to_format = color + "{0: >2} | {1: ^3} | {2: >9} | {3: >6} | {4: >4} | {5}" + BColors.ENDC
+        to_format = color + "{0: >2} | {1: ^3} | {2: >10} | {3: >6} | {4: >4} | {5}" + BColors.ENDC
         to_console = to_format.format(percentage, task.response_code,
                                     task.response_size, task.number,
                                     int(task.response_time), target)

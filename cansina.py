@@ -13,6 +13,7 @@ from dbo import DBManager
 from inspector import Inspector
 
 def _check_domain(target):
+    '''Get the target url from the user, clean and return it'''
     domain = urlparse.urlparse(target).hostname
     print("Checking " + domain)
     try:
@@ -34,6 +35,7 @@ def _prepare_target(target):
     return target
 
 def _prepare_proxies(proxies):
+    '''It takes a list of proxies and returns a dictionary'''
     if proxies:
         proxies_dict = {}
         for proxy in proxies:
@@ -45,6 +47,7 @@ def _prepare_proxies(proxies):
     return {}
 
 def _populate_list_with_file(file_name):
+    '''Open a file, read its content and strips it. Returns a list with the content'''
     with open(file_name, 'r') as f:
         tmp_list = f.readlines()
     clean_list = []
@@ -58,27 +61,39 @@ def _populate_list_with_file(file_name):
 #
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-u', dest = 'target', \
-                        help = "target url (ex: http://www.hispasec.com/)", required = True)
-parser.add_argument('-p', dest = 'payload', help = "path to the payload file to use", \
-                        required = True)
-parser.add_argument('-e', dest = 'extension', \
-                        help = "extension list to use ex: php,asp,...(default none)", default = "")
-parser.add_argument('-t', dest = 'threads', type=int, \
-                        help = "number of threads (default 4)", default = 4)
-parser.add_argument('-b', dest = 'banned', \
-                        help = "banned response codes in format: 404,301,...(default none)", default = "404")
+parser.add_argument('-u', dest = 'target',
+                    help = "target url (ex: http://www.hispasec.com/)",
+                    required = True)
+parser.add_argument('-p', dest = 'payload',
+                    help = "path to the payload file to use",
+                    required = True)
+parser.add_argument('-e', dest = 'extension',
+                    help = "extension list to use ex: php,asp,...(default none)",
+                    default = "")
+parser.add_argument('-t', dest = 'threads',
+                    type=int,
+                    help = "number of threads (default 4)",
+                    default = 4)
+parser.add_argument('-b', dest = 'banned',
+                    help = "banned response codes in format: 404,301,...(default none)",
+                    default = "404")
 USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; es-ES)"
-parser.add_argument('-a', dest = 'user_agent', \
-                        help = "the preferred user-agent (default provided)", default = USER_AGENT)
-parser.add_argument('-P', dest = 'proxies', \
-                        help = "set a http and/or https proxy (ex: http://127.0.0.1:8080,https://...", default="")
-parser.add_argument('-c', dest = 'content', \
-                        help = "inspect content looking for a particular string", default = "")
-parser.add_argument('-d', dest = 'discriminator', \
-                        help = "if this string if found it will be treated as a 404", default = None)
-parser.add_argument('-D', dest = 'autodiscriminator', \
-                        help = "check for fake 404 (warning: machine decision)", action="store_true", default=False)
+parser.add_argument('-a', dest = 'user_agent',
+                    help = "the preferred user-agent (default provided)",
+                    default = USER_AGENT)
+parser.add_argument('-P', dest = 'proxies',
+                    help = "set a http and/or https proxy (ex: http://127.0.0.1:8080,https://...",
+                    default="")
+parser.add_argument('-c', dest = 'content',
+                    help = "inspect content looking for a particular string",
+                    default = "")
+parser.add_argument('-d', dest = 'discriminator',
+                    help = "if this string if found it will be treated as a 404",
+                    default = None)
+parser.add_argument('-D', dest = 'autodiscriminator',
+                    help = "check for fake 404 (warning: machine decision)",
+                    action="store_true",
+                    default=False)
 args = parser.parse_args()
 
 print("")
@@ -122,7 +137,7 @@ if not extension == ['']:
     print("Extensions to probe: %s" % " ".join(extension))
 
 print("Using payload: %s" % payload_filename)
-print("Using %s threads" % threads)
+print("Using %s threads " % threads)
 
 #
 # Creating middle objects
@@ -158,7 +173,8 @@ try:
     sys.stdout.write('\r')
     sys.stdout.write ("\x1b[0K")
     sys.stdout.flush()
+    time.sleep(0.5)
     sys.stdout.write ("Work Done!" + os.linesep)
     sys.stdout.flush()
 except Exception as e:
-    print(e)
+    print("cansina.py - " + e)
