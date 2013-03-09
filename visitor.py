@@ -32,7 +32,9 @@ class Visitor(multiprocessing.Process):
     def visit(self, task):
         try:
             headers = {"user-agent" : self.user_agent}
+
             now = time.time()
+
             r = None
             if self.proxy:
                 r = requests.get(task.get_complete_target(), headers=headers, proxies=self.proxy)
@@ -41,14 +43,18 @@ class Visitor(multiprocessing.Process):
             after = time.time()
             delta = (after - now) * 1000
             tmp_content = r.content
+            task.response_size = len(tmp_content)
+            task.response_time = delta
+
             # If discriminator is found we mark it 404
             if self.discriminator and self.discriminator in tmp_content:
                 r.status_code = '404'
-            task.response_size = len(tmp_content)
-            task.response_time = delta
+
             task.set_response_code(r.status_code)
+
             if task.content and (task.content in tmp_content) and not task.response_code == '404':
                 task.content_has_detected(True)
+
             if r.history and r.history[0]:
                 if r.url == task.get_complete_target() + '/':
                     pass
