@@ -12,7 +12,7 @@ SLEEP_TIME = 0.5
 
 class DBManager(multiprocessing.Process):
 
-    def __init__(self, database_name, queue):
+    def __init__(self, database_name):
         multiprocessing.Process.__init__(self)
         if not os.path.isfile(PREFIX + database_name + SUFIX):
             if not os.path.isdir('data'):
@@ -36,8 +36,11 @@ class DBManager(multiprocessing.Process):
             except:
                 print "Error creating database"
                 sys.exit()
-        self.queue = queue
+        self.queue = multiprocessing.JoinableQueue()
         self.database_name = database_name
+
+    def get_results_queue(self):
+        return self.queue
 
     def run(self):
         Console.header()
@@ -48,7 +51,7 @@ class DBManager(multiprocessing.Process):
                 task = self.queue.get()
                 if task.target == 'STOP':
                     self.queue.task_done()
-                    break
+                    self.terminate()
                 else:
                     self.process(task)
                     self.queue.task_done()

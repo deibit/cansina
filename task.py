@@ -38,7 +38,7 @@ class Task:
 
     def get_complete_target(self):
         if '***' in self.target:
-            self.target.replace('***', self.resource)
+            self.target = self.target.replace('***', self.resource)
             return self.target + self.extension
         return self.target + self.resource + self.extension
 

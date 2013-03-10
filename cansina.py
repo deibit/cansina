@@ -149,11 +149,10 @@ print("Using %s threads " % threads)
 #   - manager: process who is responsible of storing results from results queue
 #
 
-results = multiprocessing.JoinableQueue()
 payload = Payload(target, payload_list, extension, banned_response_codes, content)
 payload_size = payload.payload_size * len(extension)
 database_name = urlparse.urlparse(target).hostname
-manager = DBManager(database_name, results)
+manager = DBManager(database_name)
 print("Total requests %s  (%s/thread)" % (payload_size, payload_size / threads))
 
 #
@@ -161,20 +160,25 @@ print("Total requests %s  (%s/thread)" % (payload_size, payload_size / threads))
 #
 
 manager.daemon = True
+payload.daemon = True
 manager.start()
+payload.start()
+
 try:
     for n in range(0, threads):
-        v = Visitor(n, payload, results, user_agent, proxy, discriminator, autodiscriminator_location)
+        v = Visitor(n, payload, manager.get_results_queue(), user_agent, proxy, discriminator, autodiscriminator_location)
         v.daemon = True
         v.start()
     while len(multiprocessing.active_children()) > 1:
         time.sleep(0.1)
-    results.join()
+    manager.get_results_queue().join()
+
     sys.stdout.write('\r')
     sys.stdout.write ("\x1b[0K")
     sys.stdout.flush()
     time.sleep(0.5)
     sys.stdout.write ("Work Done!" + os.linesep)
     sys.stdout.flush()
+
 except Exception as e:
     print("cansina.py - " + e)

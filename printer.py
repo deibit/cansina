@@ -1,6 +1,7 @@
 import os
 import sys
 import time
+import urlparse
 
 from bcolors import BColors
 
@@ -17,7 +18,8 @@ class Console:
         counter = 0
         percentage = counter * 100 / task.payload_size
         counter = counter + 1
-        target = task.resource + task.extension
+        target = task.target + task.resource + task.extension
+        target = urlparse.urlsplit(target).path
         if len(target) > 80:
             target = target[:80] + "...(cont)"
         if task.location:
