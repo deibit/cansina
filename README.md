@@ -13,7 +13,7 @@ It aims to be (very) simple and directed to use doing only one thing: Discover c
 The app is far from being finished, probably is poorly coded and I wouldn't recommend it
 to use in a serious pentesting session.
 
-Lists from: wfuzz, fuzzdb and DirBuster are included in this repository for convenience but are
+Lists from fuzzdb are included in this repository for convenience but are
 not part of the project. You can use whatever list you want.
 
 Feature requests and comments are welcome.
@@ -73,11 +73,9 @@ Dependencies
 - [requests](https://github.com/kennethreitz/requests)
 - Python 2.7 (I didn't test it before or above 2.7 version)
 
-Thanks for the lists
---------------------
+Thanks
+------
 
-- [wfuzz](http://www.edge-security.com/wfuzz.php)
-- [Dirbuster](https://sourceforge.net/projects/dirbuster/)
 - [fuzzdb](https://code.google.com/p/fuzzdb/)
 
 License information
