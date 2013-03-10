@@ -21,12 +21,14 @@ Feature requests and comments are welcome.
 Features
 --------
 
-- Threads (well, multiprocesses)
+- Threads (well, processes)
 - HTTP/S Proxy support (thanks to requests)
 - Data persistance (sqlite3)
 - Support for multiextensions list (-e php,asp,aspx,txt...)
 - Content inspector (will watch for a specific string inside web page content)
-- (more planned)
+- Skip fake 404 (best as possible)
+- Skip by filtering content
+- Replacing (for URL fuzzing)
 
 Some use cases
 --------------
@@ -51,8 +53,19 @@ cansina.py -u target_site_url -p payload_filename -e php,asp,aspx
 
 **Inspecting content**
 
-cansina.py -u target_site_url -p payload_filename -c look_for
+cansina.py -u target_site_url -p payload_filename -c look_for_this_text
 
+**Filtering by content**
+
+cansina.py -u target_site_url -p payload_filename -d look_for_this_text
+
+**Autodiscriminator**
+
+cansina.py -u target_site_url -p payload_filename -D
+
+**Replacing**
+
+cansina.py -u target_site_url/***_this/ -p payload_filename
 
 Dependencies
 ------------
