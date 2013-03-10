@@ -14,3 +14,4 @@ form
 cgi-bin
 .cgi
 .svn
+index.php
