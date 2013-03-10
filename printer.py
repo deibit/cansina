@@ -31,11 +31,13 @@ class Console:
         if task.response_code == "200":
             color = BColors.GREEN
         if task.response_code == "403":
-            color = BColors.LBLUE
-        if task.response_code == "301" or task.response_code == "302":
-            color = BColors.YELLOW
-        if task.response_code == "500":
             color = BColors.RED
+        if task.response_code == "301" or task.response_code == "302":
+            color = BColors.LBLUE
+        if task.response_code == "401":
+            color = BColors.RED
+        if task.response_code.startswith('5'):
+            color = BColors.YELLOW
         if task.content_detected:
             color = BColors.MAGENTA
         to_format = color + "{0: >2} | {1: ^3} | {2: >10} | {3: >6} | {4: >4} | {5}" + BColors.ENDC
