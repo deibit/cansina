@@ -20,18 +20,29 @@ class Payload(multiprocessing.Process):
     def run(self):
             number = 0
             for resource in self.payload:
+
                 number = number + 1
-                # Asigning a line number to every payload-line
-                # Cleaning spurious / of some payloads
-                # Add . in extensions if it lacks
+
+                # Skip commented lines
                 if resource and resource[0] == '#':
                     continue
-                if resource and resource[0] == '/':
+
+                # Avoid double // because some dicts have /prepend_words
+                if resource[0] == '/':
                     resource = resource[1:]
+
                 for extension in self.extension:
-                    if extension and not extension[0] == '.':
+
+                    # If resource is a whole word and user didnt provide a extension
+                    # put a final /
+                    if not extension and not '.' in resource:
+                        resource = resource + '/'
+
+                    # Put a . before extension if the users didnt do it
+                    if extension and not '.' in extension:
                         extension = '.' + extension
-                    self.queue.put(Task(number, self.payload_filename, self. payload_size, self.target, resource,
+
+                    self.queue.put(Task(number, self.payload_filename, self.payload_size, self.target, resource,
                                         extension, self.banned_response_codes, self.content))
                 while self.queue.full():
                     time.sleep(SLEEP_TIME)

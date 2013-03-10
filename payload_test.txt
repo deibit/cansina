@@ -12,3 +12,5 @@ index
 unaaldia/1
 form
 cgi-bin
+.cgi
+.svn
