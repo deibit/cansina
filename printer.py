@@ -15,7 +15,7 @@ class Console:
 
     @staticmethod
     def body(task):
-        counter = 0
+        counter = task.number
         percentage = counter * 100 / task.payload_size
         counter = counter + 1
         target = task.target + task.resource + task.extension

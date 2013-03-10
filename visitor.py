@@ -16,7 +16,7 @@ SLEEP_TIME = 3
 class Visitor(multiprocessing.Process):
     def __init__(self, number, payload, results, user_agent, proxy, discriminator, banned_location):
         multiprocessing.Process.__init__(self)
-        self.id = number
+        self.number = number
         self.payload = payload
         self.results = results
         self.user_agent = user_agent
@@ -70,7 +70,7 @@ class Visitor(multiprocessing.Process):
             self.results.put(task)
 
         except requests.ConnectionError, requests.Timeout:
-            sys.stdout.write("(%s) timeout - sleeping...\n" % self.id)
+            sys.stdout.write("(%s) timeout - sleeping...\n" % self.number)
             time.sleep(SLEEP_TIME)
 
         except ValueError:

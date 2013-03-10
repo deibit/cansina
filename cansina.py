@@ -153,7 +153,7 @@ payload = Payload(target, payload_list, extension, banned_response_codes, conten
 payload_size = payload.payload_size * len(extension)
 database_name = urlparse.urlparse(target).hostname
 manager = DBManager(database_name)
-print("Total requests %s  (%s/thread)" % (payload_size, payload_size / threads))
+print("Total requests %s  (%s / thread)" % (payload_size, payload_size / threads))
 
 #
 # Go
@@ -165,8 +165,8 @@ manager.start()
 payload.start()
 
 try:
-    for n in range(0, threads):
-        v = Visitor(n, payload, manager.get_results_queue(), user_agent, proxy, discriminator, autodiscriminator_location)
+    for number in range(0, threads):
+        v = Visitor(number, payload, manager.get_results_queue(), user_agent, proxy, discriminator, autodiscriminator_location)
         v.daemon = True
         v.start()
     while len(multiprocessing.active_children()) > 1:
