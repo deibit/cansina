@@ -17,9 +17,14 @@ class Payload(multiprocessing.Process):
         self.banned_response_codes = banned_response_codes
         self.content = content
 
+        self.uppercase = False
+
     def run(self):
             number = 0
             for resource in self.payload:
+
+                if self.uppercase:
+                    resource = resource.upper()
 
                 number = number + 1
 
@@ -32,7 +37,6 @@ class Payload(multiprocessing.Process):
                     resource = resource[1:]
 
                 for extension in self.extension:
-
                     # If resource is a whole word and user didnt provide a extension
                     # put a final /
                     if not extension and not '.' in resource:
@@ -46,6 +50,9 @@ class Payload(multiprocessing.Process):
                                         extension, self.banned_response_codes, self.content))
                 while self.queue.full():
                     time.sleep(SLEEP_TIME)
+
+    def set_uppercase(self):
+        self.uppercase = True
 
     def _comment(self, resource):
         '''Returns True is the resource starts with a comment sign'''

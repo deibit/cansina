@@ -29,11 +29,12 @@ Features
 - Skip fake 404 (best as possible)
 - Skip by filtering content
 - Replacing (for URL fuzzing)
+- Reporting tool
 
 Some use cases
 --------------
 
-python cansina.py -h
+Look at python cansina.py -h for a comprehensive list of features and choices
 
 **Basic use**
 

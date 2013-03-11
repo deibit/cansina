@@ -94,6 +94,10 @@ parser.add_argument('-D', dest = 'autodiscriminator',
                     help = "check for fake 404 (warning: machine decision)",
                     action="store_true",
                     default=False)
+parser.add_argument('-U', dest = 'uppercase',
+                    help = "MAKE ALL RESOURCE REQUESTS UPPERCASE",
+                    action="store_true",
+                    default=False)
 args = parser.parse_args()
 
 print("")
@@ -136,6 +140,10 @@ if not banned_response_codes == ['']:
 if not extension == ['']:
     print("Extensions to probe: %s" % " ".join(extension))
 
+uppercase = args.uppercase
+if uppercase:
+    print("All resource requests will be done in uppercase")
+
 print("Using payload: %s" % payload_filename)
 print("Using %s threads " % threads)
 
@@ -150,19 +158,22 @@ print("Using %s threads " % threads)
 #
 
 payload = Payload(target, payload_list, extension, banned_response_codes, content)
+if uppercase:
+    payload.set_uppercase()
 payload_size = payload.payload_size * len(extension)
 database_name = urlparse.urlparse(target).hostname
 manager = DBManager(database_name)
 print("Total requests %s  (%s / thread)" % (payload_size, payload_size / threads))
 
 #
-# Go
+# Starting Manager and Payload processes
 #
-
-manager.daemon = True
 payload.daemon = True
-manager.start()
+manager.daemon = True
 payload.start()
+manager.start()
+# Give payload and manager time to get ready
+time.sleep(1)
 
 try:
     for number in range(0, threads):
