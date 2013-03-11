@@ -1,8 +1,21 @@
+#!/usr/bin/env python -B
 import sys
-import sqlite3
 import os
+import sqlite3
+import argparse
+import webbrowser
 
-project_name = sys.argv[1]
+parser = argparse.ArgumentParser()
+parser.add_argument('-p', dest = 'project_name',
+                    help = "path to sqlite3 project file",
+                    required = True)
+parser.add_argument('-b', dest = 'browser',
+                    help = "Open a default browser with the project results",
+                    action="store_true",
+                    default=False)
+args = parser.parse_args()
+project_name = args.project_name
+browser = args.browser
 
 QUERY = "SELECT * FROM requests ORDER BY resource"
 
@@ -55,13 +68,6 @@ class Item:
         except:
             return ""
 
-project_name = None
-try:
-    project_name = sys.argv[1]
-except:
-    print("Need a project sqlite file as argument")
-    sys.exit()
-
 connection = None
 try:
     connection = sqlite3.connect(project_name)
@@ -90,7 +96,8 @@ for i in data:
     item.location = i[8]
     objects.append(item)
 
-with open(project_name + ".html", 'w') as f:
+project_html = project_name.replace(".sqlite", '') + ".html"
+with open(project_html, 'w') as f:
     f.write(header + os.linesep)
     f.write(body + os.linesep)
     f.write('<tbody>' + os.linesep)
@@ -98,7 +105,7 @@ with open(project_name + ".html", 'w') as f:
         f.write("<tr class='" + i.get_color() + "'>" + os.linesep)
         f.write("<td>" + str(i.linenumber) + "</td>" + os.linesep)
         f.write("<td>" + i.payload_name + "</td>" + os.linesep)
-        f.write("<td>" + i.url + "</td>" + os.linesep)
+        f.write("<td><a href='" + i.url + "'>" + i.url + "</a></td>" + os.linesep)
         f.write("<td>" + i.response_code + "</td>" + os.linesep)
         f.write("<td>" + str(i.size) + "</td>" + os.linesep)
         f.write("<td>" + i.location + "</td>" + os.linesep)
@@ -106,3 +113,5 @@ with open(project_name + ".html", 'w') as f:
     f.write('</tbody>' + os.linesep)
     f.write(footer + os.linesep)
 
+if browser:
+    webbrowser.open_new_tab("data/" + project_html)
