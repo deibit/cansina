@@ -8,7 +8,7 @@ and make URL requests looking back to the server response code. Cansina stores t
 in a sqlite database (omitting 404 responses). One for every new url (think this as a kind of projects feature)
 and the same database for every new payload on the same url.
 
-It aims to be (very) simple and directed to use doing only one thing: Discover content.
+It aims to be (very) simple and straight to use doing only one thing: Discover content.
 
 The app is far from being finished, probably is poorly coded and I wouldn't recommend it
 to use in a serious pentesting session.
