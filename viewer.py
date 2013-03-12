@@ -25,13 +25,12 @@ header =    '''<html>
                     <script src="../assets/js/bootstrap.min.js" type="text/javascript"></script>
                     <link href="../assets/css/bootstrap.css" rel="stylesheet">
                     <link href="../assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
-                    <link href="../assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
 
                 </head>
             '''
 
 body =      '''<body>
-                <table class="table table-striped table-hover">
+                <table class="table table-hover table-condensed">
                     <thead>
                         <tr>
                             <th>Line</th>
@@ -114,4 +113,5 @@ with open(project_html, 'w') as f:
     f.write(footer + os.linesep)
 
 if browser:
-    webbrowser.open_new_tab("data/" + project_html)
+    p = "file://" + os.getcwd() + os.sep + project_html
+    webbrowser.open_new_tab(p)
