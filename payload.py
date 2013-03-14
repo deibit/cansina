@@ -5,19 +5,28 @@ from task import Task
 SLEEP_TIME = 0.1
 
 class Payload(multiprocessing.Process):
-    def __init__(self, target, payload, extension, banned_response_codes, content):
+    def __init__(self, target, payload):
         multiprocessing.Process.__init__(self)
         self.target = target
         self.payload = payload
-        self.extension = extension
-        self.banned_response_codes = banned_response_codes
+
+        self.extensions = None
         self.queue = multiprocessing.JoinableQueue()
         self.payload_size = len(self.payload)
         self.payload_filename = payload.pop()
-        self.banned_response_codes = banned_response_codes
-        self.content = content
+        self.banned_response_codes = None
+        self.content = None
 
         self.uppercase = False
+
+    def set_banned_response_codes(self, banned_response_codes):
+        self.banned_response_codes = banned_response_codes
+
+    def set_extensions(self, extensions):
+        self.extensions = extensions
+
+    def set_content(self, content):
+        self.content = content
 
     def run(self):
             number = 0
@@ -36,7 +45,7 @@ class Payload(multiprocessing.Process):
                 if resource[0] == '/':
                     resource = resource[1:]
 
-                for extension in self.extension:
+                for extension in self.extensions:
                     # If resource is a whole word and user didnt provide a extension
                     # put a final /
                     if not extension and not '.' in resource:
@@ -46,8 +55,10 @@ class Payload(multiprocessing.Process):
                     if extension and not '.' in extension:
                         extension = '.' + extension
 
-                    self.queue.put(Task(number, self.payload_filename, self.payload_size, self.target, resource,
-                                        extension, self.banned_response_codes, self.content))
+                    task = Task(number, self.payload_filename, self.payload_size, self.target, resource, extension)
+                    task.set_banned_response_codes(self.banned_response_codes)
+                    task.set_content(self.content)
+                    self.queue.put(task)
                 while self.queue.full():
                     time.sleep(SLEEP_TIME)
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python -B
+#!/usr/bin/env python
 import sys
 import os
 import argparse
@@ -134,8 +134,7 @@ if autodiscriminator:
         autodiscriminator_location = r[0]
         print("404 ---> 302 ----> " + autodiscriminator_location)
 
-if not banned_response_codes == ['']:
-    print("Banned response codes: %s" % " ".join(banned_response_codes))
+print("Banned response codes: %s" % " ".join(banned_response_codes))
 
 if not extension == ['']:
     print("Extensions to probe: %s" % " ".join(extension))
@@ -157,7 +156,10 @@ print("Using %s threads " % threads)
 #   - manager: process who is responsible of storing results from results queue
 #
 
-payload = Payload(target, payload_list, extension, banned_response_codes, content)
+payload = Payload(target, payload_list)
+payload.set_extensions(extension)
+payload.set_banned_response_codes(banned_response_codes)
+payload.set_content(content)
 if uppercase:
     payload.set_uppercase()
 payload_size = payload.payload_size * len(extension)
@@ -177,7 +179,9 @@ time.sleep(1)
 
 try:
     for number in range(0, threads):
-        v = Visitor(number, payload, manager.get_results_queue(), user_agent, proxy, discriminator, autodiscriminator_location)
+        v = Visitor(number, payload, manager.get_results_queue(), discriminator, autodiscriminator_location)
+        v.set_user_agent(user_agent)
+        v.set_proxy(proxy)
         v.daemon = True
         v.start()
     while len(multiprocessing.active_children()) > 1:
@@ -192,4 +196,4 @@ try:
     sys.stdout.flush()
 
 except Exception as e:
-    print("cansina.py - " + e)
+    print("cansina.py - " + e.msg)

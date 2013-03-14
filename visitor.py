@@ -14,15 +14,24 @@ from task import Task
 SLEEP_TIME = 3
 
 class Visitor(multiprocessing.Process):
-    def __init__(self, number, payload, results, user_agent, proxy, discriminator, banned_location):
+
+    user_agent = None
+    proxy = None
+
+    def __init__(self, number, payload, results, discriminator, banned_location):
         multiprocessing.Process.__init__(self)
         self.number = number
         self.payload = payload
         self.results = results
-        self.user_agent = user_agent
-        self.proxy = proxy
+
         self.discriminator = discriminator
         self.banned_location = banned_location
+
+    def set_user_agent(self, useragent):
+        Visitor.user_agent = useragent
+
+    def set_proxy(self, proxy):
+        Visitor.proxy = proxy
 
     def run(self):
         while not self.payload.queue.empty():
@@ -31,13 +40,15 @@ class Visitor(multiprocessing.Process):
 
     def visit(self, task):
         try:
-            headers = {"user-agent" : self.user_agent}
+            headers = {}
+            if Visitor.user_agent:
+                headers = {"user-agent" : Visitor.user_agent}
 
             now = time.time()
 
             r = None
-            if self.proxy:
-                r = requests.get(task.get_complete_target(), headers=headers, proxies=self.proxy)
+            if Visitor.proxy:
+                r = requests.get(task.get_complete_target(), headers=headers, proxies=Visitor.proxy)
             else:
                 r = requests.get(task.get_complete_target(), headers=headers)
             after = time.time()
