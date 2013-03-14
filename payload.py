@@ -4,16 +4,26 @@ from task import Task
 
 SLEEP_TIME = 0.1
 
+def _populate_list_with_file(file_name):
+    '''Open a file, read its content and strips it. Returns a list with the content'''
+    with open(file_name, 'r') as f:
+        tmp_list = f.readlines()
+    clean_list = []
+    for e in tmp_list:
+        e = e.strip()
+        clean_list.append(e)
+    return clean_list
+
 class Payload(multiprocessing.Process):
-    def __init__(self, target, payload):
+    def __init__(self, target, payload_filename):
         multiprocessing.Process.__init__(self)
         self.target = target
-        self.payload = payload
+        self.payload_filename = payload_filename
+        self.payload = _populate_list_with_file(payload_filename)
 
         self.extensions = None
         self.queue = multiprocessing.JoinableQueue()
-        self.payload_size = len(self.payload)
-        self.payload_filename = payload.pop()
+        self.length = len(self.payload)
         self.banned_response_codes = None
         self.content = None
 
@@ -27,6 +37,9 @@ class Payload(multiprocessing.Process):
 
     def set_content(self, content):
         self.content = content
+
+    def get_length(self):
+        return self.length
 
     def run(self):
             number = 0
@@ -55,9 +68,10 @@ class Payload(multiprocessing.Process):
                     if extension and not '.' in extension:
                         extension = '.' + extension
 
-                    task = Task(number, self.payload_filename, self.payload_size, self.target, resource, extension)
+                    task = Task(number, self.target, self.payload_filename, resource, extension)
                     task.set_banned_response_codes(self.banned_response_codes)
                     task.set_content(self.content)
+                    task.set_payload_length(self.length)
                     self.queue.put(task)
                 while self.queue.full():
                     time.sleep(SLEEP_TIME)
@@ -71,3 +85,4 @@ class Payload(multiprocessing.Process):
             if resource.startswith(b):
                 return True
         return False
+

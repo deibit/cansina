@@ -16,7 +16,7 @@ class Console:
     @staticmethod
     def body(task):
         counter = task.number
-        percentage = counter * 100 / task.payload_size
+        percentage = counter * 100 / task.get_payload_length()
         counter = counter + 1
         target = task.target + task.resource + task.extension
         target = urlparse.urlsplit(target).path

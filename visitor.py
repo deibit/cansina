@@ -17,15 +17,23 @@ class Visitor(multiprocessing.Process):
 
     user_agent = None
     proxy = None
+    discriminator = None
+    banned_location = None
 
-    def __init__(self, number, payload, results, discriminator, banned_location):
+    def __init__(self, number, payload, results):
         multiprocessing.Process.__init__(self)
         self.number = number
         self.payload = payload
         self.results = results
 
-        self.discriminator = discriminator
-        self.banned_location = banned_location
+        self.discriminator = Visitor.discriminator
+        self.banned_location = Visitor.banned_location
+
+    def set_discriminator(self, discriminator):
+        Visitor.discriminator = discriminator
+
+    def set_banned_location(self, banned_location):
+        Visitor.banned_location = banned_location
 
     def set_user_agent(self, useragent):
         Visitor.user_agent = useragent
@@ -73,7 +81,7 @@ class Visitor(multiprocessing.Process):
                     pass
                 else:
                     # We dont want those pesky 404 relocations
-                    task.location = r.url
+                    task.set_location(r.url)
                     if task.location == self.banned_location:
                         task.set_response_code('404')
                     else:

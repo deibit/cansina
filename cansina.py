@@ -46,16 +46,6 @@ def _prepare_proxies(proxies):
         return proxies_dict
     return {}
 
-def _populate_list_with_file(file_name):
-    '''Open a file, read its content and strips it. Returns a list with the content'''
-    with open(file_name, 'r') as f:
-        tmp_list = f.readlines()
-    clean_list = []
-    for e in tmp_list:
-        e = e.strip()
-        clean_list.append(e)
-    return clean_list
-
 #
 # Parsing program options
 #
@@ -106,8 +96,6 @@ target = _prepare_target(args.target)
 
 # Processing payload
 payload_filename = args.payload
-payload_list = _populate_list_with_file(payload_filename)
-payload_list.append(payload_filename)
 
 extension = args.extension.split(',')
 
@@ -156,20 +144,22 @@ print("Using %s threads " % threads)
 #   - manager: process who is responsible of storing results from results queue
 #
 
-payload = Payload(target, payload_list)
+payload = Payload(target, payload_filename)
 payload.set_extensions(extension)
 payload.set_banned_response_codes(banned_response_codes)
 payload.set_content(content)
 if uppercase:
     payload.set_uppercase()
-payload_size = payload.payload_size * len(extension)
+payload_size = payload.get_length() * len(extension)
+print("Total requests %s  (%s / thread)" % (payload.get_length(), payload.get_length() / threads))
+
 database_name = urlparse.urlparse(target).hostname
 manager = DBManager(database_name)
-print("Total requests %s  (%s / thread)" % (payload_size, payload_size / threads))
 
 #
 # Starting Manager and Payload processes
 #
+
 payload.daemon = True
 manager.daemon = True
 payload.start()
@@ -179,9 +169,12 @@ time.sleep(1)
 
 try:
     for number in range(0, threads):
-        v = Visitor(number, payload, manager.get_results_queue(), discriminator, autodiscriminator_location)
+        v = Visitor(number, payload, manager.get_results_queue())
         v.set_user_agent(user_agent)
         v.set_proxy(proxy)
+        if discriminator:
+            v.set_discriminator(discriminator)
+        v.set_banned_location(autodiscriminator_location)
         v.daemon = True
         v.start()
     while len(multiprocessing.active_children()) > 1:
@@ -196,4 +189,6 @@ try:
     sys.stdout.flush()
 
 except Exception as e:
-    print("cansina.py - " + e.msg)
+    exc_type, exc_obj, exc_tb = sys.exc_info()
+    fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+    print("cansina.py", exc_type, fname, exc_tb.tb_lineno)

@@ -3,15 +3,14 @@ class Task:
     content = None
 
     ''' This class stores information retrieved from/to the request'''
-    def __init__(self, number, payload_filename, payload_size, target, resource, extension):
+    def __init__(self, number, target, payload_filename, resource, extension):
 
         self.number = number
+        self.payload_length = -1
         self.payload_filename = payload_filename
-        self.payload_size = payload_size
         self.target = target
         self.resource = resource
         self.extension = extension
-
         self.location = ""
         self.response_code = None
         self.response_size = None
@@ -21,6 +20,12 @@ class Task:
         self.valid = True
         self.content_detected = False
 
+    def set_payload_length(self, length):
+        self.payload_length = length
+
+    def get_payload_length(self):
+        return self.payload_length
+
     def set_banned_response_codes(self, banned_codes):
         self.banned_response_codes = banned_codes
 
@@ -28,6 +33,9 @@ class Task:
         self.response_code = str(code)
         if self.response_code in self.banned_response_codes:
             self.valid = False
+
+    def set_location(self, location):
+        self.location = location
 
     def set_content(self, content):
         Task.content = content
