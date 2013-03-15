@@ -17,12 +17,13 @@ def _populate_list_with_file(file_name):
 class Payload(multiprocessing.Process):
     def __init__(self, target, payload_filename):
         multiprocessing.Process.__init__(self)
+
         self.target = target
         self.payload_filename = payload_filename
         self.payload = _populate_list_with_file(payload_filename)
+        self.queue = multiprocessing.JoinableQueue()
 
         self.extensions = None
-        self.queue = multiprocessing.JoinableQueue()
         self.length = len(self.payload)
         self.banned_response_codes = None
         self.content = None
@@ -43,6 +44,7 @@ class Payload(multiprocessing.Process):
 
     def run(self):
             number = 0
+
             for resource in self.payload:
 
                 if self.uppercase:
@@ -68,13 +70,13 @@ class Payload(multiprocessing.Process):
                     if extension and not '.' in extension:
                         extension = '.' + extension
 
-                    Task.set_banned_response_codes(self.banned_response_codes)
-                    Task.set_payload_filename(self.payload_filename)
-                    Task.set_payload_length(self.length)
-                    Task.set_target(target)
-                    task = Task(number, resource, extension)
+                    task = Task(number, self.target, resource, extension)
+                    task.set_payload_filename(self.payload_filename)
+                    task.set_payload_length(self.length)
+                    task.set_banned_response_codes(self.banned_response_codes)
                     task.set_content(self.content)
                     self.queue.put(task)
+
                 while self.queue.full():
                     time.sleep(SLEEP_TIME)
 
