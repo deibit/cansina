@@ -18,7 +18,7 @@ not part of the project. You can use whatever list you want.
 
 Feature requests and comments are welcome.
 
-![CansinaImage](https://github.com/deibit/Cansina/raw/master/images/cansina-showcase.png "Image")
+![CansinaImage](https://github.com/deibit/cansina/raw/master/images/cansina-showcase.png "Image")
 
 Features
 --------
