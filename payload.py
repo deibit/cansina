@@ -57,7 +57,7 @@ class Payload(multiprocessing.Process):
                     continue
 
                 # Avoid double // because some dicts have /prepend_words
-                if resource[0] == '/':
+                if resource and resource[0] == '/':
                     resource = resource[1:]
 
                 for extension in self.extensions:
