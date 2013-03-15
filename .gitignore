@@ -1,0 +1,4 @@
+*.pyc
+data/*
+fuzzdb/*
+.DS_Store
