@@ -68,10 +68,12 @@ class Payload(multiprocessing.Process):
                     if extension and not '.' in extension:
                         extension = '.' + extension
 
-                    task = Task(number, self.target, self.payload_filename, resource, extension)
-                    task.set_banned_response_codes(self.banned_response_codes)
+                    Task.set_banned_response_codes(self.banned_response_codes)
+                    Task.set_payload_filename(self.payload_filename)
+                    Task.set_payload_length(self.length)
+                    Task.set_target(target)
+                    task = Task(number, resource, extension)
                     task.set_content(self.content)
-                    task.set_payload_length(self.length)
                     self.queue.put(task)
                 while self.queue.full():
                     time.sleep(SLEEP_TIME)

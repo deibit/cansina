@@ -168,15 +168,16 @@ manager.start()
 time.sleep(1)
 
 try:
+    if discriminator:
+        Visitor.set_discriminator(discriminator)
+    Visitor.set_banned_location(autodiscriminator_location)
+    Visitor.set_user_agent(user_agent)
+    Visitor.set_proxy(proxy)
     for number in range(0, threads):
         v = Visitor(number, payload, manager.get_results_queue())
-        v.set_user_agent(user_agent)
-        v.set_proxy(proxy)
-        if discriminator:
-            v.set_discriminator(discriminator)
-        v.set_banned_location(autodiscriminator_location)
         v.daemon = True
         v.start()
+
     while len(multiprocessing.active_children()) > 1:
         time.sleep(0.1)
     manager.get_results_queue().join()
@@ -185,7 +186,7 @@ try:
     sys.stdout.write ("\x1b[0K")
     sys.stdout.flush()
     time.sleep(0.5)
-    sys.stdout.write ("Work Done!" + os.linesep)
+    sys.stdout.write("Work Done!" + os.linesep)
     sys.stdout.flush()
 
 except Exception as e:

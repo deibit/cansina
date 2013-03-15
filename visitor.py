@@ -20,26 +20,27 @@ class Visitor(multiprocessing.Process):
     discriminator = None
     banned_location = None
 
+    @staticmethod
+    def set_discriminator(discriminator):
+        Visitor.discriminator = discriminator
+
+    @staticmethod
+    def set_banned_location(banned_location):
+        Visitor.banned_location = banned_location
+
+    @staticmethod
+    def set_user_agent(useragent):
+        Visitor.user_agent = useragent
+
+    @staticmethod
+    def set_proxy(proxy):
+        Visitor.proxy = proxy
+
     def __init__(self, number, payload, results):
         multiprocessing.Process.__init__(self)
         self.number = number
         self.payload = payload
         self.results = results
-
-        self.discriminator = Visitor.discriminator
-        self.banned_location = Visitor.banned_location
-
-    def set_discriminator(self, discriminator):
-        Visitor.discriminator = discriminator
-
-    def set_banned_location(self, banned_location):
-        Visitor.banned_location = banned_location
-
-    def set_user_agent(self, useragent):
-        Visitor.user_agent = useragent
-
-    def set_proxy(self, proxy):
-        Visitor.proxy = proxy
 
     def run(self):
         while not self.payload.queue.empty():
@@ -66,7 +67,7 @@ class Visitor(multiprocessing.Process):
             task.response_time = delta
 
             # If discriminator is found we mark it 404
-            if self.discriminator and self.discriminator in tmp_content:
+            if Visitor.discriminator and Visitor.discriminator in tmp_content:
                 r.status_code = '404'
 
             task.set_response_code(r.status_code)
