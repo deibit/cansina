@@ -18,6 +18,8 @@ not part of the project. You can use whatever list you want.
 
 Feature requests and comments are welcome.
 
+![CansinaImage](https://github.com/deibit/cansina/raw/gh-pages/images/cansina-showcase.png "Image")
+
 Features
 --------
 
