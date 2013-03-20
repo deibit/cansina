@@ -57,9 +57,9 @@ class Visitor(multiprocessing.Process):
 
             r = None
             if Visitor.proxy:
-                r = requests.get(task.get_complete_target(), headers=headers, proxies=Visitor.proxy)
+                r = requests.get(task.get_complete_target(), headers=headers, proxies=Visitor.proxy, verify = False)
             else:
-                r = requests.get(task.get_complete_target(), headers=headers)
+                r = requests.get(task.get_complete_target(), headers=headers, verify=False)
             after = time.time()
             delta = (after - now) * 1000
             tmp_content = r.content
