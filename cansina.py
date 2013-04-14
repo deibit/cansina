@@ -12,6 +12,7 @@ from payload import Payload
 from dbo import DBManager
 from inspector import Inspector
 
+
 def _check_domain(target):
     '''Get the target url from the user, clean and return it'''
     domain = urlparse.urlparse(target).hostname
@@ -21,7 +22,9 @@ def _check_domain(target):
             pass
     except Exception as e:
         print("ERROR: Domain doesn't seems to resolve. Check URL")
+        print e
         sys.exit(1)
+
 
 def _prepare_target(target):
     '''Examine target url compliance adding default handle (http://) and look for a final /'''
@@ -33,6 +36,7 @@ def _prepare_target(target):
         target = target + '/'
     _check_domain(target)
     return target
+
 
 def _prepare_proxies(proxies):
     '''It takes a list of proxies and returns a dictionary'''
@@ -51,41 +55,41 @@ def _prepare_proxies(proxies):
 #
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-u', dest = 'target',
-                    help = "target url (ex: http://www.hispasec.com/)",
-                    required = True)
-parser.add_argument('-p', dest = 'payload',
-                    help = "path to the payload file to use",
-                    required = True)
-parser.add_argument('-e', dest = 'extension',
-                    help = "extension list to use ex: php,asp,...(default none)",
-                    default = "")
-parser.add_argument('-t', dest = 'threads',
-                    type=int,
-                    help = "number of threads (default 4)",
-                    default = 4)
-parser.add_argument('-b', dest = 'banned',
-                    help = "banned response codes in format: 404,301,...(default none)",
-                    default = "404")
-USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; es-ES)"
-parser.add_argument('-a', dest = 'user_agent',
-                    help = "the preferred user-agent (default provided)",
-                    default = USER_AGENT)
-parser.add_argument('-P', dest = 'proxies',
-                    help = "set a http and/or https proxy (ex: http://127.0.0.1:8080,https://...",
+parser.add_argument('-u', dest='target',
+                    help="target url (ex: http://www.hispasec.com/)",
+                    required=True)
+parser.add_argument('-p', dest='payload',
+                    help="path to the payload file to use",
+                    required=True)
+parser.add_argument('-e', dest='extension',
+                    help="extension list to use ex: php,asp,...(default none)",
                     default="")
-parser.add_argument('-c', dest = 'content',
-                    help = "inspect content looking for a particular string",
-                    default = "")
-parser.add_argument('-d', dest = 'discriminator',
-                    help = "if this string if found it will be treated as a 404",
-                    default = None)
-parser.add_argument('-D', dest = 'autodiscriminator',
-                    help = "check for fake 404 (warning: machine decision)",
+parser.add_argument('-t', dest='threads',
+                    type=int,
+                    help="number of threads (default 4)",
+                    default=4)
+parser.add_argument('-b', dest='banned',
+                    help="banned response codes in format: 404,301,...(default none)",
+                    default="404")
+USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; es-ES)"
+parser.add_argument('-a', dest='user_agent',
+                    help="the preferred user-agent (default provided)",
+                    default=USER_AGENT)
+parser.add_argument('-P', dest='proxies',
+                    help="set a http and/or https proxy (ex: http://127.0.0.1:8080,https://...",
+                    default="")
+parser.add_argument('-c', dest='content',
+                    help="inspect content looking for a particular string",
+                    default="")
+parser.add_argument('-d', dest='discriminator',
+                    help="if this string if found it will be treated as a 404",
+                    default=None)
+parser.add_argument('-D', dest='autodiscriminator',
+                    help="check for fake 404 (warning: machine decision)",
                     action="store_true",
                     default=False)
-parser.add_argument('-U', dest = 'uppercase',
-                    help = "MAKE ALL RESOURCE REQUESTS UPPERCASE",
+parser.add_argument('-U', dest='uppercase',
+                    help="MAKE ALL RESOURCE REQUESTS UPPERCASE",
                     action="store_true",
                     default=False)
 args = parser.parse_args()
@@ -168,8 +172,7 @@ manager.start()
 time.sleep(1)
 
 try:
-    if discriminator:
-        Visitor.set_discriminator(discriminator)
+    Visitor.set_discriminator(discriminator)
     Visitor.set_banned_location(autodiscriminator_location)
     Visitor.set_user_agent(user_agent)
     Visitor.set_proxy(proxy)
@@ -183,7 +186,7 @@ try:
     manager.get_results_queue().join()
 
     sys.stdout.write('\r')
-    sys.stdout.write ("\x1b[0K")
+    sys.stdout.write("\x1b[0K")
     sys.stdout.flush()
     time.sleep(0.5)
     sys.stdout.write("Work Done!" + os.linesep)

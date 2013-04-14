@@ -10,6 +10,7 @@ PREFIX = "data" + os.sep
 SUFIX = ".sqlite"
 SLEEP_TIME = 0.5
 
+
 class DBManager(multiprocessing.Process):
 
     def __init__(self, database_name):
@@ -62,28 +63,20 @@ class DBManager(multiprocessing.Process):
         connection = sqlite3.connect(PREFIX + self.database_name + SUFIX)
         cursor = connection.cursor()
         # Check if the record already exists
+        record = {"url": task.target, "resource": task.resource, "extension": task.extension, "response_code": task.response_code}
         cursor.execute("SELECT * FROM requests WHERE \
                         url=:url AND \
                         resource=:resource AND \
                         extension=:extension AND \
-                        response_code=:response_code",
-                        {"url" : task.target,
-                         "resource" : task.resource,
-                         "extension" : task.extension,
-                         "response_code" : task.response_code
-                         })
+                        response_code=:response_code", record)
         # TODO banned response code at user will
         if not cursor.fetchone():
             if not task.response_code == "404":
                 if task.is_valid():
-                    cursor.execute("INSERT INTO requests VALUES (?,?,?,?,?,?,?,?,?,?)", \
-                        task.values() + (time.time(),))
+                    cursor.execute("INSERT INTO requests VALUES (?,?,?,?,?,?,?,?,?,?)", task.values() + (time.time(),))
                     connection.commit()
         connection.close()
 
         def terminate(self):
             print "DB process %s terminated" % self.pid
             multiprocessing.Process.terminate(self)
-
-
-

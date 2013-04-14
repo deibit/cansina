@@ -1,4 +1,6 @@
 # From: http://stackoverflow.com/a/287944/91267
+
+
 class BColors:
     RED = '\033[31m'
     MAGENTA = '\033[35m'
