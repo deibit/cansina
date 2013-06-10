@@ -38,4 +38,5 @@ nosetests.xml
 .DS_Store
 data/*
 payloads/*
+fuzzdb/*
 
