@@ -14,7 +14,7 @@ from inspector import Inspector
 
 
 def _check_domain(target):
-    '''Get the target url from the user, clean and return it'''
+    """Get the target url from the user, clean and return it"""
     domain = urlparse.urlparse(target).hostname
     print("Checking " + domain)
     try:
@@ -27,19 +27,19 @@ def _check_domain(target):
 
 
 def _prepare_target(target):
-    '''Examine target url compliance adding default handle (http://) and look for a final /'''
+    """Examine target url compliance adding default handle (http://) and look for a final /"""
     if target.startswith('http://') or target.startswith('https://'):
         pass
     else:
         target = 'http://' + target
     if not target.endswith('/'):
-        target = target + '/'
+        target += '/'
     _check_domain(target)
     return target
 
 
 def _prepare_proxies(proxies):
-    '''It takes a list of proxies and returns a dictionary'''
+    """It takes a list of proxies and returns a dictionary"""
     if proxies:
         proxies_dict = {}
         for proxy in proxies:
@@ -92,6 +92,9 @@ parser.add_argument('-U', dest='uppercase',
                     help="MAKE ALL RESOURCE REQUESTS UPPERCASE",
                     action="store_true",
                     default=False)
+parser.add_argument('-T', dest='request_delay',
+                    help="Time (in milliseconds) between requests",
+                    default=False)
 args = parser.parse_args()
 
 print("")
@@ -135,6 +138,8 @@ uppercase = args.uppercase
 if uppercase:
     print("All resource requests will be done in uppercase")
 
+request_delay = args.request_delay
+
 print("Using payload: %s" % payload_filename)
 print("Using %s threads " % threads)
 
@@ -176,6 +181,8 @@ try:
     Visitor.set_banned_location(autodiscriminator_location)
     Visitor.set_user_agent(user_agent)
     Visitor.set_proxy(proxy)
+    if request_delay:
+        Visitor.set_delay(request_delay)
     for number in range(0, threads):
         v = Visitor(number, payload, manager.get_results_queue())
         v.daemon = True

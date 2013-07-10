@@ -1,11 +1,12 @@
 import multiprocessing
+import time
 
 from task import Task
 
 SLEEP_TIME = 0.1
 
 def _populate_list_with_file(file_name):
-    '''Open a file, read its content and strips it. Returns a list with the content'''
+    """Open a file, read its content and strips it. Returns a list with the content"""
     with open(file_name, 'r') as f:
         tmp_list = f.readlines()
     clean_list = []
@@ -50,7 +51,7 @@ class Payload(multiprocessing.Process):
                 if self.uppercase:
                     resource = resource.upper()
 
-                number = number + 1
+                number += 1
 
                 # Skip commented lines
                 if resource and resource[0] == '#':
@@ -64,7 +65,7 @@ class Payload(multiprocessing.Process):
                     # If resource is a whole word and user didnt provide a extension
                     # put a final /
                     if not extension and not '.' in resource:
-                        resource = resource + '/'
+                        resource += '/'
 
                     # Put a . before extension if the users didnt do it
                     if extension and not '.' in extension:
@@ -84,7 +85,7 @@ class Payload(multiprocessing.Process):
         self.uppercase = True
 
     def _comment(self, resource):
-        '''Returns True is the resource starts with a comment sign'''
+        """Returns True is the resource starts with a comment sign"""
         for b in ['#']:
             if resource.startswith(b):
                 return True

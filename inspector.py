@@ -7,8 +7,8 @@ USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; es-ES)"
 user_agent = {"user-agent" : USER_AGENT}
 
 class Inspector:
-    '''This class mission is to examine the behaviour of the application when a on
-        purpose inexistent page is requested'''
+    """This class mission is to examine the behaviour of the application when a on
+        purpose inexistent page is requested"""
     TEST404_OK = 0
     TEST404_MD5 = 1
     TEST404_STRING = 2
@@ -19,10 +19,10 @@ class Inspector:
         self.target = target
 
     def _give_it_a_try(self):
-        '''Every time this method is called it will request a random resource
+        """Every time this method is called it will request a random resource
             the target domain. Return value is a dictionary with values as
             HTTP response code, resquest size, md5 of the content and the content
-            itself. If there were a redirection it will record the new url'''
+            itself. If there were a redirection it will record the new url"""
         s = []
         for n in range(0,42):
             random.seed()
@@ -47,27 +47,24 @@ class Inspector:
 
         return result
 
-    def _diff_test(self, a, b):
-        return difflib.unified_diff(a,b)
-
     def _fire_a_404(self):
-        '''Get the a request and decide what to do'''
+        """Get the a request and decide what to do"""
         first_result = self._give_it_a_try()
 
         if first_result['code'] == '404':
             print("Got a nice 404, problems not expected")
             # Ok, resquest gave a 404 so we should not find problems
-            return ('', Inspector.TEST404_OK)
+            return '', Inspector.TEST404_OK
 
         elif first_result['code'] == '302' or first_result['location']:
             location = first_result['location']
-            return (location, Inspector.TEST404_URL)
+            return location, Inspector.TEST404_URL
 
         elif first_result['code'] == '200':
-            return (first_result['md5'], Inspector.TEST404_MD5)
+            return first_result['md5'], Inspector.TEST404_MD5
 
         # We give up here :(
-        return ('', Inspector.TEST404_NONE)
+        return '', Inspector.TEST404_NONE
 
     def check_this(self):
         return self._fire_a_404()

@@ -9,8 +9,6 @@ except:
     print("Python module requests not found")
     sys.exit(1)
 
-from task import Task
-
 SLEEP_TIME = 3
 
 class Visitor(multiprocessing.Process):
@@ -19,6 +17,7 @@ class Visitor(multiprocessing.Process):
     proxy = None
     discriminator = None
     banned_location = None
+    delay = 0
 
     @staticmethod
     def set_discriminator(discriminator):
@@ -35,6 +34,10 @@ class Visitor(multiprocessing.Process):
     @staticmethod
     def set_proxy(proxy):
         Visitor.proxy = proxy
+
+    @staticmethod
+    def set_delay(delay):
+        Visitor.delay = int(delay)
 
     def __init__(self, number, payload, results):
         multiprocessing.Process.__init__(self)
@@ -88,6 +91,7 @@ class Visitor(multiprocessing.Process):
                     else:
                         task.set_response_code(r.history[0].status_code)
             self.results.put(task)
+            time.sleep(float(Visitor.delay / 0.001))
 
         except requests.ConnectionError, requests.Timeout:
             sys.stdout.write("(%s) timeout - sleeping...\n" % self.number)

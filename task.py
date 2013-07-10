@@ -1,6 +1,6 @@
 class Task:
 
-    ''' This class stores information retrieved from/to the request'''
+    """ This class stores information retrieved from/to the request"""
     def __init__(self, number, target, resource, extension):
 
         self.number = number
