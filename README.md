@@ -32,6 +32,7 @@ Features
 - Skip by filtering content
 - Replacing (for URL fuzzing)
 - Reporting tool
+- Basic Authentication
 
 Some use cases
 --------------
