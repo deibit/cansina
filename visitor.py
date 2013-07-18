@@ -39,11 +39,17 @@ class Visitor(multiprocessing.Process):
     def set_delay(delay):
         Visitor.delay = int(delay)
 
+    @staticmethod
+    def set_authentication(auth):
+        Visitor.auth = tuple(auth.split(':'))
+
     def __init__(self, number, payload, results):
         multiprocessing.Process.__init__(self)
         self.number = number
         self.payload = payload
         self.results = results
+
+        self.__time = []
 
     def run(self):
         while not self.payload.queue.empty():
@@ -58,16 +64,22 @@ class Visitor(multiprocessing.Process):
 
             now = time.time()
 
+            if self.__time:
+                timeout = sum(self.__time) / len(self.__time)
+            else:
+                timeout = 10
+
             r = None
             if Visitor.proxy:
-                r = requests.get(task.get_complete_target(), headers=headers, proxies=Visitor.proxy, verify = False)
+                r = requests.get(task.get_complete_target(), headers=headers, proxies=Visitor.proxy, verif=False, timeout=timeout, auth=Visitor.auth)
             else:
-                r = requests.get(task.get_complete_target(), headers=headers, verify=False)
+                r = requests.get(task.get_complete_target(), headers=headers, verify=False, timeout=timeout, auth=Visitor.auth)
             after = time.time()
             delta = (after - now) * 1000
             tmp_content = r.content
             task.response_size = len(tmp_content)
             task.response_time = delta
+            self.__time.append(delta)
 
             # If discriminator is found we mark it 404
             if Visitor.discriminator and Visitor.discriminator in tmp_content:
@@ -91,7 +103,8 @@ class Visitor(multiprocessing.Process):
                     else:
                         task.set_response_code(r.history[0].status_code)
             self.results.put(task)
-            time.sleep(float(Visitor.delay / 0.001))
+            if self.delay:
+                time.sleep(float(Visitor.delay / 0.001))
 
         except requests.ConnectionError, requests.Timeout:
             sys.stdout.write("(%s) timeout - sleeping...\n" % self.number)

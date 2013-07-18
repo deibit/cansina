@@ -39,4 +39,4 @@ nosetests.xml
 data/*
 payloads/*
 fuzzdb/*
-
+.idea/*

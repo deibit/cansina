@@ -95,6 +95,9 @@ parser.add_argument('-U', dest='uppercase',
 parser.add_argument('-T', dest='request_delay',
                     help="Time (in milliseconds) between requests",
                     default=False)
+parser.add_argument('-A', dest='authentication',
+                    help="Basic Authentication (e.g. user:password)", 
+                    default=False)
 args = parser.parse_args()
 
 print("")
@@ -140,6 +143,8 @@ if uppercase:
 
 request_delay = args.request_delay
 
+authentication = args.authentication
+
 print("Using payload: %s" % payload_filename)
 print("Using %s threads " % threads)
 
@@ -181,9 +186,10 @@ try:
     Visitor.set_banned_location(autodiscriminator_location)
     Visitor.set_user_agent(user_agent)
     Visitor.set_proxy(proxy)
+    Visitor.set_authentication(authentication)
     if request_delay:
         Visitor.set_delay(request_delay)
-    for number in range(0, threads):
+    for number in range(0, threads + 1):
         v = Visitor(number, payload, manager.get_results_queue())
         v.daemon = True
         v.start()
