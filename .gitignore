@@ -40,3 +40,5 @@ data/*
 payloads/*
 fuzzdb/*
 .idea/*
+.ropeproject
+cansina.iml

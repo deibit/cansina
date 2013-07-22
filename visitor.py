@@ -71,7 +71,7 @@ class Visitor(multiprocessing.Process):
 
             r = None
             if Visitor.proxy:
-                r = requests.get(task.get_complete_target(), headers=headers, proxies=Visitor.proxy, verif=False, timeout=timeout, auth=Visitor.auth)
+                r = requests.get(task.get_complete_target(), headers=headers, proxies=Visitor.proxy, verify=False, timeout=timeout, auth=Visitor.auth)
             else:
                 r = requests.get(task.get_complete_target(), headers=headers, verify=False, timeout=timeout, auth=Visitor.auth)
             after = time.time()
