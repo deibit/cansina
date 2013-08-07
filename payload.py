@@ -12,7 +12,7 @@ def _populate_list_with_file(file_name):
     clean_list = []
     for e in tmp_list:
         e = e.strip()
-        clean_list.append(e)
+        clean_list.append(e.decode("utf-8", "replace"))
     return clean_list
 
 class Payload(multiprocessing.Process):

@@ -43,7 +43,7 @@ class Console:
         to_format = color + "{0: >2} | {1: ^3} | {2: >10} | {3: >6} | {4: >4} | {5}" + BColors.ENDC
         to_console = to_format.format(percentage, task.response_code,
                                     task.response_size, task.number,
-                                    int(task.response_time), target)
+                                    int(task.response_time), target.decode("utf-8", "replace"))
         sys.stdout.write(to_console + linesep)
         sys.stdout.flush()
         time.sleep(0.1)
