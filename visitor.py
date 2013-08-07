@@ -41,7 +41,10 @@ class Visitor(multiprocessing.Process):
 
     @staticmethod
     def set_authentication(auth):
-        Visitor.auth = tuple(auth.split(':'))
+        if auth:
+            Visitor.auth = tuple(auth.split(':'))
+        else:
+            Visitor.auth = auth
 
     def __init__(self, number, payload, results):
         multiprocessing.Process.__init__(self)
