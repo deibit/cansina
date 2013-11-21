@@ -18,7 +18,7 @@ class Console:
         counter = task.number
         percentage = counter * 100 / task.get_payload_length()
         counter += 1
-        target = task.target + task.resource + task.extension
+        target = task.get_complete_target()
         target = urlparse.urlsplit(target).path
         if len(target) > 80:
             target = target[:80] + "...(cont)"

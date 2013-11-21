@@ -32,7 +32,9 @@ def _prepare_target(target):
         pass
     else:
         target = 'http://' + target
-    if not target.endswith('/'):
+    if target.endswith('/') or '***' in target:
+        pass
+    else:
         target += '/'
     _check_domain(target)
     return target
@@ -96,7 +98,7 @@ parser.add_argument('-T', dest='request_delay',
                     help="Time (in milliseconds) between requests",
                     default=False)
 parser.add_argument('-A', dest='authentication',
-                    help="Basic Authentication (e.g. user:password)", 
+                    help="Basic Authentication (e.g. user:password)",
                     default=False)
 args = parser.parse_args()
 

@@ -59,9 +59,14 @@ class Task:
 
     def get_complete_target(self):
         if '***' in self.target:
-            self.target = self.target.replace('***', self.resource)
+            self.target = self.target.replace('***', self.resource.replace('/', ''))
+            # HACK! This is why functional programming justifies itself.
+            # When calling two times get_complete_target first time it replaces *** with resource
+            # second time it pass to the else and put resource AGAIN giving wrong results in the output
+            self.resource = ""
             return self.target + self.extension
-        return self.target + self.resource + self.extension
+        else:
+            return self.target + self.resource + self.extension
 
     def is_valid(self):
         return self.valid

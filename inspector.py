@@ -41,7 +41,6 @@ class Inspector:
                   'content':content,
                   'location': None}
 
-        history = page.history
         if len(page.history) >= 1:
             result['location'] = page.url
 
