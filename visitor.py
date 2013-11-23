@@ -18,6 +18,7 @@ class Visitor(multiprocessing.Process):
     discriminator = None
     banned_location = None
     delay = 0
+    requests = ""
 
     @staticmethod
     def set_discriminator(discriminator):
@@ -38,6 +39,10 @@ class Visitor(multiprocessing.Process):
     @staticmethod
     def set_delay(delay):
         Visitor.delay = int(delay)
+
+    @staticmethod
+    def set_requests(type_request):
+        Visitor.requests = type_request
 
     @staticmethod
     def set_authentication(auth):
@@ -74,9 +79,15 @@ class Visitor(multiprocessing.Process):
 
             r = None
             if Visitor.proxy:
-                r = requests.get(task.get_complete_target(), headers=headers, proxies=Visitor.proxy, verify=False, timeout=timeout, auth=Visitor.auth)
+                if Visitor.requests == "GET":
+                    r = requests.get(task.get_complete_target(), headers=headers, proxies=Visitor.proxy, verify=False, timeout=timeout, auth=Visitor.auth)
+                elif Visitor.requests == "HEAD":
+                    r = requests.head(task.get_complete_target(), headers=headers, proxies=Visitor.proxy, verify=False, timeout=timeout, auth=Visitor.auth)
             else:
-                r = requests.get(task.get_complete_target(), headers=headers, verify=False, timeout=timeout, auth=Visitor.auth)
+                if Visitor.requests == "GET":
+                    r = requests.get(task.get_complete_target(), headers=headers, verify=False, timeout=timeout, auth=Visitor.auth)
+                elif Visitor.requests == "HEAD":
+                    r = requests.head(task.get_complete_target(), headers=headers, verify=False, timeout=timeout, auth=Visitor.auth)
             after = time.time()
             delta = (after - now) * 1000
             tmp_content = r.content

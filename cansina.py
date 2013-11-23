@@ -12,6 +12,7 @@ from payload import Payload
 from dbo import DBManager
 from inspector import Inspector
 
+USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; es-ES)"
 
 def _check_domain(target):
     """Get the target url from the user, clean and return it"""
@@ -73,7 +74,6 @@ parser.add_argument('-t', dest='threads',
 parser.add_argument('-b', dest='banned',
                     help="banned response codes in format: 404,301,...(default none)",
                     default="404")
-USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; es-ES)"
 parser.add_argument('-a', dest='user_agent',
                     help="the preferred user-agent (default provided)",
                     default=USER_AGENT)
@@ -100,6 +100,9 @@ parser.add_argument('-T', dest='request_delay',
 parser.add_argument('-A', dest='authentication',
                     help="Basic Authentication (e.g. user:password)",
                     default=False)
+parser.add_argument('-H', dest='request_type',
+                    help="HTTP HEAD requests",
+                    action="store_true")
 args = parser.parse_args()
 
 print("")
@@ -116,13 +119,25 @@ banned_response_codes = args.banned.split(',')
 user_agent = args.user_agent
 proxy = _prepare_proxies(args.proxies.split(','))
 
+request_type = args.request_type
+if request_type:
+    print("HTTP HEAD requests")
+    request_type = "HEAD"
+else:
+    print("HTTP GET requests")
+    request_type = "GET"
+
 content = args.content
 if content:
     print("Content inspection selected")
+    if request_type == "HEAD":
+        print ("WARNING: HEAD requests make Content inspection useless")
 
 discriminator = args.discriminator
 if discriminator:
     print("Discriminator active")
+    if request_type == "HEAD":
+        print ("WARNING: HEAD requests make Content inspection useless")
 
 autodiscriminator = args.autodiscriminator
 autodiscriminator_location = None
@@ -149,6 +164,7 @@ authentication = args.authentication
 
 print("Using payload: %s" % payload_filename)
 print("Using %s threads " % threads)
+
 
 #
 # Creating middle objects
@@ -189,6 +205,7 @@ try:
     Visitor.set_user_agent(user_agent)
     Visitor.set_proxy(proxy)
     Visitor.set_authentication(authentication)
+    Visitor.set_requests(request_type)
     if request_delay:
         Visitor.set_delay(request_delay)
     for number in range(0, threads + 1):
