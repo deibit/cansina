@@ -6,16 +6,21 @@ import argparse
 import webbrowser
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-p', dest = 'project_name',
-                    help = "path to sqlite3 project file",
-                    required = True)
-parser.add_argument('-b', dest = 'browser',
-                    help = "Open a default browser with the project results",
+parser.add_argument('-p', dest='project_name',
+                    help="path to sqlite3 project file",
+                    required=True)
+parser.add_argument('-b', dest='browser',
+                    help="Open a default browser with the project results",
+                    action="store_true",
+                    default=False)
+parser.add_argument('-o', dest='output',
+                    help="Simple listing output",
                     action="store_true",
                     default=False)
 args = parser.parse_args()
 project_name = args.project_name
 browser = args.browser
+output  = args.output
 
 QUERY = "SELECT * FROM requests ORDER BY resource"
 
@@ -25,7 +30,6 @@ header =    '''<html>
                     <script src="../assets/js/bootstrap.min.js" type="text/javascript"></script>
                     <link href="../assets/css/bootstrap.css" rel="stylesheet">
                     <link href="../assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
-
                 </head>
             '''
 
@@ -95,23 +99,35 @@ for i in data:
     item.location = i[8]
     objects.append(item)
 
-project_html = project_name.replace(".sqlite", '') + ".html"
-with open(project_html, 'w') as f:
-    f.write(header + os.linesep)
-    f.write(body + os.linesep)
-    f.write('<tbody>' + os.linesep)
-    for i in objects:
-        f.write("<tr class='" + i.get_color() + "'>" + os.linesep)
-        f.write("<td>" + str(i.linenumber) + "</td>" + os.linesep)
-        f.write("<td>" + i.payload_name + "</td>" + os.linesep)
-        f.write("<td><a href='" + i.url + "'>" + i.url + "</a></td>" + os.linesep)
-        f.write("<td>" + i.response_code + "</td>" + os.linesep)
-        f.write("<td>" + str(i.size) + "</td>" + os.linesep)
-        f.write("<td>" + i.location + "</td>" + os.linesep)
-        f.write("</tr>" + os.linesep)
-    f.write('</tbody>' + os.linesep)
-    f.write(footer + os.linesep)
+if not output:
+    project_html = project_name.replace(".sqlite", '') + ".html"
+    with open(project_html, 'w') as f:
+        f.write(header + os.linesep)
+        f.write(body + os.linesep)
+        f.write('<tbody>' + os.linesep)
+        for i in objects:
+            f.write("<tr class='" + i.get_color() + "'>" + os.linesep)
+            f.write("<td>" + str(i.linenumber) + "</td>" + os.linesep)
+            f.write("<td>" + i.payload_name + "</td>" + os.linesep)
+            f.write("<td><a href='" + i.url + "'>" + i.url + "</a></td>" + os.linesep)
+            f.write("<td>" + i.response_code + "</td>" + os.linesep)
+            f.write("<td>" + str(i.size) + "</td>" + os.linesep)
+            f.write("<td>" + i.location + "</td>" + os.linesep)
+            f.write("</tr>" + os.linesep)
+        f.write('</tbody>' + os.linesep)
+        f.write(footer + os.linesep)
 
-if browser:
-    p = "file://" + os.getcwd() + os.sep + project_html
-    webbrowser.open_new_tab(p)
+    if browser:
+        p = "file://" + os.getcwd() + os.sep + project_html
+        webbrowser.open_new_tab(p)
+
+else:
+    interesting_codes = ['200', '401', '403']
+    for i in objects:
+        if i.response_code in interesting_codes:
+            if '.ht' in i.url and i.response_code == '403':
+                continue
+            else:
+                print i.url
+
+
