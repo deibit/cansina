@@ -19,10 +19,15 @@ class Visitor(multiprocessing.Process):
     banned_location = None
     delay = 0
     requests = ""
+    size_discriminator = -1
 
     @staticmethod
     def set_discriminator(discriminator):
         Visitor.discriminator = discriminator
+
+    @staticmethod
+    def set_size_discriminator(size_discriminator):
+        Visitor.size_discriminator = int(size_discriminator)
 
     @staticmethod
     def set_banned_location(banned_location):
@@ -99,6 +104,9 @@ class Visitor(multiprocessing.Process):
             if Visitor.discriminator and Visitor.discriminator in tmp_content:
                 r.status_code = '404'
 
+            # Check if the size of the page is set for discrimante fake 404 errors
+            if not Visitor.size_discriminator == -1 and task.response_size == Visitor.size_discriminator:
+                r.status_code = '404'
             task.set_response_code(r.status_code)
 
             # Look for interesting content

@@ -103,6 +103,9 @@ parser.add_argument('-A', dest='authentication',
 parser.add_argument('-H', dest='request_type',
                     help="HTTP HEAD requests",
                     action="store_true")
+parser.add_argument('-s', dest='size_discriminator',
+                    help="Size (in bytes) for page discriminator",
+                    default=False)
 args = parser.parse_args()
 
 print("")
@@ -162,6 +165,9 @@ request_delay = args.request_delay
 
 authentication = args.authentication
 
+
+size_discriminator = args.size_discriminator
+
 print("Using payload: %s" % payload_filename)
 print("Using %s threads " % threads)
 
@@ -206,6 +212,8 @@ try:
     Visitor.set_proxy(proxy)
     Visitor.set_authentication(authentication)
     Visitor.set_requests(request_type)
+    if size_discriminator:
+        Visitor.set_size_discriminator(size_discriminator)
     if request_delay:
         Visitor.set_delay(request_delay)
     for number in range(0, threads + 1):
