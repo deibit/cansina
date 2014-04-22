@@ -4,11 +4,15 @@ import os
 import sqlite3
 import argparse
 import webbrowser
+import csv
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-p', dest='project_name',
                     help="path to sqlite3 project file",
                     required=True)
+parser.add_argument('-e', dest='outname',
+                    help="save as...",
+                    required=False)
 parser.add_argument('-b', dest='browser',
                     help="Open a default browser with the project results",
                     action="store_true",
@@ -17,10 +21,17 @@ parser.add_argument('-o', dest='output',
                     help="Simple listing output",
                     action="store_true",
                     default=False)
+parser.add_argument('-c', dest='csv',
+                    help="Comma separate value output",
+                    action="store_true",
+                    default=False)
+
 args = parser.parse_args()
 project_name = args.project_name
+outname = args.outname
 browser = args.browser
 output  = args.output
+csv_output = args.csv
 
 QUERY = "SELECT * FROM requests ORDER BY resource"
 
@@ -71,6 +82,11 @@ class Item:
         except:
             return ""
 
+    def csv_data(self):
+        members = [self.payload_name, self.linenumber, self.url, self.response_code, self.size, self.location]
+        data = ",".join([str(s) for s in members])
+        return data + os.linesep
+
 connection = None
 try:
     connection = sqlite3.connect(project_name)
@@ -100,8 +116,10 @@ for i in data:
     objects.append(item)
 
 if not output:
-    project_html = project_name.replace(".sqlite", '') + ".html"
-    with open(project_html, 'w') as f:
+    if not outname:
+        print "An output file is requied. Tried -e <file>"
+        sys.exit(1)
+    with open(outname + '.html', 'w') as f:
         f.write(header + os.linesep)
         f.write(body + os.linesep)
         f.write('<tbody>' + os.linesep)
@@ -117,9 +135,18 @@ if not output:
         f.write('</tbody>' + os.linesep)
         f.write(footer + os.linesep)
 
-    if browser:
-        p = "file://" + os.getcwd() + os.sep + project_html
+    if browser and outname:
+        p = "file://" + os.getcwd() + os.sep + outname
         webbrowser.open_new_tab(p)
+
+    if csv_output:
+        if outname:
+            with open(outname + '.csv', 'wb') as f:
+                for i in objects:
+                    f.write(i.csv_data())
+        else:
+                for i in objects:
+                    print i.csv_data()
 
 else:
     interesting_codes = ['200', '401', '403']
