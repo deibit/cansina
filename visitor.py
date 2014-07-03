@@ -129,8 +129,7 @@ class Visitor(multiprocessing.Process):
                 time.sleep(float(Visitor.delay / 0.001))
 
         except requests.ConnectionError, requests.Timeout:
-            sys.stderr.write("Connection ot timeout error: %s", task.get_complete_target())
-            #time.sleep(SLEEP_TIME)
+            sys.stderr.write("Connection (or/and) timeout error")
 
         except ValueError:
             # Falling back to urllib (requests doesnt want freak chars)
