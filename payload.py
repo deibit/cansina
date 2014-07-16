@@ -28,8 +28,11 @@ class Payload(multiprocessing.Process):
         self.length = len(self.payload)
         self.banned_response_codes = None
         self.content = None
-
+        self.remove_slash = False
         self.uppercase = False
+
+    def set_remove_slash(self, remove_slash):
+        self.remove_slash = remove_slash
 
     def set_banned_response_codes(self, banned_response_codes):
         self.banned_response_codes = banned_response_codes
@@ -61,10 +64,13 @@ class Payload(multiprocessing.Process):
                 if resource and resource[0] == '/':
                     resource = resource[1:]
 
+                if self.remove_slash and resource[-1] == '/':
+                    resource = resource[-1]
+
                 for extension in self.extensions:
                     # If resource is a whole word and user didnt provide a extension
                     # put a final /
-                    if not extension and not '.' in resource:
+                    if not extension and not '.' in resource and not self.remove_slash:
                         resource += '/'
 
                     # Put a . before extension if the users didnt do it

@@ -106,6 +106,10 @@ parser.add_argument('-H', dest='request_type',
 parser.add_argument('-s', dest='size_discriminator',
                     help="Size (in bytes) for page discriminator",
                     default=False)
+parser.add_argument('-S', dest='remove_slash',
+                    help="Remove last slash from the requests",
+                    default=False,
+                    action="store_true")
 args = parser.parse_args()
 
 print("")
@@ -135,6 +139,10 @@ if content:
     print("Content inspection selected")
     if request_type == "HEAD":
         print ("WARNING: HEAD requests make Content inspection useless")
+
+remove_slash = args.remove_slash
+if remove_slash:
+    print("Requests without last /")
 
 discriminator = args.discriminator
 if discriminator:
@@ -186,6 +194,7 @@ payload = Payload(target, payload_filename)
 payload.set_extensions(extension)
 payload.set_banned_response_codes(banned_response_codes)
 payload.set_content(content)
+payload.set_remove_slash(remove_slash)
 if uppercase:
     payload.set_uppercase()
 payload_size = payload.get_length() * len(extension)
