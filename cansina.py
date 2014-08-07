@@ -23,7 +23,7 @@ def _check_domain(target):
             pass
     except Exception as e:
         print("ERROR: Domain doesn't seems to resolve. Check URL")
-        print e
+        print (e)
         sys.exit(1)
 
 
@@ -197,8 +197,8 @@ payload.set_content(content)
 payload.set_remove_slash(remove_slash)
 if uppercase:
     payload.set_uppercase()
-payload_size = payload.get_length() * len(extension)
-print("Total requests %s  (%s / thread)" % (payload.get_length(), payload.get_length() / threads))
+payload_size = payload.get_length() * len(payload.extensions)
+print("Total requests %s  (aprox: %s / thread)" % (payload_size, payload_size / threads))
 
 database_name = urlparse.urlparse(target).hostname
 manager = DBManager(database_name)
@@ -229,6 +229,7 @@ try:
         v = Visitor(number, payload, manager.get_results_queue())
         v.daemon = True
         v.start()
+        time.sleep(0.1)
 
     while len(multiprocessing.active_children()) > 1:
         time.sleep(0.1)
