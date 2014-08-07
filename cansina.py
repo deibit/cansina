@@ -177,7 +177,7 @@ authentication = args.authentication
 size_discriminator = args.size_discriminator
 
 print("Using payload: %s" % payload_filename)
-print("Using %s threads " % threads)
+print("Launching %s threads " % threads)
 
 
 #
