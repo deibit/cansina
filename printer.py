@@ -44,9 +44,8 @@ class Console:
         to_console = to_format.format(percentage, task.response_code,
                                     task.response_size, task.number,
                                     int(task.response_time), target.encode('utf-8'))
-        sys.stdout.write(to_console + linesep)
+        sys.stdout.write(to_console[:200] + linesep)
         sys.stdout.flush()
         time.sleep(0.1)
         sys.stdout.write('\r')
-        sys.stdout.write ("\x1b[0K")
-        sys.stdout.flush()
+        sys.stdout.write("\x1b[0K")

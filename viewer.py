@@ -25,6 +25,10 @@ parser.add_argument('-c', dest='csv',
                     help="Comma separate value output",
                     action="store_true",
                     default=False)
+parser.add_argument('-f2', dest='filter_200',
+                    help="Only HTTP 200 code",
+                    action="store_true",
+                    default=False)
 
 args = parser.parse_args()
 project_name = args.project_name
@@ -32,6 +36,7 @@ outname = args.outname
 browser = args.browser
 output  = args.output
 csv_output = args.csv
+f2 = args.filter_200
 
 QUERY = "SELECT * FROM requests ORDER BY resource"
 
@@ -113,11 +118,15 @@ for i in data:
     item.response_code = i[5]
     item.size = i[6]
     item.location = i[8]
-    objects.append(item)
+    if f2:
+        if item.response_code == "200":
+            objects.append(item)
+    else:
+        objects.append(item)
 
 if not output:
     if not outname:
-        print "An output file is requied. Tried -e <file>"
+        print "An output file is required. Try -e <file>"
         sys.exit(1)
     with open(outname + '.html', 'w') as f:
         f.write(header + os.linesep)

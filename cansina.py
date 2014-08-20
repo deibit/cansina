@@ -237,7 +237,6 @@ try:
 
     sys.stdout.write('\r')
     sys.stdout.write("\x1b[0K")
-    sys.stdout.flush()
     time.sleep(0.5)
     sys.stdout.write("Work Done!" + os.linesep)
     sys.stdout.flush()
