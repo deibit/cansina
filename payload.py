@@ -87,8 +87,12 @@ class Payload(threading.Thread):
                 task.set_content(self.content)
                 self.queue.put(task)
 
-            while not self.queue.empty():
-                time.sleep(SLEEP_TIME)
+        while self.queue and not self.queue.empty():
+            time.sleep(SLEEP_TIME)
+
+    def flush(self):
+        with self.queue.mutex:
+            self.queue = 0
 
     def set_uppercase(self):
         self.uppercase = True

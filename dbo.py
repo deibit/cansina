@@ -54,7 +54,6 @@ class DBManager(threading.Thread):
                 self.process(task)
                 self.queue.task_done()
                 Console.body(task)
-        print "dbo out"
 
     def process(self, task):
         connection = sqlite3.connect(PREFIX + self.database_name + SUFIX)

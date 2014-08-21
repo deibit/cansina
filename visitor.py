@@ -66,9 +66,12 @@ class Visitor(threading.Thread):
         self.__time = []
 
     def run(self):
-        while not self.payload.queue.empty():
-            self.visit(self.payload.queue.get())
-            self.payload.queue.task_done()
+        try:
+            while not self.payload.queue.empty():
+                self.visit(self.payload.queue.get())
+                self.payload.queue.task_done()
+        except AttributeError:
+            pass
 
     def visit(self, task):
         try:

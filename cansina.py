@@ -4,7 +4,6 @@ import os
 import argparse
 import urlparse
 import time
-import threading
 import socket
 
 from visitor import Visitor
@@ -211,37 +210,46 @@ payload.daemon = True
 manager.daemon = True
 payload.start()
 manager.start()
-# Give payload and manager time to get ready
-#time.sleep(1)
 
-try:
-    Visitor.set_discriminator(discriminator)
-    Visitor.set_banned_location(autodiscriminator_location)
-    Visitor.set_user_agent(user_agent)
-    Visitor.set_proxy(proxy)
-    Visitor.set_authentication(authentication)
-    Visitor.set_requests(request_type)
-    if size_discriminator:
-        Visitor.set_size_discriminator(size_discriminator)
-    if request_delay:
-        Visitor.set_delay(request_delay)
-    for number in range(0, threads + 1):
-        v = Visitor(number, payload, manager.get_results_queue())
-        v.daemon = True
-        v.start()
+#try:
+Visitor.set_discriminator(discriminator)
+Visitor.set_banned_location(autodiscriminator_location)
+Visitor.set_user_agent(user_agent)
+Visitor.set_proxy(proxy)
+Visitor.set_authentication(authentication)
+Visitor.set_requests(request_type)
+if size_discriminator:
+    Visitor.set_size_discriminator(size_discriminator)
+if request_delay:
+    Visitor.set_delay(request_delay)
+thread_pool = []
+for number in range(0, threads + 1):
+    v = Visitor(number, payload, manager.get_results_queue())
+    thread_pool.append(v)
+    v.daemon = True
+    v.start()
+
+while payload.queue.not_empty:
+    try:
         time.sleep(0.1)
+    except KeyboardInterrupt:
+        print "\nStopping!"
+        manager.dead = True
+        payload.flush()
+        break
 
-    payload.queue.join()
-    manager.dead = True
-    manager.get_results_queue().join()
+for t in thread_pool:
+    t.join()
+manager.dead = True
+manager.get_results_queue().join()
 
-    sys.stdout.write('\r')
-    sys.stdout.write("\x1b[0K")
-    time.sleep(0.5)
-    sys.stdout.write("Work Done!" + os.linesep)
-    sys.stdout.flush()
+sys.stdout.write('\r')
+sys.stdout.write("\x1b[0K")
+time.sleep(0.5)
+sys.stdout.write("Work Done!" + os.linesep)
+sys.stdout.flush()
 
-except Exception as e:
-    exc_type, exc_obj, exc_tb = sys.exc_info()
-    fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-    print("cansina.py", exc_type, fname, exc_tb.tb_lineno)
+# except Exception as e:
+#     exc_type, exc_obj, exc_tb = sys.exc_info()
+#     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+#     print("cansina.py", exc_type, fname, exc_tb.tb_lineno)
