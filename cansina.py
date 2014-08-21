@@ -229,7 +229,7 @@ for number in range(0, threads + 1):
     v.daemon = True
     v.start()
 
-while payload.queue.not_empty:
+while not payload.queue.empty():
     try:
         time.sleep(0.1)
     except KeyboardInterrupt:
