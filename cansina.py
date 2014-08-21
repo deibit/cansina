@@ -233,7 +233,7 @@ while payload.queue.not_empty:
     try:
         time.sleep(0.1)
     except KeyboardInterrupt:
-        print "\nStopping!"
+        print "\nWaiting for threads to stop..."
         manager.dead = True
         payload.flush()
         break
@@ -246,10 +246,6 @@ manager.get_results_queue().join()
 sys.stdout.write('\r')
 sys.stdout.write("\x1b[0K")
 time.sleep(0.5)
-sys.stdout.write("Work Done!" + os.linesep)
+sys.stdout.write("Work done" + os.linesep)
 sys.stdout.flush()
 
-# except Exception as e:
-#     exc_type, exc_obj, exc_tb = sys.exc_info()
-#     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-#     print("cansina.py", exc_type, fname, exc_tb.tb_lineno)
