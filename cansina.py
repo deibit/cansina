@@ -112,8 +112,6 @@ parser.add_argument('-S', dest='remove_slash',
                     action="store_true")
 args = parser.parse_args()
 
-print("")
-
 target = _prepare_target(args.target)
 
 # Processing payload
