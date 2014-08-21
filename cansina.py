@@ -4,7 +4,7 @@ import os
 import argparse
 import urlparse
 import time
-import multiprocessing
+import threading
 import socket
 
 from visitor import Visitor
@@ -14,42 +14,43 @@ from inspector import Inspector
 
 USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; es-ES)"
 
-def _check_domain(target):
+
+def _check_domain(target_url):
     """Get the target url from the user, clean and return it"""
-    domain = urlparse.urlparse(target).hostname
+    domain = urlparse.urlparse(target_url).hostname
     print("Checking " + domain)
     try:
         if socket.gethostbyname(domain):
             pass
-    except Exception as e:
+    except Exception as ex:
         print("ERROR: Domain doesn't seems to resolve. Check URL")
-        print (e)
+        print (ex)
         sys.exit(1)
 
 
-def _prepare_target(target):
+def _prepare_target(target_url):
     """Examine target url compliance adding default handle (http://) and look for a final /"""
-    if target.startswith('http://') or target.startswith('https://'):
+    if target_url.startswith('http://') or target_url.startswith('https://'):
         pass
     else:
-        target = 'http://' + target
-    if target.endswith('/') or '***' in target:
+        target_url = 'http://' + target_url
+    if target_url.endswith('/') or '***' in target_url:
         pass
     else:
-        target += '/'
-    _check_domain(target)
-    return target
+        target_url += '/'
+    _check_domain(target_url)
+    return target_url
 
 
 def _prepare_proxies(proxies):
     """It takes a list of proxies and returns a dictionary"""
     if proxies:
         proxies_dict = {}
-        for proxy in proxies:
-            if proxy.startswith('http://'):
-                proxies_dict['http'] = proxy
-            elif proxy.startswith('https://'):
-                proxies_dict['https'] = proxy
+        for proxy_item in proxies:
+            if proxy_item.startswith('http://'):
+                proxies_dict['http'] = proxy_item
+            elif proxy_item.startswith('https://'):
+                proxies_dict['https'] = proxy_item
         return proxies_dict
     return {}
 
@@ -173,7 +174,6 @@ request_delay = args.request_delay
 
 authentication = args.authentication
 
-
 size_discriminator = args.size_discriminator
 
 print("Using payload: %s" % payload_filename)
@@ -183,7 +183,7 @@ print("Launching %s threads " % threads)
 #
 # Creating middle objects
 #
-#   - results: queue where visitors will store finished Tasks
+# - results: queue where visitors will store finished Tasks
 #
 #   - payload: queue where visitors will get Tasks to do
 #
@@ -212,7 +212,7 @@ manager.daemon = True
 payload.start()
 manager.start()
 # Give payload and manager time to get ready
-time.sleep(1)
+#time.sleep(1)
 
 try:
     Visitor.set_discriminator(discriminator)
@@ -231,8 +231,8 @@ try:
         v.start()
         time.sleep(0.1)
 
-    while len(multiprocessing.active_children()) > 1:
-        time.sleep(0.1)
+    payload.queue.join()
+    manager.dead = True
     manager.get_results_queue().join()
 
     sys.stdout.write('\r')

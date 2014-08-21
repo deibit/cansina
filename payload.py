@@ -1,9 +1,11 @@
-import multiprocessing
+import threading
+import Queue
 import time
 
 from task import Task
 
 SLEEP_TIME = 0.1
+
 
 def _populate_list_with_file(file_name):
     """Open a file, read its content and strips it. Returns a list with the content"""
@@ -15,14 +17,15 @@ def _populate_list_with_file(file_name):
         clean_list.append(e.decode("utf-8", "replace"))
     return clean_list
 
-class Payload(multiprocessing.Process):
+
+class Payload(threading.Thread):
     def __init__(self, target, payload_filename):
-        multiprocessing.Process.__init__(self)
+        threading.Thread.__init__(self)
 
         self.target = target
         self.payload_filename = payload_filename
         self.payload = _populate_list_with_file(payload_filename)
-        self.queue = multiprocessing.JoinableQueue()
+        self.queue = Queue.Queue()
 
         self.extensions = None
         self.length = len(self.payload)
@@ -47,50 +50,51 @@ class Payload(multiprocessing.Process):
         return self.length
 
     def run(self):
-            number = 0
+        number = 0
 
-            for resource in self.payload:
+        for resource in self.payload:
 
-                if self.uppercase:
-                    resource = resource.upper()
+            if self.uppercase:
+                resource = resource.upper()
 
-                number += 1
+            number += 1
 
-                # Skip commented lines
-                if resource and resource[0] == '#':
-                    continue
+            # Skip commented lines
+            if resource and resource[0] == '#':
+                continue
 
-                # Avoid double // because some dicts have /prepend_words
-                if resource and resource[0] == '/':
-                    resource = resource[1:]
+            # Avoid double // because some dicts have /prepend_words
+            if resource and resource[0] == '/':
+                resource = resource[1:]
 
-                if self.remove_slash and resource[-1] == '/':
-                    resource = resource[-1]
+            if self.remove_slash and resource[-1] == '/':
+                resource = resource[-1]
 
-                for extension in self.extensions:
-                    # If resource is a whole word and user didnt provide a extension
-                    # put a final /
-                    if not extension and not '.' in resource and not self.remove_slash:
-                        resource += '/'
+            for extension in self.extensions:
+                # If resource is a whole word and user didnt provide a extension
+                # put a final /
+                if not extension and not '.' in resource and not self.remove_slash:
+                    resource += '/'
 
-                    # Put a . before extension if the users didnt do it
-                    if extension and not '.' in extension:
-                        extension = '.' + extension
+                # Put a . before extension if the users didnt do it
+                if extension and not '.' in extension:
+                    extension = '.' + extension
 
-                    task = Task(number, self.target, resource, extension)
-                    task.set_payload_filename(self.payload_filename)
-                    task.set_payload_length(self.length)
-                    task.set_banned_response_codes(self.banned_response_codes)
-                    task.set_content(self.content)
-                    self.queue.put(task)
+                task = Task(number, self.target, resource, extension)
+                task.set_payload_filename(self.payload_filename)
+                task.set_payload_length(self.length)
+                task.set_banned_response_codes(self.banned_response_codes)
+                task.set_content(self.content)
+                self.queue.put(task)
 
-                while self.queue.full():
-                    time.sleep(SLEEP_TIME)
+            while not self.queue.empty():
+                time.sleep(SLEEP_TIME)
 
     def set_uppercase(self):
         self.uppercase = True
 
-    def _comment(self, resource):
+    @staticmethod
+    def _comment(resource):
         """Returns True is the resource starts with a comment sign"""
         for b in ['#']:
             if resource.startswith(b):

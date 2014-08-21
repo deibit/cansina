@@ -4,7 +4,6 @@ import os
 import sqlite3
 import argparse
 import webbrowser
-import csv
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-p', dest='project_name',
@@ -34,13 +33,13 @@ args = parser.parse_args()
 project_name = args.project_name
 outname = args.outname
 browser = args.browser
-output  = args.output
+output = args.output
 csv_output = args.csv
 f2 = args.filter_200
 
 QUERY = "SELECT * FROM requests ORDER BY resource"
 
-header =    '''<html>
+header = '''<html>
                 <head>
                     <script src="../assets/js/jquery-1.9.0.min.js" type="text/javascript"></script>
                     <script src="../assets/js/bootstrap.min.js" type="text/javascript"></script>
@@ -49,7 +48,7 @@ header =    '''<html>
                 </head>
             '''
 
-body =      '''<body>
+body = '''<body>
                 <table class="table table-hover table-condensed">
                     <thead>
                         <tr>
@@ -65,6 +64,7 @@ body =      '''<body>
 
 footer = '</table></body></html>'
 
+
 class Item:
     def __init__(self):
         self.linenumber = None
@@ -75,13 +75,12 @@ class Item:
         self.location = None
 
     def get_color(self):
-        colors = {'200' : 'success',
-                  '403' : 'error',
-                  '401' : 'error',
-                  '301' : 'info',
-                  '302' : 'info',
-                  '500' : 'warning'
-                  }
+        colors = {'200': 'success',
+                  '403': 'error',
+                  '401': 'error',
+                  '301': 'info',
+                  '302': 'info',
+                  '500': 'warning'}
         try:
             return colors[self.response_code]
         except:
@@ -89,8 +88,9 @@ class Item:
 
     def csv_data(self):
         members = [self.payload_name, self.linenumber, self.url, self.response_code, self.size, self.location]
-        data = ",".join([str(s) for s in members])
-        return data + os.linesep
+        csv_data = ",".join([str(s) for s in members])
+        return csv_data + os.linesep
+
 
 connection = None
 try:
@@ -154,8 +154,8 @@ if not output:
                 for i in objects:
                     f.write(i.csv_data())
         else:
-                for i in objects:
-                    print i.csv_data()
+            for i in objects:
+                print i.csv_data()
 
 else:
     interesting_codes = ['200', '401', '403']

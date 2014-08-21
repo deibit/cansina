@@ -1,18 +1,19 @@
-import multiprocessing
+import threading
 import time
 import sys
 import urllib
 
 try:
     import requests
-except:
+except ImportError:
     print("Python module requests not found")
     sys.exit(1)
 
 SLEEP_TIME = 3
 
-class Visitor(multiprocessing.Process):
 
+class Visitor(threading.Thread):
+    auth = None
     user_agent = None
     proxy = None
     discriminator = None
@@ -57,7 +58,7 @@ class Visitor(multiprocessing.Process):
             Visitor.auth = auth
 
     def __init__(self, number, payload, results):
-        multiprocessing.Process.__init__(self)
+        threading.Thread.__init__(self)
         self.number = number
         self.payload = payload
         self.results = results
@@ -73,7 +74,7 @@ class Visitor(multiprocessing.Process):
         try:
             headers = {}
             if Visitor.user_agent:
-                headers = {"user-agent" : Visitor.user_agent}
+                headers = {"user-agent": Visitor.user_agent}
 
             now = time.time()
 
@@ -85,14 +86,18 @@ class Visitor(multiprocessing.Process):
             r = None
             if Visitor.proxy:
                 if Visitor.requests == "GET":
-                    r = requests.get(task.get_complete_target(), headers=headers, proxies=Visitor.proxy, verify=False, timeout=timeout, auth=Visitor.auth)
+                    r = requests.get(task.get_complete_target(), headers=headers, proxies=Visitor.proxy, verify=False,
+                                     timeout=timeout, auth=Visitor.auth)
                 elif Visitor.requests == "HEAD":
-                    r = requests.head(task.get_complete_target(), headers=headers, proxies=Visitor.proxy, verify=False, timeout=timeout, auth=Visitor.auth)
+                    r = requests.head(task.get_complete_target(), headers=headers, proxies=Visitor.proxy, verify=False,
+                                      timeout=timeout, auth=Visitor.auth)
             else:
                 if Visitor.requests == "GET":
-                    r = requests.get(task.get_complete_target(), headers=headers, verify=False, timeout=timeout, auth=Visitor.auth)
+                    r = requests.get(task.get_complete_target(), headers=headers, verify=False, timeout=timeout,
+                                     auth=Visitor.auth)
                 elif Visitor.requests == "HEAD":
-                    r = requests.head(task.get_complete_target(), headers=headers, verify=False, timeout=timeout, auth=Visitor.auth)
+                    r = requests.head(task.get_complete_target(), headers=headers, verify=False, timeout=timeout,
+                                      auth=Visitor.auth)
             after = time.time()
             delta = (after - now) * 1000
             tmp_content = r.content
@@ -146,6 +151,3 @@ class Visitor(multiprocessing.Process):
         except Exception as e:
             print e.args
 
-    def terminate(self):
-        print "process %s terminated" % self.pid
-        multiprocessing.Process.terminate(self)

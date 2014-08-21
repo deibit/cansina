@@ -4,7 +4,8 @@ import requests
 import hashlib
 
 USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; es-ES)"
-user_agent = {"user-agent" : USER_AGENT}
+user_agent = {"user-agent": USER_AGENT}
+
 
 class Inspector:
     """This class mission is to examine the behaviour of the application when a on
@@ -24,7 +25,7 @@ class Inspector:
             HTTP response code, resquest size, md5 of the content and the content
             itself. If there were a redirection it will record the new url"""
         s = []
-        for n in range(0,42):
+        for n in range(0, 42):
             random.seed()
             s.append(chr(random.randrange(97, 122)))
         s = "".join(s)
@@ -35,10 +36,10 @@ class Inspector:
         page = requests.get(target, headers=user_agent)
         content = page.content
 
-        result = {'code':str(page.status_code),
-                  'size':len(content),
-                  'md5':hashlib.md5("".join(content)).hexdigest(),
-                  'content':content,
+        result = {'code': str(page.status_code),
+                  'size': len(content),
+                  'md5': hashlib.md5("".join(content)).hexdigest(),
+                  'content': content,
                   'location': None}
 
         if len(page.history) >= 1:
@@ -67,6 +68,7 @@ class Inspector:
 
     def check_this(self):
         return self._fire_a_404()
+
 
 if __name__ == '__main__':
     i = Inspector(sys.argv[1])

@@ -1,5 +1,6 @@
 import sqlite3
-import multiprocessing
+import threading
+import Queue
 import time
 import os
 import sys
@@ -8,13 +9,13 @@ from printer import Console
 
 PREFIX = "data" + os.sep
 SUFIX = ".sqlite"
-SLEEP_TIME = 0.5
+SLEEP_TIME = 0.1
 
 
-class DBManager(multiprocessing.Process):
-
+class DBManager(threading.Thread):
     def __init__(self, database_name):
-        multiprocessing.Process.__init__(self)
+        self.dead = False
+        threading.Thread.__init__(self)
         if not os.path.isfile(PREFIX + database_name + SUFIX):
             if not os.path.isdir('data'):
                 os.mkdir('data')
@@ -37,7 +38,7 @@ class DBManager(multiprocessing.Process):
             except:
                 print "Error creating database"
                 sys.exit()
-        self.queue = multiprocessing.JoinableQueue()
+        self.queue = Queue.Queue()
         self.database_name = database_name
 
     def get_results_queue(self):
@@ -45,24 +46,22 @@ class DBManager(multiprocessing.Process):
 
     def run(self):
         Console.header()
-        while 1:
+        while not self.dead or self.queue.not_empty:
             if self.queue.empty():
                 time.sleep(SLEEP_TIME)
             else:
                 task = self.queue.get()
-                if task.target == 'STOP':
-                    self.queue.task_done()
-                    self.terminate()
-                else:
-                    self.process(task)
-                    self.queue.task_done()
-                    Console.body(task)
+                self.process(task)
+                self.queue.task_done()
+                Console.body(task)
+        print "dbo out"
 
     def process(self, task):
         connection = sqlite3.connect(PREFIX + self.database_name + SUFIX)
         cursor = connection.cursor()
         # Check if the record already exists
-        record = {"url": task.target, "resource": task.resource, "extension": task.extension, "response_code": task.response_code}
+        record = {"url": task.target, "resource": task.resource, "extension": task.extension,
+                  "response_code": task.response_code}
         cursor.execute("SELECT * FROM requests WHERE \
                         url=:url AND \
                         resource=:resource AND \
@@ -76,6 +75,3 @@ class DBManager(multiprocessing.Process):
                     connection.commit()
         connection.close()
 
-        def terminate(self):
-            print "DB process %s terminated" % self.pid
-            multiprocessing.Process.terminate(self)
