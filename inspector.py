@@ -8,8 +8,8 @@ user_agent = {"user-agent": USER_AGENT}
 
 
 class Inspector:
-    """This class mission is to examine the behaviour of the application when a on
-        purpose inexistent page is requested"""
+    """This class mission is to examine the behaviour of the application when on
+        purpose an inexistent page is requested"""
     TEST404_OK = 0
     TEST404_MD5 = 1
     TEST404_STRING = 2

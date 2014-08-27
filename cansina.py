@@ -56,8 +56,15 @@ def _prepare_proxies(proxies):
 #
 # Parsing program options
 #
+usage = "cansina.py -u url -p payload [options]"
+description = '''
+Cansina is a web content discovery tool.
+It makes requests and analyze the responses triying to figure out whether the
+resource is or not accessible.
 
-parser = argparse.ArgumentParser()
+'''
+epilog = "License, requests, etc: https://github.com/deibit/cansina"
+parser = argparse.ArgumentParser(usage=usage, description=description, epilog=epilog)
 parser.add_argument('-u', dest='target',
                     help="target url (ex: http://www.hispasec.com/)",
                     required=True)
@@ -91,7 +98,7 @@ parser.add_argument('-D', dest='autodiscriminator',
                     action="store_true",
                     default=False)
 parser.add_argument('-U', dest='uppercase',
-                    help="MAKE ALL RESOURCE REQUESTS UPPERCASE",
+                    help="Make requests uppercase",
                     action="store_true",
                     default=False)
 parser.add_argument('-T', dest='request_delay',
@@ -107,7 +114,7 @@ parser.add_argument('-s', dest='size_discriminator',
                     help="Size (in bytes) for page discriminator",
                     default=False)
 parser.add_argument('-S', dest='remove_slash',
-                    help="Remove last slash from the requests",
+                    help="Remove ending slash from payloads",
                     default=False,
                     action="store_true")
 args = parser.parse_args()
@@ -174,8 +181,7 @@ authentication = args.authentication
 size_discriminator = args.size_discriminator
 
 print("Using payload: %s" % payload_filename)
-print("Launching %s threads " % threads)
-
+print("Spawning %s threads " % threads)
 
 #
 # Creating middle objects
@@ -209,7 +215,6 @@ manager.daemon = True
 payload.start()
 manager.start()
 
-#try:
 Visitor.set_discriminator(discriminator)
 Visitor.set_banned_location(autodiscriminator_location)
 Visitor.set_user_agent(user_agent)
@@ -220,6 +225,7 @@ if size_discriminator:
     Visitor.set_size_discriminator(size_discriminator)
 if request_delay:
     Visitor.set_delay(request_delay)
+
 thread_pool = []
 for number in range(0, threads + 1):
     v = Visitor(number, payload, manager.get_results_queue())
@@ -246,4 +252,3 @@ sys.stdout.write("\x1b[0K")
 time.sleep(0.5)
 sys.stdout.write("Work done" + os.linesep)
 sys.stdout.flush()
-
