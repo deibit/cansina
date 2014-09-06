@@ -68,7 +68,7 @@ class Payload(threading.Thread):
                 resource = resource[1:]
 
             if self.remove_slash and resource[-1] == '/':
-                resource = resource[-1]
+                resource = resource[:-1]
 
             for extension in self.extensions:
                 # If resource is a whole word and user didnt provide a extension
