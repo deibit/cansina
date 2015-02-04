@@ -245,8 +245,8 @@ while not payload.queue.empty():
 
 #for t in thread_pool:
     #t.join()
-#manager.dead = True
-#manager.get_results_queue().join()
+manager.dead = True
+manager.get_results_queue().join()
 
 sys.stdout.write('\r')
 sys.stdout.write("\x1b[0K")
