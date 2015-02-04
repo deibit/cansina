@@ -227,7 +227,7 @@ if request_delay:
     Visitor.set_delay(request_delay)
 
 thread_pool = []
-for number in range(0, threads + 1):
+for number in range(0, threads):
     v = Visitor(number, payload, manager.get_results_queue())
     thread_pool.append(v)
     v.daemon = True
@@ -239,13 +239,14 @@ while not payload.queue.empty():
     except KeyboardInterrupt:
         print "\nWaiting for threads to stop..."
         manager.dead = True
+        [v.kill() for v in thread_pool]
         payload.flush()
         break
 
-for t in thread_pool:
-    t.join()
-manager.dead = True
-manager.get_results_queue().join()
+#for t in thread_pool:
+    #t.join()
+#manager.dead = True
+#manager.get_results_queue().join()
 
 sys.stdout.write('\r')
 sys.stdout.write("\x1b[0K")

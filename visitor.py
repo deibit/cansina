@@ -21,6 +21,12 @@ class Visitor(threading.Thread):
     delay = 0
     requests = ""
     size_discriminator = -1
+    killed = False
+
+
+    @staticmethod
+    def kill():
+        Visitor.killed = True
 
     @staticmethod
     def set_discriminator(discriminator):
@@ -65,9 +71,10 @@ class Visitor(threading.Thread):
 
         self.__time = []
 
+
     def run(self):
         try:
-            while not self.payload.queue.empty():
+            while not self.payload.queue.empty() and not Visitor.killed:
                 self.visit(self.payload.queue.get())
                 self.payload.queue.task_done()
         except AttributeError:
