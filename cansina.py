@@ -59,7 +59,7 @@ def _prepare_proxies(proxies):
 usage = "cansina.py -u url -p payload [options]"
 description = '''
 Cansina is a web content discovery tool.
-It makes requests and analyze the responses triying to figure out whether the
+It makes requests and analyze the responses trying to figure out whether the
 resource is or not accessible.
 
 '''
@@ -239,13 +239,12 @@ while not payload.queue.empty():
     except KeyboardInterrupt:
         print "\nWaiting for threads to stop..."
         manager.dead = True
-        [v.kill() for v in thread_pool]
+        [visitor.kill() for visitor in thread_pool]
         payload.flush()
         break
 
-#for t in thread_pool:
-    #t.join()
-manager.dead = True
+if not manager.dead:
+    manager.dead = True
 manager.get_results_queue().join()
 
 sys.stdout.write('\r')
