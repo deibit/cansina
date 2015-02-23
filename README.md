@@ -1,6 +1,10 @@
 Cansina
 =======
 
+### Try develop branch for an update version
+
+_git checkout develop_
+
 Cansina is a (yet another) Web Content Discovery Application.
 
 It takes general available lists of common path and files used by web applications
