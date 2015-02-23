@@ -16,6 +16,9 @@ There is an ongoing effort to add features via plugins.
 
 Feature requests and comments are welcome.
 
+Screenshot
+----------
+
 ![CansinaImage](https://github.com/deibit/cansina/raw/gh-pages/images/cansina-showcase.png "Image")
 
 Features
