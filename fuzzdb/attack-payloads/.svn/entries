@@ -1,94 +1,0 @@
-10
-
-dir
-188
-http://fuzzdb.googlecode.com/svn/trunk/attack-payloads
-http://fuzzdb.googlecode.com/svn
-
-
-
-2012-06-08T21:41:13.804594Z
-188
-unix23@gmail.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-389a61cb-3542-a87d-fe93-12be81370f99
-
-sql-injection
-dir
-
-format-strings
-dir
-
-rfi
-dir
-
-ldap
-dir
-
-html_fuzz
-dir
-
-os-cmd-execution
-dir
-
-xpath
-dir
-
-path-traversal
-dir
-
-integer-overflow
-dir
-
-os-dir-indexing
-dir
-
-xml
-dir
-
-all-attacks
-dir
-
-file-upload
-dir
-
-BizLogic
-dir
-
-disclosure-localpaths
-dir
-
-server-side-include
-dir
-
-lfi
-dir
-
-disclosure-source
-dir
-
-xss
-dir
-
-http-protocol
-dir
-
-disclosure-directory
-dir
-
-control-chars
-dir
-

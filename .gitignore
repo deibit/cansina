@@ -36,7 +36,9 @@ nosetests.xml
 
 *.log
 .DS_Store
+TODO.txt
 data/*
+output/*
 payloads/*
 fuzzdb/*
 .idea/*
