@@ -220,7 +220,7 @@ while True:
 
 time_after_running = time.time()
 delta = round(timedelta(seconds=(time_after_running - time_before_running)).total_seconds(), 2)
-print("Task runned for %i seconds" % delta)
+print("Task took %i seconds" % delta)
 
 sys.stdout.write("\x1b[0K")
 sys.stdout.flush()
