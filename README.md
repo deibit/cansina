@@ -6,9 +6,10 @@ Cansina is a Web Content Discovery Application.
 It is well known Web applications doesn't publish all their resources or links to them, 
 so the only way to discover those resources is....asking for them!
 
-Cansina mission is to help making requests and filtering the responses to tell apart if
-it is an existing resource or just an annoying or disguised 404. Of course other
-kind of useful responses (401, 403, ...) are processed in a similar fashion.
+Useful during a pentesting or web security audit. Cansina mission is to help making 
+requests and filtering the responses to tell apart if it is an existing resource or
+just an annoying or disguised 404. Of course other kind of useful responses 
+(401, 403, ...) are processed in a similar fashion.
 
 The responses are kept in a sqlite database for later process.
 
