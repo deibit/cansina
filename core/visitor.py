@@ -3,6 +3,7 @@ import time
 import sys
 import urllib
 import os
+import hashlib
 
 unuseful_codes = ['404']
 strict_codes = ['100', '200', '300', '301', '302', '401', '403', '405', '500']
@@ -20,6 +21,7 @@ class Visitor(threading.Thread):
     proxy = None
     discriminator = None
     banned_location = None
+    banned_md5 = None
     delay = None
     requests = ""
     size_discriminator = -1
@@ -41,6 +43,10 @@ class Visitor(threading.Thread):
     @staticmethod
     def set_banned_location(banned_location):
         Visitor.banned_location = banned_location
+
+    @staticmethod
+    def set_banned_md5(banned_md5):
+        Visitor.banned_md5 = banned_md5
 
     @staticmethod
     def set_user_agent(useragent):
@@ -123,10 +129,16 @@ class Visitor(threading.Thread):
             if Visitor.discriminator and Visitor.discriminator in tmp_content:
                 r.status_code = '404'
 
+            #print self.banned_md5 + "  -  " + hashlib.md5("".join(tmp_content)).hexdigest()
+
+            if Visitor.banned_md5 and hashlib.md5("".join(tmp_content)).hexdigest() == self.banned_md5:
+                r.status_code = '404'
+
             # Check if the size of the page is set for discrimante fake 404 errors
             if not Visitor.size_discriminator == 0 and task.response_size == Visitor.size_discriminator:
                 r.status_code = '404'
             task.set_response_code(r.status_code)
+
 
             # Look for interesting content
             if task.content and (task.content in tmp_content) and not task.response_code == '404':

@@ -60,7 +60,8 @@ class Inspector:
             location = first_result['location']
             return location, Inspector.TEST404_URL
 
-        elif first_result['code'] == '200':
+        #elif first_result['code'] == '200':
+        else:
             return first_result['md5'], Inspector.TEST404_MD5
 
         # We give up here :(

@@ -24,6 +24,12 @@ def _populate_list_with_file(file_name):
         clean_list.append(e.decode("utf-8", "replace"))
     return clean_list
 
+def _has_extension(res):
+    #wether the last path sector has '.'
+    if res.rfind("/") == -1:
+        return "." in res
+    else:
+        return "." in res[res.rfind("/"):]
 
 class Payload():
     def __init__(self, target, payload_filename):
@@ -83,7 +89,7 @@ class Payload():
             for extension in self.extensions:
                 # If resource is a whole word and user didnt provide a extension
                 # put a final /
-                if not extension and not '.' in resource and not self.remove_slash:
+                if not extension and not _has_extension(resource) and not self.remove_slash:
                     resource += '/'
 
                 # Put a . before extension if the users didnt do it
