@@ -129,6 +129,7 @@ if discriminator:
 
 autodiscriminator = args.autodiscriminator
 autodiscriminator_location = None
+autodiscriminator_md5 = None
 if autodiscriminator:
     print("Launching autodiscriminator")
     i = Inspector(target)
@@ -136,6 +137,9 @@ if autodiscriminator:
     if notfound_type == Inspector.TEST404_URL:
         autodiscriminator_location = result
         print("404 ---> 302 ----> " + autodiscriminator_location)
+    elif notfound_type == Inspector.TEST404_MD5:
+        autodiscriminator_md5 = result
+        print("404 ---> PAGE_MD5 ----> " + autodiscriminator_md5)
 
 print("Banned response codes: %s" % " ".join(banned_response_codes))
 
@@ -185,6 +189,7 @@ manager.set_timeout(MANAGER_TIMEOUT)
 #
 Visitor.set_authentication(authentication)
 Visitor.set_banned_location(autodiscriminator_location)
+Visitor.set_banned_md5(autodiscriminator_md5)
 Visitor.set_delay(request_delay)
 Visitor.set_discriminator(discriminator)
 Visitor.set_proxy(proxy)
