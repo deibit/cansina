@@ -87,6 +87,7 @@ parser.add_argument('-T', dest='request_delay', help="Time (a float number, e.g 
 parser.add_argument('-U', dest='uppercase', help="Make payload requests uppercase", action="store_true", default=False)
 parser.add_argument('-a', dest='user_agent', help="The preferred user-agent (default provided)", default=USER_AGENT)
 parser.add_argument('-b', dest='banned', help="List of banned response codes", default="404")
+parser.add_argument('-B', dest='unbanned', help="List of unbanned response codes, mark all response as invalid without unbanned response codes, higher priority than banned", default="")
 parser.add_argument('-c', dest='content', help="Inspect content looking for a particular string", default="")
 parser.add_argument('-d', dest='discriminator', help="If this string if found it will be treated as a 404", default=None)
 parser.add_argument('-e', dest='extension', help="Extension list to use ex: php,asp,...(default none)", default="")
@@ -100,6 +101,7 @@ target = _prepare_target(args.target)
 extension = args.extension.split(',')
 threads = int(args.threads)
 banned_response_codes = args.banned.split(',')
+unbanned_response_codes = args.unbanned.split(',')
 user_agent = args.user_agent
 proxy = _prepare_proxies(args.proxies.split(','))
 
@@ -142,6 +144,7 @@ if autodiscriminator:
         print("404 ---> PAGE_MD5 ----> " + autodiscriminator_md5)
 
 print("Banned response codes: %s" % " ".join(banned_response_codes))
+print("unBanned response codes: %s" % " ".join(unbanned_response_codes))
 
 if not extension == ['']:
     print("Extensions to probe: %s" % " ".join(extension))
@@ -170,6 +173,7 @@ payload.set_extensions(extension)
 payload.set_remove_slash(remove_slash)
 payload.set_uppercase(uppercase)
 payload.set_banned_response_codes(banned_response_codes)
+payload.set_unbanned_response_codes(unbanned_response_codes)
 payload.set_content(content)
 
 total_requests = payload.get_total_requests()
