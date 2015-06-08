@@ -11,6 +11,7 @@ class Task:
         self.payload_length = 0
         self.payload_filename = None
         self.banned_response_codes = []
+        self.unbanned_response_codes = []
 
         self.content = None
         self.location = ""
@@ -29,6 +30,9 @@ class Task:
     def set_banned_response_codes(self, banned_codes):
         self.banned_response_codes = banned_codes
 
+    def set_unbanned_response_codes(self, unbanned_codes):
+        self.unbanned_response_codes = unbanned_codes
+
     def set_payload_filename(self, payload_filename):
         self.payload_filename = payload_filename
 
@@ -36,6 +40,10 @@ class Task:
         self.response_code = str(code)
         if self.response_code in self.banned_response_codes:
             self.valid = False
+        if self.unbanned_response_codes and len(self.unbanned_response_codes)>0:
+            self.valid = False
+            if self.response_code in self.unbanned_response_codes:
+                self.valid = True
 
     def set_location(self, location):
         self.location = location
