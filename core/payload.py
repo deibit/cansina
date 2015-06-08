@@ -42,6 +42,7 @@ class Payload():
         self.extensions = None
         self.length = len(self.payload)
         self.banned_response_codes = None
+        self.unbanned_response_codes = None
         self.content = None
         self.remove_slash = False
         self.uppercase = False
@@ -51,6 +52,9 @@ class Payload():
 
     def set_banned_response_codes(self, banned_response_codes):
         self.banned_response_codes = banned_response_codes
+
+    def set_unbanned_response_codes(self, unbanned_response_codes):
+        self.unbanned_response_codes = unbanned_response_codes
 
     def set_extensions(self, extensions):
         self.extensions = extensions
@@ -100,6 +104,7 @@ class Payload():
                 task.set_payload_filename(self.payload_filename)
                 task.set_payload_length(self.length)
                 task.set_banned_response_codes(self.banned_response_codes)
+                task.set_unbanned_response_codes(self.unbanned_response_codes)
                 task.set_content(self.content)
                 self.queue.put(task)
 
