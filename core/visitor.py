@@ -139,7 +139,6 @@ class Visitor(threading.Thread):
                 r.status_code = '404'
             task.set_response_code(r.status_code)
 
-
             # Look for interesting content
             if task.content and (task.content in tmp_content) and not task.response_code == '404':
                 task.content_has_detected(True)

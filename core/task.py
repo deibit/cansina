@@ -40,7 +40,7 @@ class Task:
         self.response_code = str(code)
         if self.response_code in self.banned_response_codes:
             self.valid = False
-        if self.unbanned_response_codes and len(self.unbanned_response_codes)>0:
+        if self.unbanned_response_codes and len(self.unbanned_response_codes) > 1:
             self.valid = False
             if self.response_code in self.unbanned_response_codes:
                 self.valid = True
