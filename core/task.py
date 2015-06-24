@@ -38,9 +38,13 @@ class Task:
 
     def set_response_code(self, code):
         self.response_code = str(code)
+        # By default a code is valid but...if...
+        # ...we select and optimistic detection 'all is valid' unless...
         if self.response_code in self.banned_response_codes:
             self.valid = False
-        if self.unbanned_response_codes and len(self.unbanned_response_codes) > 1:
+            return
+        # ...but if we select a pesimistic one 'all is invalid' unless...
+        if '' not in self.unbanned_response_codes:
             self.valid = False
             if self.response_code in self.unbanned_response_codes:
                 self.valid = True
