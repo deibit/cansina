@@ -25,7 +25,7 @@ def _populate_list_with_file(file_name):
     return clean_list
 
 def _has_extension(res):
-    #wether the last path sector has '.'
+    #whether the last path sector has '.'
     if res.rfind("/") == -1:
         return "." in res
     else:

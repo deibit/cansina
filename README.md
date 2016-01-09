@@ -1,3 +1,9 @@
+News
+====
+
+9-1-2016    Cansina support Windows terminal (sorry I didn't test Cansina on Windows boxes)
+            You won't have that fancy flash in filtered HTTP codes but it works...    
+
 Cansina
 =======
 

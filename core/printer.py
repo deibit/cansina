@@ -3,13 +3,16 @@ import sys
 import time
 import urlparse
 
-RED = '\033[31m'
-MAGENTA = '\033[35m'
-BLUE = '\033[34m'
-GREEN = '\033[32m'
-YELLOW = '\033[33m'
-LBLUE = '\033[36m'
-ENDC = '\033[0m'
+if os.name == 'nt':
+    RED,MAGENTA,BLUE,GREEN,YELLOW,LBLUE,ENDC = ("","","","","","","")
+else:
+    RED = '\033[31m'
+    MAGENTA = '\033[35m'
+    BLUE = '\033[34m'
+    GREEN = '\033[32m'
+    YELLOW = '\033[33m'
+    LBLUE = '\033[36m'
+    ENDC = '\033[0m'
 
 
 class Console:
@@ -35,6 +38,8 @@ class Console:
         linesep = ""
         if task.is_valid():
             linesep = os.linesep
+        elif os.name == 'nt':
+            return
         color = ""
         if task.response_code == "200":
             color = GREEN
@@ -56,4 +61,6 @@ class Console:
         sys.stdout.flush()
         time.sleep(0.1)
         sys.stdout.write('\r')
-        sys.stdout.write("\x1b[0K")
+        if not os.name == 'nt':
+            sys.stdout.write("\x1b[0K")
+

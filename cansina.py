@@ -84,7 +84,7 @@ parser.add_argument('-H', dest='request_type', help="Make HTTP HEAD requests", a
 parser.add_argument('-P', dest='proxies', help="Set a http and/or https proxy (ex: http://127.0.0.1:8080,https://...", default="")
 parser.add_argument('-S', dest='remove_slash', help="Remove ending slash for payloads", default=False, action="store_true")
 parser.add_argument('-T', dest='request_delay', help="Time (a float number, e.g 0.25 or 1.75) between requests", default=0)
-parser.add_argument('-U', dest='uppercase', help="Make payload requests uppercase", action="store_true", default=False)
+parser.add_argument('-U', dest='uppercase', help="Make payload requests upper-case", action="store_true", default=False)
 parser.add_argument('-a', dest='user_agent', help="The preferred user-agent (default provided)", default=USER_AGENT)
 parser.add_argument('-b', dest='banned', help="List of banned response codes", default="404")
 parser.add_argument('-B', dest='unbanned', help="List of unbanned response codes, mark all response as invalid without unbanned response codes, higher priority than banned", default="")
@@ -231,6 +231,7 @@ time_after_running = time.time()
 delta = round(timedelta(seconds=(time_after_running - time_before_running)).total_seconds(), 2)
 print("Task took %i seconds" % delta)
 
-sys.stdout.write("\x1b[0K")
+if not os.name == 'nt':
+	sys.stdout.write("\x1b[0K")
 sys.stdout.flush()
 sys.exit()
