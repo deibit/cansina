@@ -63,4 +63,3 @@ class Console:
         sys.stdout.write('\r')
         if not os.name == 'nt':
             sys.stdout.write("\x1b[0K")
-

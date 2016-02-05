@@ -154,7 +154,6 @@ class Visitor(threading.Thread):
                     if task.location == self.banned_location:
                         task.set_response_code('404')
                     else:
-                        print r.history[0].status_code
                         task.set_response_code(r.history[0].status_code)
             self.results.put(task)
             if Visitor.delay:
