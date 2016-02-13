@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Diviei/cansina.svg?branch=master)](https://travis-ci.org/Diviei/cansina)
+
 News
 ====
 
