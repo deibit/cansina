@@ -7,7 +7,7 @@ News
 Cansina
 =======
 
-[![Build Status](https://travis-ci.org/Diviei/cansina.svg?branch=master)](https://travis-ci.org/Diviei/cansina)
+[![Build Status](https://travis-ci.org/deibit/cansina.svg?branch=master)](https://travis-ci.org/deibit/cansina)
 
 Cansina is a Web Content Discovery Application.
 
