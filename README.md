@@ -166,7 +166,7 @@ Payloads
 License information
 -------------------
 
-Copyright (C) 2013-2016 David García (daganu@gmail.com)
+Copyright (C) 2013-2016 David García
 
 License: GNU General Public License, version 3 or later; see LICENSE.txt
          included in this archive for details.
