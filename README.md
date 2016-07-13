@@ -9,6 +9,8 @@ News
 Cansina
 =======
 
+[![Build Status](https://travis-ci.org/deibit/cansina.svg?branch=master)](https://travis-ci.org/deibit/cansina)
+
 Cansina is a Web Content Discovery Application.
 
 It is well known Web applications don't publish all their resources or public links, 
