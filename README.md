@@ -1,7 +1,8 @@
 News
 ====
 
-13-07-2016  Added new feature resumable sessions 
+13-07-2016  Added new feature resumable sessions
+
  9-01-2016  Cansina support Windows terminal (sorry I didn't test Cansina on Windows boxes)
             You won't have that fancy flash in filtered HTTP codes but it works...    
 
