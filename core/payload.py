@@ -5,12 +5,13 @@ import time
 from core.task import Task
 
 
-def _populate_list_with_file(file_name):
+def _populate_list_with_file(file_name, linenumber):
     """ Open a file, read its content and strips it. Returns a list with the content
         additionally it filter and clean some splinters
     """
     with open(file_name, 'r') as f:
         tmp_list = f.readlines()
+        tmp_list = tmp_list[linenumber:]
     clean_list = []
     for e in tmp_list:
         # Delete leading and trailing spaces
@@ -32,11 +33,12 @@ def _has_extension(res):
         return "." in res[res.rfind("/"):]
 
 class Payload():
-    def __init__(self, target, payload_filename):
+    def __init__(self, target, payload_filename, resumer):
 
         self.target = target
         self.payload_filename = payload_filename
-        self.payload = _populate_list_with_file(payload_filename)
+        self.linenumber = resumer.get_line()
+        self.payload = _populate_list_with_file(payload_filename, self.linenumber)
         self.queue = Queue.Queue()
         self.dead = False
         self.extensions = None
@@ -78,7 +80,7 @@ class Payload():
         self.uppercase = uppercase
 
     def get_queue(self):
-        task_id = 0
+        task_id = self.linenumber
 
         for resource in self.payload:
             if self.uppercase:

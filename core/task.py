@@ -58,6 +58,9 @@ class Task:
     def get_content(self):
         return self.content
 
+    def get_number(self):
+        return self.number
+
     def values(self):
         return (self.number,
                 self.payload_filename,

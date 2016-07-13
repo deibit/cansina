@@ -1,23 +1,25 @@
 News
 ====
 
-9-1-2016    Cansina support Windows terminal (sorry I didn't test Cansina on Windows boxes)
+13-07-2016  Added new feature resumable sessions 
+ 9-01-2016  Cansina support Windows terminal (sorry I didn't test Cansina on Windows boxes)
             You won't have that fancy flash in filtered HTTP codes but it works...    
+
 
 Cansina
 =======
 
 Cansina is a Web Content Discovery Application.
 
-It is well known Web applications doesn't publish all their resources or links to them, 
-so the only way to discover those resources is....asking for them!
+It is well known Web applications don't publish all their resources or public links, 
+so the only way to discover these resources is....requesting for them!
 
-Useful during a pentesting or web security audit. Cansina mission is to help making 
-requests and filtering the responses to tell apart if it is an existing resource or
-just an annoying or disguised 404. Of course other kind of useful responses 
-(401, 403, ...) are processed in a similar fashion.
+Cansina duty is to help you making requests and filtering the responses to tell 
+apart if it is an existing resource or just an annoying or disguised 404.
 
-The responses are kept in a sqlite database for later process.
+Of course other kind of useful responses (401, 403, ...) are processed in a similar fashion.
+
+Responses are kept in a sqlite database for later process or viewing.
 
 There is an ongoing effort to add features via plugins.
 
@@ -36,6 +38,7 @@ Features
 - Proxy support
 - Data persistence
 - Basic Authentication
+- Resume
 
 Usage
 -----
@@ -138,22 +141,29 @@ Simple http proxy
 
 Manages basic authentication
 
+**Resume session**
+
+*cansina.py -r resume_file*
+
+Resume last interrupted session with all options and payload with former linenumber
+
+
 Dependencies
 ------------
 
 - [requests](https://github.com/kennethreitz/requests)
 - Python 2.7.x 
-- Python 3.x (soon)
 
 Payloads
 --------
 
+- [SecList](https://github.com/danielmiessler/SecLists)
 - [fuzzdb](https://code.google.com/p/fuzzdb/)
 
 License information
 -------------------
 
-Copyright (C) 2013-2015 David García (daganu@gmail.com)
+Copyright (C) 2013-2016 David García (daganu@gmail.com)
 
 License: GNU General Public License, version 3 or later; see LICENSE.txt
          included in this archive for details.

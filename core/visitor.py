@@ -11,7 +11,7 @@ strict_codes = ['100', '200', '300', '301', '302', '401', '403', '405', '500']
 try:
     import requests
 except ImportError:
-    print("[CANSINA] Faltal Python module requests not found (install it with pip)")
+    print("[CANSINA] Faltal Python module requests not found (install it with pip install requests)")
     sys.exit(1)
 
 
@@ -71,9 +71,9 @@ class Visitor(threading.Thread):
         else:
             Visitor.auth = auth
 
-    def __init__(self, number, payload, results):
+    def __init__(self, visitor_id, payload, results):
         threading.Thread.__init__(self)
-        self.number = number
+        self.visitor_id = visitor_id
         self.payload = payload
         self.results = results.get_results_queue()
 

@@ -5,6 +5,7 @@ import argparse
 import urlparse
 import time
 import socket
+import pickle
 
 from datetime import timedelta
 
@@ -13,6 +14,7 @@ from core.payload import Payload
 from core.dbmanager import DBManager
 from core.inspector import Inspector
 from core.printer import Console
+from core.resumer import Resumer
 
 #
 #   Default options
@@ -34,7 +36,7 @@ def _check_domain(target_url):
         if socket.gethostbyname(domain):
             pass
     except Exception:
-        print("[CANSINA]: Domain doesn't resolve. Check URL")
+        print("Domain doesn't resolve. Check URL")
         sys.exit(1)
 
 
@@ -77,27 +79,63 @@ resource is or not accessible.
 '''
 epilog = "License, requests, etc: https://github.com/deibit/cansina"
 
-parser = argparse.ArgumentParser(usage=usage, description=description, epilog=epilog)
-parser.add_argument('-A', dest='authentication', help="Basic Authentication (e.g. user:password)", default=False)
-parser.add_argument('-D', dest='autodiscriminator', help="Check for fake 404 (warning: machine decision)", action="store_true", default=False)
-parser.add_argument('-H', dest='request_type', help="Make HTTP HEAD requests", action="store_true")
-parser.add_argument('-P', dest='proxies', help="Set a http and/or https proxy (ex: http://127.0.0.1:8080,https://...", default="")
-parser.add_argument('-S', dest='remove_slash', help="Remove ending slash for payloads", default=False, action="store_true")
-parser.add_argument('-T', dest='request_delay', help="Time (a float number, e.g 0.25 or 1.75) between requests", default=0)
-parser.add_argument('-U', dest='uppercase', help="Make payload requests upper-case", action="store_true", default=False)
-parser.add_argument('-a', dest='user_agent', help="The preferred user-agent (default provided)", default=USER_AGENT)
-parser.add_argument('-b', dest='banned', help="List of banned response codes", default="404")
-parser.add_argument('-B', dest='unbanned', help="List of unbanned response codes, mark all response as invalid without unbanned response codes, higher priority than banned", default="")
-parser.add_argument('-c', dest='content', help="Inspect content looking for a particular string", default="")
-parser.add_argument('-d', dest='discriminator', help="If this string if found it will be treated as a 404", default=None)
-parser.add_argument('-e', dest='extension', help="Extension list to use ex: php,asp,...(default none)", default="")
-parser.add_argument('-p', dest='payload', help="Path to the payload file to use", required=True)
-parser.add_argument('-s', dest='size_discriminator', help="Will skip pages with this size in bytes", default=False)
-parser.add_argument('-t', dest='threads', type=int, help="Number of threads (default 4)", default=THREADS)
-parser.add_argument('-u', dest='target', help="Target url (ex: http://www.hispasec.com/)", required=True)
+parser = argparse.ArgumentParser(
+    usage=usage, description=description, epilog=epilog)
+parser.add_argument('-A', dest='authentication',
+                    help="Basic Authentication (e.g. user:password)", default=False)
+parser.add_argument('-D', dest='autodiscriminator',
+                    help="Check for fake 404 (warning: machine decision)", action="store_true", default=False)
+parser.add_argument('-H', dest='request_type',
+                    help="Make HTTP HEAD requests", action="store_true")
+parser.add_argument('-P', dest='proxies',
+                    help="Set a http and/or https proxy (ex: http://127.0.0.1:8080,https://...", default="")
+parser.add_argument('-S', dest='remove_slash',
+                    help="Remove ending slash for payloads", default=False, action="store_true")
+parser.add_argument('-T', dest='request_delay',
+                    help="Time (a float number, e.g 0.25 or 1.75) between requests", default=0)
+parser.add_argument('-U', dest='uppercase',
+                    help="Make payload requests upper-case", action="store_true", default=False)
+parser.add_argument('-a', dest='user_agent',
+                    help="The preferred user-agent (default provided)", default=USER_AGENT)
+parser.add_argument('-b', dest='banned',
+                    help="List of banned response codes", default="404")
+parser.add_argument('-B', dest='unbanned',
+                    help="List of unbanned response codes, mark all response as invalid without unbanned response codes, higher priority than banned", default="")
+parser.add_argument('-c', dest='content',
+                    help="Inspect content looking for a particular string", default="")
+parser.add_argument('-d', dest='discriminator',
+                    help="If this string if found it will be treated as a 404", default=None)
+parser.add_argument('-e', dest='extension',
+                    help="Extension list to use ex: php,asp,...(default none)", default="")
+parser.add_argument('-p', dest='payload',
+                    help="Path to the payload file to use", default=None)
+parser.add_argument('-s', dest='size_discriminator',
+                    help="Will skip pages with this size in bytes", default=False)
+parser.add_argument('-t', dest='threads', type=int,
+                    help="Number of threads (default 4)", default=THREADS)
+parser.add_argument('-u', dest='target',
+                    help="Target url", default=None)
+parser.add_argument('-r', dest='resume',
+                    help="Resume a session", default=False)
 args = parser.parse_args()
 
+# Initialize a Resumer object
+resumer = Resumer(args, 0)
+resume = args.resume
+# If we are ressuming a former session revive last args object
+if resume:
+    try:
+        with open(resume) as f:
+            resumer = pickle.load(f)
+            args = resumer.get_args()
+    except:
+        sys.stdout.write("Could not load a correct resume file, sorry.")
+        sys.exit()
+
 target = _prepare_target(args.target)
+if not target:
+    sys.stdout.write("You have to specify a target!")
+    sys.exit()
 extension = args.extension.split(',')
 threads = int(args.threads)
 banned_response_codes = args.banned.split(',')
@@ -160,6 +198,9 @@ authentication = args.authentication
 size_discriminator = args.size_discriminator
 
 payload_filename = args.payload
+if not payload_filename:
+    sys.stdout.write("You have to specify a payload file!")
+    sys.exit()
 print("Using payload: %s" % payload_filename)
 print("Spawning %s threads " % threads)
 print("Generating payloads...")
@@ -168,7 +209,7 @@ print("Generating payloads...")
 #
 # Payload queue configuration
 #
-payload = Payload(target, payload_filename)
+payload = Payload(target, payload_filename, resumer)
 payload.set_extensions(extension)
 payload.set_remove_slash(remove_slash)
 payload.set_uppercase(uppercase)
@@ -177,7 +218,8 @@ payload.set_unbanned_response_codes(unbanned_response_codes)
 payload.set_content(content)
 
 total_requests = payload.get_total_requests()
-print("Total requests %s  (aprox: %s / thread)" % (total_requests, total_requests / threads))
+print("Total requests %s  (aprox: %s / thread)" %
+      (total_requests, total_requests / threads))
 payload_queue = payload.get_queue()
 
 #
@@ -220,18 +262,22 @@ Console.header()
 while True:
     try:
         if not manager.get_a_task() and any([visitor.is_alive() for visitor in thread_pool]):
-            print("Finishing...")
+            sys.stdout.write("Finishing...")
             break
     except KeyboardInterrupt:
-        print (os.linesep + "Waiting for threads to stop...")
+        sys.stdout.write(os.linesep + "Waiting for threads to stop...")
         Visitor.kill()
+        resumer.set_line(payload_queue.get().get_number())
+        with open("resume_file_" + time.strftime("%d_%m_%y_%H_%M", time.localtime()), 'w') as f:
+            pickle.dump(resumer, f)
         break
 
 time_after_running = time.time()
-delta = round(timedelta(seconds=(time_after_running - time_before_running)).total_seconds(), 2)
+delta = round(timedelta(seconds=(time_after_running -
+                                 time_before_running)).total_seconds(), 2)
 print("Task took %i seconds" % delta)
 
 if not os.name == 'nt':
-	sys.stdout.write("\x1b[0K")
+    sys.stdout.write("\x1b[0K")
 sys.stdout.flush()
 sys.exit()
