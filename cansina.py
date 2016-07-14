@@ -279,7 +279,5 @@ delta = round(timedelta(seconds=(time_after_running -
                                  time_before_running)).total_seconds(), 2)
 print("Task took %i seconds" % delta)
 
-if not os.name == 'nt':
-    sys.stdout.write("\x1b[0K")
 sys.stdout.flush()
 sys.exit()
