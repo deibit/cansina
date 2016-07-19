@@ -1,7 +1,7 @@
 News
 ====
 
-19-07-2016  Fixed a bug in DBManager queue which were stopping Cansina when target server responses were slow
+19-07-2016  Fixed a bug in DBManager queue which was stopping Cansina when target server responses were slow
 
 13-07-2016  Added new feature resumable sessions
 
