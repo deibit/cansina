@@ -259,20 +259,20 @@ for visitor_id in range(0, threads):
 time_before_running = time.time()
 Console.header()
 
-while True:
-    try:
-        if not manager.get_a_task() and any([visitor.is_alive() for visitor in thread_pool]):
-            sys.stdout.write("Finishing...")
+try:
+    while True:
+        visitors_alive = any([v.is_alive() for v in thread_pool])
+        if not manager.get_a_task(visitors_alive):
             break
-    except KeyboardInterrupt:
-        sys.stdout.write(os.linesep + "Waiting for threads to stop...")
-        Visitor.kill()
-        resp = raw_input(os.linesep + "Resume file? (Type 'y' to get) ")
-        if resp == 'y':
-            resumer.set_line(payload_queue.get().get_number())
-            with open("resume_file_" + time.strftime("%d_%m_%y_%H_%M", time.localtime()), 'w') as f:
-                pickle.dump(resumer, f)
-        break
+except KeyboardInterrupt:
+    sys.stdout.write(os.linesep + "Waiting for threads to stop...")
+    Visitor.kill()
+    resp = raw_input(os.linesep + "Resume file? (Type 'y' to get) ")
+    if resp == 'y':
+        resumer.set_line(payload_queue.get().get_number())
+        with open("resume_file_" + time.strftime("%d_%m_%y_%H_%M", time.localtime()), 'w') as f:
+            pickle.dump(resumer, f)
+sys.stdout.write("Finishing...")
 
 time_after_running = time.time()
 delta = round(timedelta(seconds=(time_after_running -

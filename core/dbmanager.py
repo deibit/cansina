@@ -1,5 +1,4 @@
 import sqlite3
-import threading
 import Queue
 import time
 import os
@@ -48,15 +47,21 @@ class DBManager():
     def set_timeout(self, timeout):
         self.timeout = timeout
 
-    def get_a_task(self):
+    def get_a_task(self, alived):
         try:
-            task = self.queue.get(block=True, timeout=self.timeout)
-            self.process(task)
-            self.queue.task_done()
-            Console.body(task)
+            task = self.queue.get(False)
+            if task:
+                self.process(task)
+                self.queue.task_done()
+                Console.body(task)
+            else:
+                print "no task"
             return True
         except Queue.Empty:
-            return False
+            if not alived:
+                return False
+            else:
+                return True
 
     def get_results_queue(self):
         return self.queue

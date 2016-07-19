@@ -82,10 +82,14 @@ class Visitor(threading.Thread):
 
     def run(self):
         try:
-            while not self.payload.empty() or not Visitor.killed:
-                self.visit(self.payload.get(block=True))
+            while not self.payload.empty():
+                if Visitor.killed:
+                    break
+                self.visit(self.payload.get())
                 self.payload.task_done()
         except AttributeError:
+            pass
+        except Queue.Empty:
             pass
 
 
