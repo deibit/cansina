@@ -1,6 +1,8 @@
 News
 ====
 
+19-07-2016  Fixed a bug in DBManager queue which were stopping Cansina when target server responses were slow
+
 13-07-2016  Added new feature resumable sessions
 
  9-01-2016  Cansina support Windows terminal (sorry I didn't test Cansina on Windows boxes)
