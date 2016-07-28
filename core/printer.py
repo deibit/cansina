@@ -14,6 +14,17 @@ else:
     LBLUE = '\033[36m'
     ENDC = '\033[0m'
 
+COLUMNS = 80
+try:
+    # (Slightly modified) http://stackoverflow.com/a/943921/91267
+    p = os.popen('stty size', 'r')
+    rows, columns = p.read().split()
+    p.close()
+    COLUMNS = int(columns)
+    pass
+except:
+    pass
+
 
 class Console:
     def __init__(self):
@@ -31,8 +42,8 @@ class Console:
         percentage = counter * 100 / task.get_payload_length()
         target = task.get_complete_target()
         target = urlparse.urlsplit(target).path
-        if len(target) > 80:
-            target = target[:80] + "...(cont)"
+        if len(target) > COLUMNS - 39:
+            target = target[:abs(COLUMNS - 39)]
         if task.location:
             target = target + " -> " + task.location
         linesep = ""
@@ -57,7 +68,7 @@ class Console:
         to_console = to_format.format(percentage, task.response_code,
                                       task.response_size, task.number,
                                       int(task.response_time), target.encode('utf-8'))
-        sys.stdout.write(to_console[:200] + linesep)
+        sys.stdout.write(to_console[:COLUMNS-2] + linesep)
         sys.stdout.flush()
         time.sleep(0.1)
         sys.stdout.write('\r')
