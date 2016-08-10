@@ -1,6 +1,10 @@
 News
 ====
 
+10-08-2016  Added '-u' option to utils/viewer.py to show what payload you used in a given project
+
+28-07-2016  Fixed max columns width when printing output
+
 19-07-2016  Fixed a bug in DBManager queue which was stopping Cansina when target server responses were slow
 
 13-07-2016  Added new feature resumable sessions

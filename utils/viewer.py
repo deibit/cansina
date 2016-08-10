@@ -30,14 +30,22 @@ parser.add_argument('-c',
                     help='comma separate list of http codes responses to print',
                     required=False)
 
+parser.add_argument('-u',
+                    help='list used payload on visited resources',
+                    action='store_true')
+
 args = parser.parse_args()
 
 project_name = args.project_name
 response_codes = args.response_codes
+used_payloads = args.u
+
 if not response_codes:
     response_codes = ['200', '302', '403']
 
 QUERY = "SELECT * FROM requests ORDER BY resource"
+if used_payloads:
+        QUERY = "SELECT url,payload FROM requests ORDER BY url"
 
 try:
     with sqlite3.connect(project_name) as connection:
@@ -58,6 +66,20 @@ def comparator(a, b):
         return 1
     if a.count('/') == b.count('/'):
         return 0
+
+if used_payloads:
+    output = {}
+    for k, v in data:
+        if not output.has_key(k):
+            output[k] = [v]
+            continue
+        output[k].append(v)
+    for k in output.keys():
+        print ("{}{}:".format(GREEN,k))
+        output[k].sort()
+        for v in set(output[k]):
+            print ("        {}{}".format(BLUE,v))
+    sys.exit()
 
 data.sort(cmp=comparator, key=lambda x: x[2] + x[3] + x[4])
 for line in data:
