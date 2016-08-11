@@ -42,10 +42,12 @@ class Console:
         percentage = counter * 100 / task.get_payload_length()
         target = task.get_complete_target()
         target = urlparse.urlsplit(target).path
-        if len(target) > COLUMNS - 39:
-            target = target[:abs(COLUMNS - 39)]
         if task.location:
             target = target + " -> " + task.location
+        if len(target) > COLUMNS - 39:
+            target = target[:abs(COLUMNS - 39)]
+        # If a task is valid means that is should be printed, so a proper
+        # linesep will be printed
         linesep = ""
         if task.is_valid():
             linesep = os.linesep

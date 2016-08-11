@@ -87,9 +87,7 @@ class Visitor(threading.Thread):
                     break
                 self.visit(self.payload.get())
                 self.payload.task_done()
-        except AttributeError:
-            pass
-        except Queue.Empty:
+        except:
             pass
 
 
@@ -164,7 +162,9 @@ class Visitor(threading.Thread):
                 time.sleep(Visitor.delay)
 
         except requests.ConnectionError, requests.Timeout:
-            sys.stderr.write("Connection (or/and) timeout error" + os.linesep)
+            # sys.stderr.write("Connection (or/and) timeout error" + os.linesep)
+            #TODO log to a file instead of screen
+            pass
 
         except ValueError:
             # Falling back to urllib (requests doesnt want freak chars)
