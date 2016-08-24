@@ -9,7 +9,7 @@ News
 
 13-07-2016  Added new feature resumable sessions
 
- 9-01-2016  Cansina support Windows terminal (sorry I didn't test Cansina on Windows boxes)
+09-01-2016  Cansina supports Windows terminal
             You won't have that fancy flash in filtered HTTP codes but it works...    
 
 
@@ -21,18 +21,24 @@ Cansina
 Cansina is a Web Content Discovery Application.
 
 It is well known Web applications don't publish all their resources or public links, 
-so the only way to discover these resources is....requesting for them!
+so the only way to discover these resources is requesting for them and check the response.
 
 Cansina duty is to help you making requests and filtering the responses to tell 
 apart if it is an existing resource or just an annoying or disguised 404.
 
-Of course other kind of useful responses (401, 403, ...) are processed in a similar fashion.
+Other kind of useful responses (401, 403, ...) are processed in a similar fashion.
 
 Responses are kept in a sqlite database for later process or viewing.
+
+You can stop and resume a task by ctrl-c, a resume file will be generated for you.
+
+Check the options '-h' for more features.
 
 There is an ongoing effort to add features via plugins.
 
 Feature requests and comments are welcome.
+
+Cansina is included in [BlackArch Linux](https://www.blackarch.org/), give it a try! 
 
 Screenshot
 ----------
@@ -165,6 +171,8 @@ Dependencies
 
 Payloads
 --------
+
+Cansina does not come with list but there are some neat projects to supply this:
 
 - [SecList](https://github.com/danielmiessler/SecLists)
 - [fuzzdb](https://code.google.com/p/fuzzdb/)
