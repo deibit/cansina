@@ -1,6 +1,8 @@
 News
 ====
 
+26-01-2017  Fixed 'InsecureRequestsWarning' message
+
 10-08-2016  Added '-u' option to utils/viewer.py to show what payload you used in a given project
 
 28-07-2016  Fixed max columns width when printing output
@@ -180,7 +182,7 @@ Cansina does not come with list but there are some neat projects to supply this:
 License information
 -------------------
 
-Copyright (C) 2013-2016 David García
+Copyright (C) 2013-2017 David García
 
 License: GNU General Public License, version 3 or later; see LICENSE.txt
          included in this archive for details.

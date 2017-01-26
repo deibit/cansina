@@ -6,6 +6,9 @@ import urlparse
 import time
 import socket
 import pickle
+import urllib3
+
+urllib3.disable_warnings()
 
 from datetime import timedelta
 
@@ -261,7 +264,7 @@ Console.header()
 
 try:
     while True:
-        visitors_alive = any([v.is_alive() for v in thread_pool])
+        visitors_alive = any([visitor.is_alive() for visitor in thread_pool])
         if not manager.get_a_task(visitors_alive):
             break
 except KeyboardInterrupt:
@@ -272,6 +275,10 @@ except KeyboardInterrupt:
         resumer.set_line(payload_queue.get().get_number())
         with open("resume_file_" + time.strftime("%d_%m_%y_%H_%M", time.localtime()), 'w') as f:
             pickle.dump(resumer, f)
+except Exception as e:
+    sys.stderr.write("Unknown exception: %s" % e)
+    sys.stderr.write(sys.exc_info()[0])
+
 sys.stdout.write("Finishing...")
 
 time_after_running = time.time()

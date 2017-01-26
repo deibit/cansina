@@ -2,6 +2,11 @@ import sys
 import random
 import requests
 import hashlib
+import urllib3
+
+# Workaround from: http://stackoverflow.com/questions/27981545/
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 10.0; Windows NT 9.0; es-ES)"
 user_agent = {"user-agent": USER_AGENT}
@@ -33,7 +38,7 @@ class Inspector:
 
         print("Checking with %s" % target)
 
-        page = requests.get(target, headers=user_agent)
+        page = requests.get(target, headers=user_agent, verify=False)
         content = page.content
 
         result = {'code': str(page.status_code),

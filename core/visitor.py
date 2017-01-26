@@ -2,8 +2,11 @@ import threading
 import time
 import sys
 import urllib
+import urllib3
 import os
 import hashlib
+
+urllib3.disable_warnings()
 
 unuseful_codes = ['404']
 strict_codes = ['100', '200', '300', '301', '302', '401', '403', '405', '500']
@@ -168,15 +171,22 @@ class Visitor(threading.Thread):
 
         except ValueError:
             # Falling back to urllib (requests doesnt want freak chars)
-            now = time.time()
-            r = urllib.urlopen(task.get_complete_target(), proxies=self.proxy)
-            after = time.time()
-            delta = (after - now) * 1000
-            task.set_response_code(r.code)
-            c = r.readlines()
-            task.response_time = delta
-            task.response_size = len(c)
-            self.results.put(task)
+            try:
+                now = time.time()
+                r = urllib.urlopen(task.get_complete_target(), proxies=self.proxy)
+                after = time.time()
+                delta = (after - now) * 1000
+                task.set_response_code(r.code)
+                c = r.readlines()
+                task.response_time = delta
+                task.response_size = len(c)
+                self.results.put(task)
+            except urllib3.InsecureRequestWarning:
+                pass
+
+        except urllib3.InsecureRequestWarning:
+            pass
 
         except Exception as e:
+            pass
             print e.args
