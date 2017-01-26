@@ -165,6 +165,13 @@ Manages basic authentication
 Resume last interrupted session with all options and payload with former linenumber
 
 
+Important
+---------
+
+This tool is intended to be used in a fair and legal context, meaning, for example,
+a penetration testing for which you have been provided previous authorization.
+
+
 Dependencies
 ------------
 
