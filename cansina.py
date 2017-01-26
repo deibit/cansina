@@ -6,9 +6,6 @@ import urlparse
 import time
 import socket
 import pickle
-import urllib3
-
-urllib3.disable_warnings()
 
 from datetime import timedelta
 
