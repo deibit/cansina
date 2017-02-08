@@ -2,7 +2,6 @@ import sys
 import random
 import requests
 import hashlib
-import urllib3
 
 # Workaround from: http://stackoverflow.com/questions/27981545/
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
