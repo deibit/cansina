@@ -72,7 +72,6 @@ class Console:
                                       int(task.response_time), target.encode('utf-8'))
         sys.stdout.write(to_console[:COLUMNS-2] + linesep)
         sys.stdout.flush()
-        time.sleep(0.1)
         sys.stdout.write('\r')
         if not os.name == 'nt':
             sys.stdout.write("\x1b[0K")
