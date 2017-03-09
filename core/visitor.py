@@ -146,7 +146,7 @@ class Visitor(threading.Thread):
                 task.content_has_detected(True)
 
             # Look for a redirection
-            if r.history and r.history[0]:
+            if r.history and r.history[0] and r.status_code.startswith('3'):
                 # If redirection is a silly nothing to nothing/ skip it
                 if r.url == task.get_complete_target() + '/':
                     pass
@@ -180,4 +180,3 @@ class Visitor(threading.Thread):
 
         except Exception as e:
             pass
-            print e.args

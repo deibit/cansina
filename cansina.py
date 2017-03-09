@@ -286,7 +286,7 @@ except KeyboardInterrupt:
 except Exception as e:
     import traceback as tb
     sys.stderr.write("Unknown exception: %s" % e)
-    print tb.print_tb(sys.exc_info()[2])
+    print(tb.print_tb(sys.exc_info()[2]))
 
 sys.stdout.write("Finishing...")
 
