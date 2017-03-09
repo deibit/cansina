@@ -6,6 +6,7 @@ import urlparse
 import time
 import socket
 import pickle
+import tempfile
 
 from datetime import timedelta
 
@@ -15,6 +16,7 @@ from core.dbmanager import DBManager
 from core.inspector import Inspector
 from core.printer import Console
 from core.resumer import Resumer
+from plugins.robots import process_robots
 
 #
 #   Default options
@@ -117,6 +119,8 @@ parser.add_argument('-u', dest='target',
                     help="Target url", default=None)
 parser.add_argument('-r', dest='resume',
                     help="Resume a session", default=False)
+parser.add_argument('-R', dest="parse_robots", action="store_true",
+                    help="Parse robots.txt and check its contents", default=False)
 args = parser.parse_args()
 
 # Initialize a Resumer object
@@ -192,24 +196,31 @@ if uppercase:
     print("All resource requests will be done in uppercase")
 
 request_delay = args.request_delay
-
 authentication = args.authentication
-
 size_discriminator = args.size_discriminator
 
-payload_filename = args.payload
-if not payload_filename:
-    sys.stdout.write("You have to specify a payload file!")
-    sys.exit()
-print("Using payload: %s" % payload_filename)
-print("Spawning %s threads " % threads)
-print("Generating payloads...")
+#FIXME: This design is garbage
+payload = None
+parse_robots = args.parse_robots
+remove_slash = True
+if parse_robots:
+   print("Using robots.txt as payload")
+   robots_content = process_robots(target) 
+   payload_filename = robots_content
+else:  
+    payload_filename = args.payload
+    if not payload_filename:
+        sys.stdout.write("You have to specify a payload file!")
+        sys.exit()
+    print("Using payload: %s" % payload_filename)
+    print("Generating payloads...")
 
+payload = Payload(target, payload_filename, resumer)
+print("Spawning %s threads " % threads)
 
 #
 # Payload queue configuration
 #
-payload = Payload(target, payload_filename, resumer)
 payload.set_extensions(extension)
 payload.set_remove_slash(remove_slash)
 payload.set_uppercase(uppercase)
@@ -273,8 +284,9 @@ except KeyboardInterrupt:
         with open("resume_file_" + time.strftime("%d_%m_%y_%H_%M", time.localtime()), 'w') as f:
             pickle.dump(resumer, f)
 except Exception as e:
+    import traceback as tb
     sys.stderr.write("Unknown exception: %s" % e)
-    sys.stderr.write(sys.exc_info()[0])
+    print tb.print_tb(sys.exc_info()[2])
 
 sys.stdout.write("Finishing...")
 

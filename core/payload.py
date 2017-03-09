@@ -9,9 +9,14 @@ def _populate_list_with_file(file_name, linenumber):
     """ Open a file, read its content and strips it. Returns a list with the content
         additionally it filter and clean some splinters
     """
-    with open(file_name, 'r') as f:
-        tmp_list = f.readlines()
-        tmp_list = tmp_list[linenumber:]
+    #FIXME: Garbage
+    tmp_list = None
+    if type(file_name) == list:
+        tmp_list = file_name
+    else:
+        with open(file_name, 'r') as f:
+            tmp_list = f.readlines()
+            tmp_list = tmp_list[linenumber:]
     clean_list = []
     for e in tmp_list:
         # Delete leading and trailing spaces
@@ -36,7 +41,7 @@ class Payload():
     def __init__(self, target, payload_filename, resumer):
 
         self.target = target
-        self.payload_filename = payload_filename
+        self.payload_filename = payload_filename if not type(payload_filename) == list else "robots.txt"
         self.linenumber = resumer.get_line()
         self.payload = _populate_list_with_file(payload_filename, self.linenumber)
         self.queue = Queue.Queue()
