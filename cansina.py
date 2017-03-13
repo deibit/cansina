@@ -18,7 +18,11 @@ from core.printer import Console
 from core.resumer import Resumer
 from plugins.robots import process_robots
 
-#
+# Workaround from: http://stackoverflow.com/questions/27981545/
+import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)#
+
 #   Default options
 #
 USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 10.0; Windows NT 9.0; en-EN)"

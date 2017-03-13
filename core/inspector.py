@@ -3,9 +3,6 @@ import random
 import requests
 import hashlib
 
-# Workaround from: http://stackoverflow.com/questions/27981545/
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 10.0; Windows NT 9.0; es-ES)"
 user_agent = {"user-agent": USER_AGENT}
