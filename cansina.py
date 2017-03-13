@@ -206,6 +206,7 @@ remove_slash = True
 if parse_robots:
    print("Using robots.txt as payload")
    robots_content = process_robots(target) 
+   print("Reaped %s entries" % (len(robots_content)))
    payload_filename = robots_content
 else:  
     payload_filename = args.payload
@@ -216,7 +217,6 @@ else:
     print("Generating payloads...")
 
 payload = Payload(target, payload_filename, resumer)
-print payload_filename
 print("Spawning %s threads " % threads)
 
 #
