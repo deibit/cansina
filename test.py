@@ -2,7 +2,6 @@ import unittest
 from core.visitor import Visitor
 from core.payload import Payload
 from core.dbmanager import DBManager
-from core.inspector import Inspector
 from core.printer import Console
 
 
@@ -22,11 +21,6 @@ class PayloadTests(unittest.TestCase):
 
 
 class DBManagerTests(unittest.TestCase):
-    # TODO
-    pass
-
-
-class InspectorTests(unittest.TestCase):
     # TODO
     pass
 
