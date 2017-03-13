@@ -46,3 +46,4 @@ fuzzdb/*
 cansina.iml
 tags
 test.txt
+.vcode/*
