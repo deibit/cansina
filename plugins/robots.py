@@ -9,8 +9,8 @@ def process_robots(target):
             return
         for line in result.text.splitlines():
             if line.startswith("Disallow:") or line.startswith("Allow:"):
-                if len(line.split(" ")) > 1:
-                    interesting_entries.append(line.split(" ")[1])
+                if len(line.split(":")) > 1:
+                    interesting_entries.append(line.split(":")[1])
         return list(set(interesting_entries))
     except Exception, e:
         sys.stderr.write("[robots] Error getting robots.txt")

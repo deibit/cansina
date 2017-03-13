@@ -216,6 +216,7 @@ else:
     print("Generating payloads...")
 
 payload = Payload(target, payload_filename, resumer)
+print payload_filename
 print("Spawning %s threads " % threads)
 
 #
