@@ -1,6 +1,8 @@
 News
 ====
 
+13-03-2017  New option: -R autoscan robots.txt and use it as a payload
+
 26-01-2017  Fixed 'InsecureRequestsWarning' message
 
 10-08-2016  Added '-u' option to utils/viewer.py to show what payload you used in a given project
@@ -164,12 +166,22 @@ Manages basic authentication
 
 Resume last interrupted session with all options and payload with former linenumber
 
+**Parse robots.txt**
+
+*cansina.py -R*
+
+Cansina will parse the robots.txt file an use it as a payload if it exists
+
 
 Important
 ---------
 
 This tool is intended to be used in a fair and legal context, meaning, for example,
 a penetration testing for which you have been provided previous authorization.
+
+One of its legitimate uses might be the one described in the following article:
+
+- [Forced browsing](https://www.owasp.org/index.php/Forced_browsing) 
 
 
 Dependencies
