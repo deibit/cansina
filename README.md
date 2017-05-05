@@ -2,6 +2,7 @@ Install
 =======
 
 pip install --user requests
+
 git clone --depth=1 https://github.com/deibit/cansina
 
 
