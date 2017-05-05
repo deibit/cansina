@@ -13,7 +13,7 @@ from datetime import timedelta
 from core.visitor import Visitor
 from core.payload import Payload
 from core.dbmanager import DBManager
-from core.inspector import Inspector
+from plugins.inspector import Inspector
 from core.printer import Console
 from core.resumer import Resumer
 from plugins.robots import process_robots
@@ -209,10 +209,10 @@ parse_robots = args.parse_robots
 remove_slash = True
 if parse_robots:
    print("Using robots.txt as payload")
-   robots_content = process_robots(target) 
+   robots_content = process_robots(target)
    print("Reaped %s entries" % (len(robots_content)))
    payload_filename = robots_content
-else:  
+else:
     payload_filename = args.payload
     if not payload_filename:
         sys.stdout.write("You have to specify a payload file!")
