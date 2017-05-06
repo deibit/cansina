@@ -140,10 +140,12 @@ if resume:
         sys.stdout.write("Could not load a correct resume file, sorry.")
         sys.exit()
 
-target = _prepare_target(args.target)
-if not target:
-    sys.stdout.write("You have to specify a target!")
+if not args.target:
+    print("You need to specify a target")
+    parser.print_help()
     sys.exit()
+target = _prepare_target(args.target)
+
 extension = args.extension.split(',')
 threads = int(args.threads)
 banned_response_codes = args.banned.split(',')
@@ -215,7 +217,8 @@ if parse_robots:
 else:
     payload_filename = args.payload
     if not payload_filename:
-        sys.stdout.write("You have to specify a payload file!")
+        print("You have to specify a payload file!")
+        parser.print_help()
         sys.exit()
     print("Using payload: %s" % payload_filename)
     print("Generating payloads...")
