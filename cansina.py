@@ -13,15 +13,15 @@ from datetime import timedelta
 from core.visitor import Visitor
 from core.payload import Payload
 from core.dbmanager import DBManager
-from plugins.inspector import Inspector
 from core.printer import Console
 from core.resumer import Resumer
 from plugins.robots import process_robots
+from plugins.inspector import Inspector
 
 # Workaround from: http://stackoverflow.com/questions/27981545/
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)#
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 #   Default options
 #
