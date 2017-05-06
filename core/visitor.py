@@ -146,18 +146,18 @@ class Visitor(threading.Thread):
                 task.content_has_detected(True)
 
             # Look for a redirection
-            if r.history and r.history[0] and r.status_code.startswith('3'):
-                # If redirection is a silly nothing to nothing/ skip it
-                if r.url == task.get_complete_target() + '/':
-                    pass
-                else:
-                    # We dont want 404 relocations
-                    task.set_location(r.url)
-                    if task.location == self.banned_location:
-                        task.set_response_code('404')
-                    else:
-                        task.set_response_code(r.history[0].status_code)
+            # if r.history and r.history[0] and r.status_code.startswith('3'):
+                # if r.url == task.get_complete_target() + '/':
+                    # pass
+                # else:
+                    # task.set_location(r.url)
+                    # if task.location == self.banned_location:
+                        # task.set_response_code('404')
+                    # else:
+                        # task.set_response_code(r.history[0].status_code)
+
             self.results.put(task)
+
             if Visitor.delay:
                 time.sleep(Visitor.delay)
 
