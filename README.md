@@ -9,6 +9,8 @@ git clone --depth=1 https://github.com/deibit/cansina
 News
 ====
 
+14-08-2017 Size filtering. Now can be a list of sizes you want to ignore
+
 13-03-2017  New option: -R autoscan robots.txt and use it as a payload
 
 26-01-2017  Fixed 'InsecureRequestsWarning' message
@@ -124,7 +126,11 @@ Simple string replacing. Useful when a URL pattern is observable
 
 *cansina.py -u target_url -s 1495 -p payload_filename*
 
-If you don't want a response and know its size is fixed this could help skipping all those responses
+If you don't want a response and know its size is fixed this could help skipping all those responses.
+
+Also, it can be a list of sizes:
+
+*cansina.py -u target_url -s 0,1495,1337 -p payload_filename*
 
 **Uppercase all requests**
 
