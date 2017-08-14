@@ -2,7 +2,6 @@ import threading
 import time
 import sys
 import urllib
-import os
 import hashlib
 
 unuseful_codes = ['404']
@@ -38,7 +37,10 @@ class Visitor(threading.Thread):
 
     @staticmethod
     def set_size_discriminator(size_discriminator):
-        Visitor.size_discriminator = int(size_discriminator)
+        if size_discriminator:
+            Visitor.size_discriminator = [int(x) for x in size_discriminator.split(",")]
+        else:
+            Visitor.size_discriminator = []
 
     @staticmethod
     def set_banned_location(banned_location):
@@ -136,8 +138,8 @@ class Visitor(threading.Thread):
             if Visitor.banned_md5 and hashlib.md5("".join(tmp_content)).hexdigest() == self.banned_md5:
                 r.status_code = '404'
 
-            # Check if the size of the page is set for discrimante fake 404 errors
-            if not Visitor.size_discriminator == 0 and task.response_size == Visitor.size_discriminator:
+            # Check if page size is not what we need
+            if task.response_size in Visitor.size_discriminator:
                 r.status_code = '404'
             task.set_response_code(r.status_code)
 

@@ -116,7 +116,7 @@ parser.add_argument('-e', dest='extension',
 parser.add_argument('-p', dest='payload',
                     help="Path to the payload file to use", default=None)
 parser.add_argument('-s', dest='size_discriminator',
-                    help="Will skip pages with this size in bytes", default=False)
+                    help="Will skip pages with this size in bytes (or a list of sizes 0,500,1500...)", default=False)
 parser.add_argument('-t', dest='threads', type=int,
                     help="Number of threads (default 4)", default=THREADS)
 parser.add_argument('-u', dest='target',
