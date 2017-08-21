@@ -58,7 +58,7 @@ class DBManager():
                 print "no task"
             return True
         except Queue.Empty:
-            return bool(alived):
+            return bool(alived)
 
     def get_results_queue(self):
         return self.queue
