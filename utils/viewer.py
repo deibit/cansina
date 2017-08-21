@@ -53,7 +53,7 @@ try:
         cursor.execute(QUERY)
         data = cursor.fetchall()
 
-except Exception, e:
+except Exception as e:
     print("Error opening database {}".format(project_name))
     print("Details: {}".format(e))
     sys.exit(-1)
