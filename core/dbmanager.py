@@ -36,7 +36,7 @@ class DBManager():
                 connection.commit()
                 connection.close()
 
-            except Exception, e:
+            except Exception as e:
                 print ("[DBManager] Error creating database {0}").format(database_name)
                 sys.exit()
 
@@ -58,10 +58,7 @@ class DBManager():
                 print "no task"
             return True
         except Queue.Empty:
-            if not alived:
-                return False
-            else:
-                return True
+            return bool(alived):
 
     def get_results_queue(self):
         return self.queue
