@@ -34,7 +34,7 @@ def visit(scheme, domain, resource):
     else:
         url = "%s://%s/%s" % (scheme, domain, resource)
 
-    print "visiting: url: %s" % url
+    print("visiting: url: %s" % url)
     request = requests.get(url, headers=user_agent)
     soup = BeautifulSoup(request.text)
     resources = {
@@ -121,7 +121,7 @@ def get_into_loot(resource):
 def check_for_302(url):
     req = requests.get(url)
     if req.status_code in ['301', '302']:
-        print "[CRAWLER] Crawling relocation instead -> %s" % req.history[0].url
+        print("[CRAWLER] Crawling relocation instead -> %s" % req.history[0].url)
         return req.history[0].url
     else:
         return url
@@ -139,5 +139,5 @@ if __name__ == '__main__':
             current_resource = _non_visited_links.pop()
             visit(scheme=components.scheme, domain=components.netloc, resource=current_resource)
         except KeyboardInterrupt:
-            print "Was visiting %s://%s%s" % (components.scheme, components.netloc, current_resource)
-    print _visited_links
+            print("Was visiting %s://%s%s" % (components.scheme, components.netloc, current_resource))
+    print(_visited_links)

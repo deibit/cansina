@@ -37,7 +37,7 @@ class DBManager():
                 connection.close()
 
             except Exception as e:
-                print ("[DBManager] Error creating database {0}").format(database_name)
+                print("[DBManager] Error creating database {0}").format(database_name)
                 sys.exit()
 
         self.dead = False
@@ -55,7 +55,7 @@ class DBManager():
                 self.queue.task_done()
                 Console.body(task)
             else:
-                print "no task"
+                print("no task")
             return True
         except Queue.Empty:
             return bool(alived)

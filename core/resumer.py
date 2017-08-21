@@ -4,7 +4,7 @@ class Resumer:
         self.line = line
 
     def set_line(self, l):
-        print "setting line to %s" % l
+        print("setting line to %s" % l)
         self.line = l
 
     def get_line(self):

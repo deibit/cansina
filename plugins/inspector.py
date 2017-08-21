@@ -70,4 +70,4 @@ class Inspector:
 
 if __name__ == '__main__':
     i = Inspector(sys.argv[1])
-    print i.check_this()
+    print(i.check_this())
