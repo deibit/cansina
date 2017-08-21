@@ -12,7 +12,7 @@ def process_robots(target):
                 if len(line.split(":")) > 1:
                     interesting_entries.append(line.split(":")[1])
         return list(set(interesting_entries))
-    except Exception, e:
+    except Exception as e:
         sys.stderr.write("[robots] Error getting robots.txt")
         sys.stderr.write(e)
-        return
+        return None
