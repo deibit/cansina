@@ -1,8 +1,12 @@
 import sqlite3
-import Queue
 import time
 import os
 import sys
+
+try:
+    import Queue
+except:
+    import queue as Queue
 
 from core.printer import Console
 

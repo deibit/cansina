@@ -1,6 +1,11 @@
+import sys
 import threading
-import Queue
 import time
+
+try:
+    import Queue
+except:
+    import queue as Queue
 
 from core.task import Task
 
@@ -27,7 +32,14 @@ def _populate_list_with_file(file_name, linenumber):
         # Remove leading '/' characters
         if e.startswith('/'):
             e = e[1:]
-        clean_list.append(e.decode("utf-8", "replace"))
+
+        if sys.version_info[0] == 3:
+            e_encode = e
+        else:
+            e_encode = e.encode('utf-8', 'replace')
+
+        clean_list.append(e)
+
     return clean_list
 
 def _has_extension(res):

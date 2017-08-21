@@ -1,7 +1,11 @@
 import os
 import sys
 import time
-import urlparse
+
+try:
+    import urlparse
+except:
+    import urllib.parse as urlparse
 
 if os.name == 'nt':
     RED,MAGENTA,BLUE,GREEN,YELLOW,LBLUE,ENDC = ("","","","","","","")
@@ -39,7 +43,7 @@ class Console:
     @staticmethod
     def body(task):
         counter = task.number
-        percentage = counter * 100 / task.get_payload_length()
+        percentage = int(counter * 100 / task.get_payload_length())
         target = task.get_complete_target()
         target = urlparse.urlsplit(target).path
         if task.location:
@@ -67,9 +71,13 @@ class Console:
         if task.content_detected:
             color = MAGENTA
         to_format = color + "{0: >2} | {1: ^3} | {2: >10} | {3: >6} | {4: >4} | {5}" + ENDC
+        if sys.version_info[0] == 3:
+            t_encode = target
+        else:
+            t_encode = target.encode('utf-8')
         to_console = to_format.format(percentage, task.response_code,
                                       task.response_size, task.number,
-                                      int(task.response_time), target.encode('utf-8'))
+                                      int(task.response_time), t_encode)
         sys.stdout.write(to_console[:COLUMNS-2] + linesep)
         sys.stdout.flush()
         sys.stdout.write('\r')

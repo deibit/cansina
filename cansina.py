@@ -2,11 +2,15 @@
 import sys
 import os
 import argparse
-import urlparse
 import time
 import socket
 import pickle
 import tempfile
+
+try:
+    import urlparse
+except:
+    import urllib.parse as urlparse
 
 from datetime import timedelta
 
