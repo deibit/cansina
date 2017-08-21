@@ -22,6 +22,10 @@ from plugins.inspector import Inspector
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+try:
+    xrange          # Python 2
+except NameError:
+    xrange = range  # Python 3
 
 #   Default options
 #
@@ -165,7 +169,7 @@ content = args.content
 if content:
     print("Content inspection selected")
     if request_type == "HEAD":
-        print ("WARNING: HEAD request render Content Inspection useless")
+        print("WARNING: HEAD request render Content Inspection useless")
 
 remove_slash = args.remove_slash
 if remove_slash:
@@ -175,7 +179,7 @@ discriminator = args.discriminator
 if discriminator:
     print("Discriminator active")
     if request_type == "HEAD":
-        print ("WARNING: HEAD requests renders Content Inspection useless")
+        print("WARNING: HEAD requests renders Content Inspection useless")
 
 autodiscriminator = args.autodiscriminator
 autodiscriminator_location = None
