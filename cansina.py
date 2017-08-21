@@ -27,9 +27,9 @@ import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 try:
-    xrange          # Python 2
+    raw_input          # Python 2
 except NameError:
-    xrange = range  # Python 3
+    raw_input = input  # Python 3
 
 #   Default options
 #
