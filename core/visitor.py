@@ -68,17 +68,13 @@ class Visitor(threading.Thread):
 
     @staticmethod
     def set_authentication(auth):
-        if auth:
-            Visitor.auth = tuple(auth.split(':'))
-        else:
-            Visitor.auth = auth
+        Visitor.auth = tuple(auth.split(':')) if auth else auth
 
     def __init__(self, visitor_id, payload, results):
         threading.Thread.__init__(self)
         self.visitor_id = visitor_id
         self.payload = payload
         self.results = results.get_results_queue()
-
         self.__time = []
 
 
@@ -100,11 +96,7 @@ class Visitor(threading.Thread):
                 headers = {"user-agent": Visitor.user_agent}
 
             now = time.time()
-
-            if self.__time:
-                timeout = sum(self.__time) / len(self.__time)
-            else:
-                timeout = 10
+            timeout = sum(self.__time) / len(self.__time) if self.__time else 10
 
             r = None
             if Visitor.proxy:
@@ -163,7 +155,7 @@ class Visitor(threading.Thread):
             if Visitor.delay:
                 time.sleep(Visitor.delay)
 
-        except requests.ConnectionError, requests.Timeout:
+        except (requests.ConnectionError, requests.Timeout):
             # sys.stderr.write("Connection (or/and) timeout error" + os.linesep)
             #TODO log to a file instead of screen
             pass
@@ -180,5 +172,5 @@ class Visitor(threading.Thread):
             task.response_size = len(c)
             self.results.put(task)
 
-        except Exception as e:
+        except Exception:
             pass
