@@ -47,3 +47,4 @@ cansina.iml
 tags
 test.txt
 .vcode/*
+./plugins/linkextractor.py
