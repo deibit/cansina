@@ -24,6 +24,11 @@ class Visitor(threading.Thread):
     cookies = None
     persist = False
     allow_redirects = False
+    headers = {}
+
+    @staticmethod
+    def set_headers(headers):
+        Visitor.headers = headers
 
     @staticmethod
     def allow_redirects(pref):
@@ -117,7 +122,8 @@ class Visitor(threading.Thread):
         try:
             headers = {}
             if Visitor.user_agent:
-                headers = {"user-agent": Visitor.user_agent}
+                Visitor.headers['User-Agent'] = Visitor.user_agent
+                # headers = {"user-agent": Visitor.user_agent}
 
             now = time.time()
             timeout = sum(self.__time) / len(self.__time) if self.__time else 10
@@ -133,7 +139,7 @@ class Visitor(threading.Thread):
             if Visitor.proxy:
                 if Visitor.requests == "GET":
                     r = self.session.get(task.get_complete_target(),
-                                         headers=headers,
+                                         headers=Visitor.headers,
                                          proxies=Visitor.proxy,
                                          verify=False,
                                          timeout=timeout,
@@ -143,7 +149,7 @@ class Visitor(threading.Thread):
 
                 elif Visitor.requests == "HEAD":
                     r = self.session.head(task.get_complete_target(),
-                                          headers=headers,
+                                          headers=Visitor.headers,
                                           proxies=Visitor.proxy,
                                           verify=False,
                                           timeout=timeout,
@@ -153,7 +159,7 @@ class Visitor(threading.Thread):
             else:
                 if Visitor.requests == "GET":
                     r = self.session.get(task.get_complete_target(),
-                                         headers=headers,
+                                         headers=Visitor.headers,
                                          verify=False,
                                          timeout=timeout,
                                          auth=Visitor.auth,
@@ -162,7 +168,7 @@ class Visitor(threading.Thread):
 
                 elif Visitor.requests == "HEAD":
                     r = self.session.head(task.get_complete_target(),
-                                          headers=headers,
+                                          headers=Visitor.headers,
                                           verify=False,
                                           timeout=timeout,
                                           auth=Visitor.auth,
@@ -178,7 +184,7 @@ class Visitor(threading.Thread):
 
             # If discriminator is found we mark it 404
             if sys.version_info[0] >= 3:
-                tmp_content = tmp_content.decode('UTF-8')
+                tmp_content = tmp_content.decode('Latin-1')
             if Visitor.discriminator and Visitor.discriminator in tmp_content:
                 r.status_code = '404'
 

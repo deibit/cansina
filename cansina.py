@@ -173,6 +173,9 @@ parser.add_argument('--no-follow', dest="allow_redirects",
                             help="Do not follow redirections", default=True, action="store_false")
 parser.add_argument('--line', dest='continue_line', type=int,
                     help="Continue payload in line <n>", default=0)
+parser.add_argument('--headers', dest='headers',
+        help="Set personalized headers: key=value;key=value...", default="")
+
 
 args = parser.parse_args()
 
@@ -213,6 +216,19 @@ unbanned_response_codes = args.unbanned.split(',')
 user_agent = args.user_agent
 proxy = _prepare_proxies(args.proxies.split(','))
 cookies = args.cookies
+request_delay = args.request_delay
+authentication = args.authentication
+size_discriminator = args.size_discriminator
+
+# Personalized headers
+personalized_headers = {}
+try:
+    for header in args.headers.split(','):
+        k, v = header.split('=')
+        personalized_headers[k] = v
+except Exception as e:
+    print("[?] Check personalized headers format: header=value,header=value...")
+    sys.exit()
 
 # HEAD / GET requests
 request_type = args.request_type
@@ -267,11 +283,6 @@ if not extension == ['']:
 uppercase = args.uppercase
 if uppercase:
     print("All resource requests will be done in uppercase")
-
-# Misc options
-request_delay = args.request_delay
-authentication = args.authentication
-size_discriminator = args.size_discriminator
 
 # Payload options
 # FIXME: This design is garbage
@@ -328,6 +339,7 @@ Visitor.set_size_discriminator(size_discriminator)
 Visitor.set_user_agent(user_agent)
 Visitor.set_persist(persist)
 Visitor.allow_redirects(args.allow_redirects)
+Visitor.set_headers(personalized_headers)
 
 try:
     cookie_jar = _make_cookie_jar(cookies)

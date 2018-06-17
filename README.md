@@ -47,6 +47,7 @@ Features
 
 - Multithreading
 - Multiextension
+- Custom headers
 - Multiple wordlists from directories
 - Content detection
 - Filter results by size
