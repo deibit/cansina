@@ -223,9 +223,10 @@ size_discriminator = args.size_discriminator
 # Personalized headers
 personalized_headers = {}
 try:
-    for header in args.headers.split(','):
-        k, v = header.split('=')
-        personalized_headers[k] = v
+    if args.headers:
+        for header in args.headers.split(','):
+            k, v = header.split('=')
+            personalized_headers[k] = v
 except Exception as e:
     print("[?] Check personalized headers format: header=value,header=value...")
     sys.exit()
