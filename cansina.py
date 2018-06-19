@@ -175,6 +175,8 @@ parser.add_argument('--line', dest='continue_line', type=int,
                     help="Continue payload in line <n>", default=0)
 parser.add_argument('--headers', dest='headers',
         help="Set personalized headers: key=value;key=value...", default="")
+parser.add_argument('--capitalize', dest='capitalize',
+        help="Transform 'word' into 'Word'.", default=False, action="store_true")
 
 
 args = parser.parse_args()
@@ -280,11 +282,6 @@ if not unbanned_response_codes[0] == '':
 if not extension == ['']:
     print("{:30} {:>}".format("Extensions to probe:", ",".join(extension)))
 
-# Uppercase
-uppercase = args.uppercase
-if uppercase:
-    print("All resource requests will be done in uppercase")
-
 # Payload options
 # FIXME: This design is garbage
 payload = None
@@ -309,12 +306,21 @@ else:
 payload = Payload(target, payload_filename, resumer)
 print("{:30} {:>}".format("Threads:", threads))
 
+# Uppercase
+if args.uppercase:
+    payload.set_uppercase()
+    print("All resource requests will be done in uppercase")
+
+# Capitalization
+if args.capitalize:
+    print("Words will be Capitalized")
+    payload.set_capitalize()
+
 #
 # Payload queue configuration
 #
 payload.set_extensions(extension)
 payload.set_remove_slash(remove_slash)
-payload.set_uppercase(uppercase)
 payload.set_banned_response_codes(banned_response_codes)
 payload.set_unbanned_response_codes(unbanned_response_codes)
 payload.set_content(content)

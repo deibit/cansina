@@ -1,6 +1,10 @@
 Changelog
 =========
 
+20-06-2018  Added new option --capitalize to transform words into Words
+
+17-06-2018  Added new option --headers to allow you to insert your own headers
+
 29-11-2017  Added new option. --line <n> will continue you task on line <n>
 
 15-09-2017  Payloads can be now a single file, a directory or a file containing references to other files
@@ -9,7 +13,7 @@ Changelog
 
 11-09-2017  Added a new option 'full-path' for show the entire path in console
 
-07-09-2017  Added an 'eta' clock 
+07-09-2017  Added an 'eta' clock
 
 06-09-2017  Viewer (from utils/viewer.py) received some love. A tree struct view and a
             couple of filters. Give it a try (utils/viewer.py -h)
@@ -37,7 +41,7 @@ Changelog
 13-07-2016  Added new feature resumable sessions
 
 09-01-2016  Cansina supports Windows terminal
-            You won't have that fancy flash in filtered HTTP codes but it works...    
+            You won't have that fancy flash in filtered HTTP codes but it works...
 
 
 License information

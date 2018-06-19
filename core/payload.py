@@ -127,6 +127,7 @@ class Payload():
         self.content = None
         self.remove_slash = False
         self.uppercase = False
+        self.capitalize = False
         self.recursive = False
         self.total_requests = 0
 
@@ -157,13 +158,21 @@ class Payload():
     def is_finished(self):
         return self.dead
 
-    def set_uppercase(self, uppercase):
-        self.uppercase = uppercase
+    def set_uppercase(self):
+        self.uppercase = True
+
+    def set_capitalize(self):
+        self.capitalize = True
+
+
 
     def _feed_queue(self):
         for resource in self.payload:
             if self.uppercase:
                 resource = resource.upper()
+
+            if self.capitalize:
+                resource = resource.capitalize()
 
             # Useful when looking for files without extension instead of directories
             if self.remove_slash and resource.endswith("/"):
