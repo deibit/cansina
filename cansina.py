@@ -177,7 +177,10 @@ parser.add_argument('--headers', dest='headers',
         help="Set personalized headers: key=value;key=value...", default="")
 parser.add_argument('--capitalize', dest='capitalize',
         help="Transform 'word' into 'Word'.", default=False, action="store_true")
-
+parser.add_argument('--strip-extension', dest='strip_extension',
+        help="Strip word extension: word.ext into word", default=False, action="store_true")
+parser.add_argument('--alpha', dest='only_alpha',
+        help="Filter non alphanumeric words from wordlist", default=False, action="store_true")
 
 args = parser.parse_args()
 
@@ -316,15 +319,31 @@ if args.capitalize:
     print("Words will be Capitalized")
     payload.set_capitalize()
 
+# Strip extension
+if args.strip_extension:
+    print("Stripping extensions")
+    payload.set_strip_extension()
+
+# Only alphanumeric words
+if args.only_alpha:
+    print("Alpha words only")
+    payload.set_alpha()
+
 #
 # Payload queue configuration
 #
 payload.set_extensions(extension)
+payload.set_strip_extension()
 payload.set_remove_slash(remove_slash)
 payload.set_banned_response_codes(banned_response_codes)
 payload.set_unbanned_response_codes(unbanned_response_codes)
 payload.set_content(content)
 payload.set_recursive(recursive)
+
+payload_queue = payload.get_queue()
+total_requests = payload.get_total_requests()
+print("{:30} {:>}".format("Total requests:",  "%s (aprox: %s / thread)" %
+      (total_requests, int(total_requests / threads))))
 
 #
 # Manager queue configuration
@@ -348,6 +367,7 @@ Visitor.set_persist(persist)
 Visitor.allow_redirects(args.allow_redirects)
 Visitor.set_headers(personalized_headers)
 
+# Cookies
 try:
     cookie_jar = _make_cookie_jar(cookies)
     Visitor.set_cookies(cookie_jar)
@@ -357,10 +377,6 @@ except:
     print("[!] Error setting cookies. Review cookie string (key:value,key:value...)")
     sys.exit()
 
-payload_queue = payload.get_queue()
-total_requests = payload.get_total_requests()
-print("{:30} {:>}".format("Total requests:",  "%s (aprox: %s / thread)" %
-      (total_requests, int(total_requests / threads))))
 #
 # Create the thread_pool and start the daemonized threads
 #
@@ -381,7 +397,9 @@ show_content_type = args.show_content_type
 #   Run the main thread until manager exhaust all tasks
 #
 time_before_running = time.time()
-Console.start_eta_queue(30, total_requests)
+Console.number_of_requests = payload.get_total_requests()
+Console.number_of_threads = threads
+Console.start_eta_queue(30)
 Console.show_full_path = full_path
 Console.show_content_type = show_content_type
 Console.header()

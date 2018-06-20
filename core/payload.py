@@ -129,10 +129,13 @@ class Payload():
         self.uppercase = False
         self.capitalize = False
         self.recursive = False
+        self.strip_extension = False
+        self.only_alpha = False
         self.total_requests = 0
+        self.number_of_tasks = 0
 
     def get_total_requests(self):
-        return self.total_requests
+        return self.number_of_tasks
 
     def set_recursive(self, recursion):
         self.recursive = recursion
@@ -164,15 +167,27 @@ class Payload():
     def set_capitalize(self):
         self.capitalize = True
 
+    def set_strip_extension(self):
+        self.strip_extension = True
 
+    def set_alpha(self):
+        self.only_alpha = True
 
     def _feed_queue(self):
         for resource in self.payload:
+
+            if self.only_alpha:
+                if not resource.isalnum():
+                    continue
+
             if self.uppercase:
                 resource = resource.upper()
 
             if self.capitalize:
                 resource = resource.capitalize()
+
+            if self.strip_extension:
+                resource = resource.split('.')[0]
 
             # Useful when looking for files without extension instead of directories
             if self.remove_slash and resource.endswith("/"):
@@ -196,6 +211,7 @@ class Payload():
                 task.set_unbanned_response_codes(self.unbanned_response_codes)
                 task.set_content(self.content)
                 self.queue.put(task)
+                self.number_of_tasks += 1
 
     def get_queue(self):
         if self.recursive:
@@ -203,7 +219,7 @@ class Payload():
             # save main component (scheme + netloc)
             path = urlparse.urlparse(self.target).path
             saved_main_component = self.target[:self.target.find(path)]
-            self.total_requests = len(self.payload) * len(self.extensions) * len(url_components)
+            self.total_requests = self.number_of_tasks * len(self.extensions) * len(url_components)
 
             # if user select recursive but url is just root
             if len(url_components) == 1:
@@ -214,6 +230,6 @@ class Payload():
                     self.target = saved_main_component + i
                     self._feed_queue()
         else:
-            self.total_requests = len(self.payload) * len(self.extensions)
+            self.total_requests = self.number_of_tasks * len(self.extensions)
             self._feed_queue()
         return self.queue

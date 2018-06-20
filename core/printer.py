@@ -37,10 +37,11 @@ _get_terminal_width()
 
 class ETAQueue:
 
-    def __init__(self, size, requests):
+    def __init__(self, size, requests, threads):
         self.size = size
         self.times = []
         self.pending_requests = requests
+        self.threads = threads
 
     def get_eta(self):
         mseconds_in_a_hour = 3600000
@@ -48,7 +49,7 @@ class ETAQueue:
         mseconds_in_a_second = 1000
 
         median = sum(self.times)//len(self.times)
-        mseconds = self.pending_requests * median
+        mseconds = self.pending_requests * median // self.threads
 
         (r_hours, hours) = (mseconds % mseconds_in_a_hour, int(mseconds / mseconds_in_a_hour))
         (r_minutes, minutes) = (r_hours % mseconds_in_a_minute, int(r_hours / mseconds_in_a_minute))
@@ -71,10 +72,13 @@ class Console:
     eta = "00h00m00s"
     show_full_path = False
     show_content_type = False
+    visited = {}
+    number_of_requests = 0
+    number_of_threads = 0
 
     @staticmethod
-    def start_eta_queue(size, payload_length):
-        Console.eta_queue = ETAQueue(size, payload_length)
+    def start_eta_queue(size):
+        Console.eta_queue = ETAQueue(size, Console.number_of_requests, Console.number_of_threads)
 
     @staticmethod
     def header():
@@ -84,7 +88,7 @@ class Console:
 
     @staticmethod
     def body(task):
-        percentage = int(task.number * 100 / task.get_payload_length())
+        percentage = int(task.number * 100 / Console.number_of_requests)
         target = task.get_complete_target()
         target = urlparse.urlsplit(target).path
 
@@ -156,9 +160,16 @@ class Console:
                                           Console.eta,
                                           t_encode, content_type)
 
-        sys.stdout.write(to_console[:COLUMNS-2] + linesep)
-        sys.stdout.flush()
-        sys.stdout.write('\r')
+        # Skip already visited resources if they does not add value
+        if t_encode in Console.visited.keys():
+            (code, size) = Console.visited[t_encode]
+            if code == task.response_code and size == task.response_size:
+                return
+        else:
+            Console.visited[t_encode] = (task.response_code, task.response_size)
+            sys.stdout.write(to_console[:COLUMNS-2] + linesep)
+            sys.stdout.flush()
+            sys.stdout.write('\r')
 
-        if not os.name == 'nt':
-            sys.stdout.write("\x1b[0K")
+            if not os.name == 'nt':
+                sys.stdout.write("\x1b[0K")
