@@ -67,7 +67,7 @@ class ETAQueue:
         self.times.append(time)
 
 class Console:
-    MIN_COLUMN_SIZE = 55
+    MIN_COLUMN_SIZE = 64
     eta_queue = None
     eta = "00h00m00s"
     show_full_path = False
@@ -94,8 +94,6 @@ class Console:
 
         if task.location:
             target = target + " -> " + task.location
-        if len(target) > COLUMNS - Console.MIN_COLUMN_SIZE:
-            target = target[:abs(COLUMNS - Console.MIN_COLUMN_SIZE)]
 
         # If a task is valid means that is should be printed, so a proper
         # linesep will be printed
@@ -127,10 +125,8 @@ class Console:
             t_encode = target
 
         # Trying to tame the UNICODE beast on Python
-        if sys.version_info[0] == 3:
-            t_encode = target
-        else:
-            t_encode = target.encode('utf-8')
+        if not sys.version_info[0] == 3:
+            t_encode = t_encode.encode('utf-8')
 
         # Fix three characters off by one on screen
         if percentage == 100:
@@ -153,6 +149,10 @@ class Console:
                 color = None         
         else:
             Console.visited[t_encode] = (task.response_code, task.response_size)
+
+        # Cut resource if its length is wider than available columns
+        if len(t_encode) > COLUMNS - Console.MIN_COLUMN_SIZE:
+            t_encode = t_encode[:abs(COLUMNS - Console.MIN_COLUMN_SIZE)]
 
         # if an entry is about to be log, remove percentage and eta time
         if color:
