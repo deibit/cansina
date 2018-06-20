@@ -23,7 +23,7 @@ class Visitor(threading.Thread):
     killed = False
     cookies = None
     persist = False
-    allow_redirects = False
+    is_allow_redirects = False
     headers = {}
 
     @staticmethod
@@ -32,7 +32,7 @@ class Visitor(threading.Thread):
 
     @staticmethod
     def allow_redirects(pref):
-        Visitor.allow_redirects = pref
+        Visitor.is_allow_redirects = pref
 
     @staticmethod
     def kill():
@@ -120,10 +120,8 @@ class Visitor(threading.Thread):
             return False
 
         try:
-            headers = {}
             if Visitor.user_agent:
                 Visitor.headers['User-Agent'] = Visitor.user_agent
-                # headers = {"user-agent": Visitor.user_agent}
 
             now = time.time()
             timeout = sum(self.__time) / len(self.__time) if self.__time else 10
@@ -145,7 +143,7 @@ class Visitor(threading.Thread):
                                          timeout=timeout,
                                          auth=Visitor.auth,
                                          cookies=Visitor.cookies,
-                                         allow_redirects=Visitor.allow_redirects)
+                                         allow_redirects=Visitor.is_allow_redirects)
 
                 elif Visitor.requests == "HEAD":
                     r = self.session.head(task.get_complete_target(),
@@ -155,7 +153,7 @@ class Visitor(threading.Thread):
                                           timeout=timeout,
                                           auth=Visitor.auth,
                                           cookies=Visitor.cookies,
-                                          allow_redirects=Visitor.allow_redirects)
+                                          allow_redirects=Visitor.is_allow_redirects)
             else:
                 if Visitor.requests == "GET":
                     r = self.session.get(task.get_complete_target(),
@@ -164,7 +162,7 @@ class Visitor(threading.Thread):
                                          timeout=timeout,
                                          auth=Visitor.auth,
                                          cookies=Visitor.cookies,
-                                         allow_redirects=Visitor.allow_redirects)
+                                         allow_redirects=Visitor.is_allow_redirects)
 
                 elif Visitor.requests == "HEAD":
                     r = self.session.head(task.get_complete_target(),
@@ -173,7 +171,7 @@ class Visitor(threading.Thread):
                                           timeout=timeout,
                                           auth=Visitor.auth,
                                           cookies=Visitor.cookies,
-                                          allow_redirects=Visitor.allow_redirects)
+                                          allow_redirects=Visitor.is_allow_redirects)
 
             after = time.time()
             delta = (after - now) * 1000
@@ -202,7 +200,7 @@ class Visitor(threading.Thread):
                 task.content_has_detected(True)
 
             # Look for a redirection
-            if Visitor.allow_redirects:
+            if Visitor.is_allow_redirects:
                 if len(r.history) > 0 and not _dumb_redirect(r.history[-1].url):
                     task.response_code = str(r.history[0].status_code)
                     task.location = r.history[-1].url

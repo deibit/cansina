@@ -145,6 +145,14 @@ class Console:
         else:
             content_type = ""
 
+        # Skip already visited resources if they does not add value
+        if t_encode in Console.visited.keys():
+            (code, size) = Console.visited[t_encode]
+            if code == task.response_code and size == task.response_size:
+                color = None         
+        else:
+            Console.visited[t_encode] = (task.response_code, task.response_size)
+
         # if an entry is about to be log, remove percentage and eta time
         if color:
             to_console = to_format_without_progress.format(task.response_code,
@@ -160,16 +168,9 @@ class Console:
                                           Console.eta,
                                           t_encode, content_type)
 
-        # Skip already visited resources if they does not add value
-        if t_encode in Console.visited.keys():
-            (code, size) = Console.visited[t_encode]
-            if code == task.response_code and size == task.response_size:
-                return
-        else:
-            Console.visited[t_encode] = (task.response_code, task.response_size)
-            sys.stdout.write(to_console[:COLUMNS-2] + linesep)
-            sys.stdout.flush()
-            sys.stdout.write('\r')
+        sys.stdout.write(to_console[:COLUMNS-2] + linesep)
+        sys.stdout.flush()
+        sys.stdout.write('\r')
 
-            if not os.name == 'nt':
-                sys.stdout.write("\x1b[0K")
+        if not os.name == 'nt':
+            sys.stdout.write("\x1b[0K")

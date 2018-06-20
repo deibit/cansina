@@ -333,7 +333,6 @@ if args.only_alpha:
 # Payload queue configuration
 #
 payload.set_extensions(extension)
-payload.set_strip_extension()
 payload.set_remove_slash(remove_slash)
 payload.set_banned_response_codes(banned_response_codes)
 payload.set_unbanned_response_codes(unbanned_response_codes)

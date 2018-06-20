@@ -175,18 +175,20 @@ class Payload():
 
     def _feed_queue(self):
         for resource in self.payload:
-
             if self.only_alpha:
                 if not resource.isalnum():
                     continue
 
             if self.uppercase:
+                input("upper")
                 resource = resource.upper()
 
             if self.capitalize:
+                input("capi")
                 resource = resource.capitalize()
 
             if self.strip_extension:
+                input("stripext")
                 resource = resource.split('.')[0]
 
             # Useful when looking for files without extension instead of directories
