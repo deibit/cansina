@@ -20,6 +20,17 @@ else:
 
 COLUMNS = 80
 
+banner = '''
+   _____                _
+  / ____|              (_)
+ | |     __ _ _ __  ___ _ _ __   __ _
+ | |    / _` | '_ \/ __| | '_ \ / _` |
+ | |___| (_| | | | \__ \ | | | | (_| |
+  \_____\__,_|_| |_|___/_|_| |_|\__,_|
+
+'''
+
+
 def _get_terminal_width():
     '''
         Get the terminal width to adjust columns size
@@ -146,7 +157,7 @@ class Console:
         if t_encode in Console.visited.keys():
             (code, size) = Console.visited[t_encode]
             if code == task.response_code and size == task.response_size:
-                color = None         
+                color = None
         else:
             Console.visited[t_encode] = (task.response_code, task.response_size)
 

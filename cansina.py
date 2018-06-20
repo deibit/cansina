@@ -52,10 +52,12 @@ except NameError:
 USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 10.0; Windows NT 9.0; en-EN)"
 THREADS = 4
 
+from core.printer import banner
+print(banner)
+
 #
 #   Utility functions
 #
-
 
 def _check_domain(target_url):
     """Get the target url from the user, clean and return it"""
