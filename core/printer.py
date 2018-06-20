@@ -120,16 +120,17 @@ class Console:
         to_format = color + "{1: ^3} | {2: >10} | {3: >6} | {4: >4} | {7} [{0: >2}%] - {5: ^9} - {6}" + ENDC
         to_format_without_progress = color + "{0: ^3} | {1: >10} | {2: >6} | {3: >4} | {5:^} {4}" + ENDC
 
-        if sys.version_info[0] == 3:
-            t_encode = target
-        else:
-            t_encode = target.encode('utf-8')
-
         # User wants to see full path
         if Console.show_full_path:
             t_encode = task.get_complete_target()
         else:
             t_encode = target
+
+        # Trying to tame the UNICODE beast on Python
+        if sys.version_info[0] == 3:
+            t_encode = target
+        else:
+            t_encode = target.encode('utf-8')
 
         # Fix three characters off by one on screen
         if percentage == 100:
