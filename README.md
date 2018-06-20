@@ -15,6 +15,56 @@ Feature requests and comments are welcome.
 
 Cansina is included in [BlackArch Linux](https://www.blackarch.org/), give it a try!
 
+Options
+-------
+
+```usage: cansina.py -u url -p payload [options]
+
+Cansina is a web content discovery tool. It makes requests and analyze the
+responses trying to figure out whether the resource is or not accessible.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -A AUTHENTICATION     Basic Authentication (e.g: user:password)
+  -C COOKIES            your cookies (e.g: key:value)
+  -D                    Check for fake 404 (warning: machine decision)
+  -H                    Make HTTP HEAD requests
+  -P PROXIES            Set a http and/or https proxy (ex:
+                        http://127.0.0.1:8080,https://...
+  -S                    Remove ending slash for payloads
+  -T REQUEST_DELAY      Time (a float number, e.g: 0.25 or 1.75) between
+                        requests
+  -U                    Make payload requests upper-case
+  -a USER_AGENT         The preferred user-agent (default provided)
+  -b BANNED             List of banned response codes
+  -B UNBANNED           List of unbanned response codes, mark all response as
+                        invalid without unbanned response codes, higher
+                        priority than banned
+  -c CONTENT            Inspect content looking for a particular string
+  -d DISCRIMINATOR      If this string if found it will be treated as a 404
+  -e EXTENSION          Extension list to use e.g: php,asp,...(default none)
+  -p PAYLOAD            A single file, a file with filenames (.payload) or a
+                        directory (will do *.txt)
+  -s SIZE_DISCRIMINATOR
+                        Will skip pages with this size in bytes (or a list of
+                        sizes 0,500,1500...)
+  -t THREADS            Number of threads (default 4)
+  -u TARGET             Target url
+  -r RESUME             Resume a session
+  -R                    Parse robots.txt and check its contents
+  --recursive           Recursive descend on path directories
+  --persist             Use HTTP persistent connections
+  --full-path           Show full path instead of only resources
+  --show-type           Show content-type in results
+  --no-follow           Do not follow redirections
+  --line CONTINUE_LINE  Continue payload in line <n>
+  --headers HEADERS     Set personalized headers: key=value;key=value...
+  --capitalize          Transform 'word' into 'Word'.
+  --strip-extension     Strip word extension: word.ext into word
+  --alpha               Filter non alphanumeric words from wordlist
+
+License, requests, etc: https://github.com/deibit/cansina```
+
 
 Screenshot
 ----------
