@@ -63,7 +63,8 @@ optional arguments:
   --strip-extension     Strip word extension: word.ext into word
   --alpha               Filter non alphanumeric words from wordlist
 
-License, requests, etc: https://github.com/deibit/cansina```
+License, requests, etc: https://github.com/deibit/cansina
+```
 
 
 Screenshot
