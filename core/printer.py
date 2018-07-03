@@ -21,13 +21,6 @@ else:
 COLUMNS = 80
 
 banner = '''
-   _____                _
-  / ____|              (_)
- | |     __ _ _ __  ___ _ _ __   __ _
- | |    / _` | '_ \/ __| | '_ \ / _` |
- | |___| (_| | | | \__ \ | | | | (_| |
-  \_____\__,_|_| |_|___/_|_| |_|\__,_|
-
 '''
 
 
@@ -93,7 +86,7 @@ class Console:
 
     @staticmethod
     def header():
-        header = os.linesep + "cod |    size    |  line  | time |" \
+        header = os.linesep + "Code |    Size    |  Line  | Time |" \
             + os.linesep + "----------------------------------" + os.linesep
         sys.stdout.write(header)
 
