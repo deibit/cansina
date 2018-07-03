@@ -1,1 +1,1 @@
-ifconfig
+ls
