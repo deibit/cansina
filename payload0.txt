@@ -1,0 +1,4 @@
+admin
+images
+css
+js
