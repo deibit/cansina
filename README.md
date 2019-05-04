@@ -1,6 +1,14 @@
 Cansina
 =======
 
+**IMPORTANT**: Clone this repository with:
+
+```
+    git clone depth=1 https://github.com/deibit/cansina
+```
+
+---
+
 [![Build Status](https://travis-ci.org/deibit/cansina.svg?branch=master)](https://travis-ci.org/deibit/cansina)
 
 Cansina is a Web Content Discovery Application.
@@ -153,7 +161,7 @@ Cansina does not come with list but there are some awesome projects to supply th
 License information
 -------------------
 
-Copyright (C) 2013-2018 David García
+Copyright (C) 2013-2019 David García
 
 License: GNU General Public License, version 3 or later; see LICENSE.txt
          included in this archive for details.
