@@ -4,7 +4,7 @@ Cansina
 **IMPORTANT**: Clone this repository with:
 
 ```
-    git clone depth=1 https://github.com/deibit/cansina
+    git clone --depth=1 https://github.com/deibit/cansina
 ```
 
 ---
