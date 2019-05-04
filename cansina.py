@@ -385,7 +385,6 @@ thread_pool = []
 for visitor_id in range(0, threads):
     v = Visitor(visitor_id, payload_queue, manager)
     thread_pool.append(v)
-    v.daemon = True
     v.start()
 
 # Select if full path is prefered
