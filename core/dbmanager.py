@@ -8,8 +8,6 @@ try:
 except:
     import queue as Queue
 
-from core.printer import Console
-
 OUTPUT_DIR = "output" + os.sep
 SUFIX = ".sqlite"
 
@@ -48,18 +46,14 @@ class DBManager():
         self.queue = Queue.Queue()
         self.database_name = database_name
 
-    def get_a_task(self, alived):
+    def get_a_task(self):
         try:
-            task = self.queue.get(False)
+            task = self.queue.get()
             if task:
                 self.process(task)
                 self.queue.task_done()
-                Console.body(task)
-            else:
-                print("no task")
-            return True
         except Queue.Empty:
-            return bool(alived)
+            return
 
     def get_results_queue(self):
         return self.queue

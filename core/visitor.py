@@ -3,8 +3,9 @@ import time
 import sys
 import urllib
 import hashlib
-
 import requests
+
+from core.printer import Console
 
 unuseful_codes = ['404']
 strict_codes = ['100', '200', '300', '301', '302', '401', '403', '405', '500']
@@ -85,19 +86,18 @@ class Visitor(threading.Thread):
     def set_persist(persist):
         Visitor.persist = persist
 
-    def __init__(self, visitor_id, payload, results):
+    def __init__(self, visitor_id, payload, results, lock):
         threading.Thread.__init__(self)
         self.visitor_id = visitor_id
         self.payload = payload
-        self.results = results.get_results_queue()
+        self.results = results
         self.__time = []
         self.session = None
+        self.lock = lock
 
     def run(self):
         try:
-            while not self.payload.empty():
-                if Visitor.killed:
-                    break
+            while not self.payload.empty() and not Visitor.killed:
                 self.visit(self.payload.get())
                 self.payload.task_done()
         except:
@@ -214,13 +214,15 @@ class Visitor(threading.Thread):
                 except:
                     pass
 
-            self.results.put(task)
+            self.lock.acquire()
+            Console.body(task)
+            self.results.get_results_queue().put(task)
+            self.results.get_a_task()
 
             if Visitor.delay:
                 time.sleep(Visitor.delay)
 
         except (requests.ConnectionError, requests.Timeout) as e:
-            # sys.stderr.write("Connection (or/and) timeout error" + os.linesep)
             # TODO log to a file instead of screen
             print ("[!] Timeout/Connection error")
             print (e)
@@ -228,3 +230,6 @@ class Visitor(threading.Thread):
         except Exception as e:
             print ("[!] General exception while visiting")
             print (e)
+
+        finally:
+            self.lock.release()

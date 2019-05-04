@@ -6,6 +6,7 @@ import time
 import socket
 import pickle
 import tempfile
+import threading
 
 try:
     import urlparse
@@ -351,6 +352,7 @@ print("{:30} {:>}".format("Total requests:",  "%s (aprox: %s / thread)" %
 #
 database_name = urlparse.urlparse(target).hostname
 manager = DBManager(database_name)
+manager_lock = threading.Lock()
 
 #
 # Configure Visitor Objects
@@ -378,15 +380,6 @@ except:
     print("[!] Error setting cookies. Review cookie string (key:value,key:value...)")
     sys.exit()
 
-#
-# Create the thread_pool and start the daemonized threads
-#
-thread_pool = []
-for visitor_id in range(0, threads):
-    v = Visitor(visitor_id, payload_queue, manager)
-    thread_pool.append(v)
-    v.start()
-
 # Select if full path is prefered
 full_path = args.full_path
 
@@ -404,31 +397,42 @@ Console.show_full_path = full_path
 Console.show_content_type = show_content_type
 Console.header()
 
+#
+# Create the thread_pool and start the daemonized threads
+#
+thread_pool = []
+for visitor_id in range(threads):
+    v = Visitor(visitor_id, payload_queue, manager, manager_lock)
+    thread_pool.append(v)
+    v.start()
+
 # Main loop
 try:
-    while True:
-        visitors_alive = any([visitor.is_alive() for visitor in thread_pool])
-        if not manager.get_a_task(visitors_alive):
-            break
+    payload_queue.join()
+    for visitor in thread_pool:
+        visitor.join()
+
 except KeyboardInterrupt:
-    sys.stdout.write(os.linesep + "Waiting for threads to stop...")
     Visitor.kill()
+    print(os.linesep + "Waiting for threads to stop...")
+    for visitor in thread_pool:
+        visitor.join()
     resp = raw_input(os.linesep + "Keep a resume file? [y/N] ")
     if resp == 'y':
         resumer.set_line(payload_queue.get().get_number())
         with open("resume_file_" + time.strftime("%d_%m_%y_%H_%M", time.localtime()), 'w') as f:
             pickle.dump(resumer, f)
+
 except Exception as e:
     import traceback as tb
     sys.stderr.write("[!] Unknown exception: %s" % e)
     print(tb.print_tb(sys.exc_info()[2]))
 
-sys.stdout.write("Finishing...")
+print("Finishing...")
 
 time_after_running = time.time()
 delta = round(timedelta(seconds=(time_after_running -
                                  time_before_running)).total_seconds(), 2)
 print("Task took %i seconds" % delta)
 
-sys.stdout.flush()
 sys.exit()
