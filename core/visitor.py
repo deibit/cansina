@@ -20,7 +20,7 @@ class Visitor(threading.Thread):
     banned_md5 = None
     delay = None
     requests = ""
-    size_discriminator = -1
+    size_discriminator = []
     killed = False
     cookies = None
     persist = False
@@ -178,25 +178,24 @@ class Visitor(threading.Thread):
             tmp_content = r.content
             task.response_size = len(tmp_content)
             task.response_time = delta
+            task.set_response_code(r.status_code)
             self.__time.append(delta)
 
             # If discriminator is found we mark it 404
             if sys.version_info[0] >= 3:
                 tmp_content = tmp_content.decode('Latin-1')
             if Visitor.discriminator and Visitor.discriminator in tmp_content:
-                r.status_code = '404'
+                task.ignorable = True
 
             if Visitor.banned_md5 and hashlib.md5("".join(tmp_content)).hexdigest() == self.banned_md5:
-                r.status_code = '404'
+                task.ignorable = True
 
             # Check if page size is not what we need
             if task.response_size in Visitor.size_discriminator:
-                r.status_code = '404'
-
-            task.set_response_code(r.status_code)
+                task.ignorable = True
 
             # Look for interesting content
-            if task.content and (task.content in tmp_content) and not task.response_code == '404':
+            if task.content and (task.content in tmp_content):
                 task.content_has_detected(True)
 
             # Look for a redirection
@@ -207,6 +206,7 @@ class Visitor(threading.Thread):
             else:
                 if str(r.status_code).startswith('3'):
                     task.set_response_code('404')
+                    task.ignorable = True
 
             if 'content-type' in [h.lower() for h in r.headers.keys()]:
                 try:

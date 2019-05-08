@@ -21,6 +21,7 @@ class Task:
         self.response_type = ""
         self.valid = True
         self.content_detected = False
+        self.ignorable = False
 
     def set_payload_length(self, length):
         self.payload_length = length

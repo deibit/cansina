@@ -16,6 +16,7 @@ else:
     GREEN = '\033[32m'
     YELLOW = '\033[33m'
     LBLUE = '\033[36m'
+    GRAY = '\033[90m'
     ENDC = '\033[0m'
 
 COLUMNS = 80
@@ -99,6 +100,8 @@ class Console:
 
     @staticmethod
     def body(task):
+        if task.ignorable:
+            return
         percentage = int(task.number * 100 / Console.number_of_requests)
         target = task.get_complete_target()
         target = urlparse.urlsplit(target).path
@@ -119,6 +122,8 @@ class Console:
             color = GREEN
         if task.response_code == "401" or task.response_code == "403":
             color = RED
+        if task.response_code == "404" and (not task.response_code in task.banned_response_codes):
+            color = GRAY
         if task.response_code == "301" or task.response_code == "302":
             color = LBLUE
         if task.response_code.startswith('5') or task.response_code == '400':
@@ -140,7 +145,7 @@ class Console:
             t_encode = t_encode.encode('utf-8')
 
         # Fix three characters off by one on screen
-        if percentage == 100:
+        if percentage >= 100:
             percentage = 99
 
         Console.eta_queue.set_time(task.response_time)
@@ -166,12 +171,14 @@ class Console:
             t_encode = t_encode[:abs(COLUMNS - Console.MIN_COLUMN_SIZE)]
 
         # if an entry is about to be log, remove percentage and eta time
-        if color:
+        if color and not task.response_code in task.banned_response_codes:
             to_console = to_format_without_progress.format(task.response_code,
                                                     task.response_size,
                                                     task.number,
                                                     int(task.response_time),
                                                     t_encode, content_type)
+
+            sys.stdout.write(to_console[:COLUMNS-2] + os.linesep)
         # print with progress
         else:
             to_console = to_format.format(percentage, task.response_code,
@@ -180,7 +187,7 @@ class Console:
                                           Console.eta,
                                           t_encode, content_type)
 
-        sys.stdout.write(to_console[:COLUMNS-2] + linesep)
+        sys.stdout.write(to_console[:COLUMNS-2])
         sys.stdout.flush()
         sys.stdout.write('\r')
 
