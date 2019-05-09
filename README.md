@@ -161,7 +161,7 @@ Cansina does not come with list but there are some awesome projects to supply th
 License information
 -------------------
 
-Copyright (C) 2013-2019 David García
+Copyright (C) 2013-2019 David García [@dgn1729](https://twitter.com/dgn1729)
 
 License: GNU General Public License, version 3 or later; see LICENSE.txt
          included in this archive for details.
