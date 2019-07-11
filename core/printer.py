@@ -87,6 +87,11 @@ class Console:
     visited = {}
     number_of_requests = 0
     number_of_threads = 0
+    show_progress = True
+    
+    @staticmethod
+    def set_show_progress(show_progress):
+        Console.show_progress = show_progress
 
     @staticmethod
     def start_eta_queue(size):
@@ -180,14 +185,15 @@ class Console:
 
             sys.stdout.write(to_console[:COLUMNS-2] + os.linesep)
         # print with progress
-        else:
+        elif Console.show_progress:
             to_console = to_format.format(percentage, task.response_code,
                                           task.response_size, task.number,
                                           int(task.response_time),
                                           Console.eta,
                                           t_encode, content_type)
 
-        sys.stdout.write(to_console[:COLUMNS-2])
+            sys.stdout.write(to_console[:COLUMNS-2])
+
         sys.stdout.flush()
         sys.stdout.write('\r')
 

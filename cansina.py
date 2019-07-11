@@ -184,6 +184,8 @@ parser.add_argument('--strip-extension', dest='strip_extension',
         help="Strip word extension: word.ext into word", default=False, action="store_true")
 parser.add_argument('--alpha', dest='only_alpha',
         help="Filter non alphanumeric words from wordlist", default=False, action="store_true")
+parser.add_argument('--no-progress', dest='no_progress',
+        help="Don't show tested words and progress. (For dumb terminals)", default=False, action="store_true")
 
 args = parser.parse_args()
 
@@ -396,6 +398,7 @@ Console.start_eta_queue(30)
 Console.show_full_path = full_path
 Console.show_content_type = show_content_type
 Console.header()
+Console.set_show_progress(False if args.no_progress else True)
 
 #
 # Create the thread_pool and start the daemonized threads
