@@ -187,7 +187,7 @@ parser.add_argument('--alpha', dest='only_alpha',
 parser.add_argument('--no-progress', dest='no_progress',
         help="Don't show tested words and progress. (For dumb terminals)", default=False, action="store_true")
 parser.add_argument('--no-colors', dest='no_colors',
-        help="Disable coloring. (For dumb terminals)", default=False, action="store_true")
+        help="Don't use output colors to keep output clean, e.g. when redirecting output to file", default=False, action="store_true")
 
 args = parser.parse_args()
 
