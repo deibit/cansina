@@ -70,6 +70,8 @@ optional arguments:
   --capitalize          Transform 'word' into 'Word'.
   --strip-extension     Strip word extension: word.ext into word
   --alpha               Filter non alphanumeric words from wordlist
+  --no-progress         Don't show tested words and progress. (For dumb terminals)
+  --no-colors           Don't use output colors to keep output clean, e.g. when redirecting output to file
 
 License, requests, etc: https://github.com/deibit/cansina
 ```
@@ -84,7 +86,7 @@ Screenshot
 Installing dependencies
 =======================
 
-pip install --user requests[security] or pip install -r requeriments.txt
+pip install --user requests[security] or pip install -r requirements.txt
 
 (try removing --user and install with sudo in case of errors)
 
