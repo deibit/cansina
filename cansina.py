@@ -352,7 +352,9 @@ print("{:30} {:>}".format("Total requests:",  "%s (aprox: %s / thread)" %
 #
 # Manager queue configuration
 #
-database_name = urlparse.urlparse(target).hostname
+database_name = urlparse.urlparse(target).scheme + '_' + urlparse.urlparse(target).hostname
+if urlparse.urlparse(target).port is not None:
+    database_name += '_' + str(urlparse.urlparse(target).port)
 manager = DBManager(database_name)
 manager_lock = threading.Lock()
 
