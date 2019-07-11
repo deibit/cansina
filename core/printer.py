@@ -88,10 +88,14 @@ class Console:
     number_of_requests = 0
     number_of_threads = 0
     show_progress = True
+    show_colors = True
     
     @staticmethod
     def set_show_progress(show_progress):
         Console.show_progress = show_progress
+
+    def set_show_colors(show_colors):
+        Console.show_colors = show_colors
 
     @staticmethod
     def start_eta_queue(size):
@@ -122,22 +126,26 @@ class Console:
         elif os.name == 'nt':
             return
 
-        color = ""
-        if task.response_code == "200":
-            color = GREEN
-        if task.response_code == "401" or task.response_code == "403":
-            color = RED
-        if task.response_code == "404" and (not task.response_code in task.banned_response_codes):
-            color = GRAY
-        if task.response_code == "301" or task.response_code == "302":
-            color = LBLUE
-        if task.response_code.startswith('5') or task.response_code == '400':
-            color = YELLOW
-        if task.content_detected:
-            color = MAGENTA
+        to_format = "{1: ^3} | {2: >10} | {3: >6} | {4: >4} | {7} [{0: >2}%] - {5: ^9} - {6}"
+        to_format_without_progress = "{0: ^3} | {1: >10} | {2: >6} | {3: >4} | {5:^} {4}"
 
-        to_format = color + "{1: ^3} | {2: >10} | {3: >6} | {4: >4} | {7} [{0: >2}%] - {5: ^9} - {6}" + ENDC
-        to_format_without_progress = color + "{0: ^3} | {1: >10} | {2: >6} | {3: >4} | {5:^} {4}" + ENDC
+        color = ""
+        if Console.show_colors:
+            if task.response_code == "200":
+                color = GREEN
+            if task.response_code == "401" or task.response_code == "403":
+                color = RED
+            if task.response_code == "404" and (not task.response_code in task.banned_response_codes):
+                color = GRAY
+            if task.response_code == "301" or task.response_code == "302":
+                color = LBLUE
+            if task.response_code.startswith('5') or task.response_code == '400':
+                color = YELLOW
+            if task.content_detected:
+                color = MAGENTA
+
+            to_format = color + to_format + ENDC
+            to_format_without_progress = color + to_format_without_progress + ENDC
 
         # User wants to see full path
         if Console.show_full_path:
@@ -176,7 +184,7 @@ class Console:
             t_encode = t_encode[:abs(COLUMNS - Console.MIN_COLUMN_SIZE)]
 
         # if an entry is about to be log, remove percentage and eta time
-        if color and not task.response_code in task.banned_response_codes:
+        if color is not None and not task.response_code in task.banned_response_codes:
             to_console = to_format_without_progress.format(task.response_code,
                                                     task.response_size,
                                                     task.number,
@@ -193,9 +201,9 @@ class Console:
                                           t_encode, content_type)
 
             sys.stdout.write(to_console[:COLUMNS-2])
+            sys.stdout.write('\r')
 
         sys.stdout.flush()
-        sys.stdout.write('\r')
 
-        if not os.name == 'nt':
+        if not os.name == 'nt' and Console.show_progress:
             sys.stdout.write("\x1b[0K")
