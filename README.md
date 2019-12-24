@@ -93,8 +93,8 @@ pip install --user requests[security] or pip install -r requirements.txt
 git clone --depth=1 https://github.com/deibit/cansina
 
 
-Fast use
-========
+Fast usage
+==========
 
 $ python3 cansina.py -u <site_url> -p <payload_file> --persist
 
