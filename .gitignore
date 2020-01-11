@@ -49,3 +49,4 @@ test.txt
 .vcode/*
 ./plugins/linkextractor.py
 .vscode
+venv/*

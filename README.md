@@ -83,20 +83,28 @@ Screenshot
 ![CansinaImage](https://github.com/deibit/cansina/raw/gh-pages/images/cansina-showcase.png "Image")
 
 
-Installing dependencies
-=======================
+Installation
+============
 
-pip install --user requests[security] or pip install -r requirements.txt
+From release tagged Py27, Cansina is made with Python 3.x in mind.
 
-(try removing --user and install with sudo in case of errors)
+[Last version with Python 2.7 support](https://github.com/deibit/cansina/tree/Py27)
 
-git clone --depth=1 https://github.com/deibit/cansina
+``` git clone --depth=1 https://github.com/deibit/cansina
+
+cd cansina
+
+pip install -r requirements.txt
+```
 
 
-Fast usage
-==========
+Usage
+======
 
-$ python3 cansina.py -u <site_url> -p <payload_file> --persist
+[Wiki](https://github.com/deibit/cansina/wiki) is full of documentation and examples. But as a fast example:
+
+```python3 cansina.py -u <site_url> -p <payload_file> --persist
+```
 
 Cansina is Python 2 compatible but 3 is more than advisable.
 
@@ -154,16 +162,11 @@ Dependencies
 Wordlists
 ---------
 
-Cansina does not come with list but there are some awesome projects to supply this:
-
 - [SecList](https://github.com/danielmiessler/SecLists)
-- [fuzzdb](https://code.google.com/p/fuzzdb/)
 
 
 License information
 -------------------
-
-Copyright (C) 2013-2019 David García [@dgn1729](https://twitter.com/dgn1729)
 
 License: GNU General Public License, version 3 or later; see LICENSE.txt
          included in this archive for details.
