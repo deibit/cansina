@@ -101,7 +101,7 @@ pip install -r requirements.txt
 
 
 Usage
-======
+-----
 
 [Wiki](https://github.com/deibit/cansina/wiki) is full of documentation and examples. But as a fast example:
 
@@ -113,6 +113,11 @@ Cansina is Python 2 compatible but 3 is more than advisable.
 
 --persist is optional but it speedup the process. Also the noise.
 
+Help summary:
+
+```
+python3 cansina.py -h
+```
 
 Features
 --------
@@ -134,14 +139,6 @@ Features
 - Path recursion
 - Persistent connections
 - Complementary tools
-
-
-Usage
------
-
-cansina.py -h for a comprehensive list of features and choices.
-
-Look up the [wiki](https://github.com/deibit/cansina/wiki), it's full of information.
 
 
 Important
