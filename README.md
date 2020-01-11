@@ -26,7 +26,8 @@ Cansina is included in [BlackArch Linux](https://www.blackarch.org/), give it a 
 Options
 -------
 
-```usage: cansina.py -u url -p payload [options]
+```
+usage: cansina.py -u url -p payload [options]
 
 Cansina is a web content discovery tool. It makes requests and analyze the
 responses trying to figure out whether the resource is or not accessible.
@@ -90,7 +91,8 @@ From release tagged Py27, Cansina is made with Python 3.x in mind.
 
 [Last version with Python 2.7 support](https://github.com/deibit/cansina/tree/Py27)
 
-``` git clone --depth=1 https://github.com/deibit/cansina
+```
+git clone --depth=1 https://github.com/deibit/cansina
 
 cd cansina
 
@@ -103,7 +105,8 @@ Usage
 
 [Wiki](https://github.com/deibit/cansina/wiki) is full of documentation and examples. But as a fast example:
 
-```python3 cansina.py -u <site_url> -p <payload_file> --persist
+```
+python3 cansina.py -u <site_url> -p <payload_file> --persist
 ```
 
 Cansina is Python 2 compatible but 3 is more than advisable.
