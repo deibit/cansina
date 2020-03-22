@@ -5,28 +5,22 @@ import fileinput
 import os
 import os.path
 import fnmatch
+import queue
 
-try:
-    import Queue
-except:
-    import queue as Queue
-
-try:
-    import urlparse
-except:
-    import urllib.parse as urlparse
+import urllib.parse as urlparse
 
 from core.task import Task
 
+
 def _get_url_components(target):
-    ''' Get a url and returns multiple paths composed by recursive components'''
-    path = [i for i in urlparse.urlparse(target).path.split('/') if len(i) > 0]
+    """ Get a url and returns multiple paths composed by recursive components"""
+    path = [i for i in urlparse.urlparse(target).path.split("/") if len(i) > 0]
     temp_path = ""
-    list_path = ['/']
+    list_path = ["/"]
     for component in path:
         sub = "/%s" % component
         temp_path += sub
-        list_path.append(temp_path + '/')
+        list_path.append(temp_path + "/")
     return list_path
 
 
@@ -34,32 +28,35 @@ def _populate_list_with_file(file_name, linenumber):
     """ Open a file, read its content and strips it. Returns a list with the content
         additionally it filter and clean some splinters
     """
+
     def _read_a_file_return_a_list(file_name):
-        '''
+        """
             Small utility function. Open a file a return its content as a list
-        '''
+        """
         tmp_list = []
         try:
             if sys.version_info > (3, 0):
-                f =  open(file_name, 'r', encoding="latin-1")
+                f = open(file_name, "r", encoding="latin-1")
             else:
-                f =  open(file_name, 'r')
+                f = open(file_name, "r")
             tmp_list = f.readlines()
 
         except (OSError, IOError) as e:
-            print("[!] Opening payload. Check file, list of files or directory content.")
+            print(
+                "[!] Opening payload. Check file, list of files or directory content."
+            )
             print(e)
             sys.exit()
 
         return tmp_list
 
-    #FIXME: Garbage
+    # FIXME: Garbage
     tmp_list = None
     # If we receive a list then they are robots.txt entries
     if type(file_name) == list:
         tmp_list = file_name
     # If filename is - we are dealing with stdin
-    elif file_name == '-':
+    elif file_name == "-":
         tmp_list = []
         for line in fileinput.input(files=file_name):
             tmp_list.append(line)
@@ -67,7 +64,7 @@ def _populate_list_with_file(file_name, linenumber):
     elif os.path.isfile(file_name):
         tmp_list = _read_a_file_return_a_list(file_name)
         # Now is time to check if is a list or single payload
-        if not file_name.endswith('.payload'):
+        if not file_name.endswith(".payload"):
             tmp_list = tmp_list[linenumber:]
         else:
             payload_list = tmp_list
@@ -79,47 +76,55 @@ def _populate_list_with_file(file_name, linenumber):
     # If we receive a dir then try to open all .txt files in there
     elif os.path.isdir(file_name):
         tmp_list = []
-        print("[*] Directory payload inclusion. All *.txt will be treated as a payload.")
+        print(
+            "[*] Directory payload inclusion. All *.txt will be treated as a payload."
+        )
         for file in os.listdir(file_name):
-            if fnmatch.fnmatch(file, '*.txt'):
-                tmp_list.extend(_read_a_file_return_a_list("{0}/{1}".format(file_name, file)))
+            if fnmatch.fnmatch(file, "*.txt"):
+                tmp_list.extend(
+                    _read_a_file_return_a_list("{0}/{1}".format(file_name, file))
+                )
 
     clean_list = []
     for e in tmp_list:
         # Delete leading and trailing spaces
         e = e.strip()
         # Skip commented lines in payload files
-        if e.startswith('#'):
+        if e.startswith("#"):
             continue
         # Remove leading '/' characters
-        if e.startswith('/'):
+        if e.startswith("/"):
             e = e[1:]
 
         if sys.version_info[0] == 3:
             e_encode = e
         else:
-            e_encode = e.decode('utf-8', 'replace')
+            e_encode = e.decode("utf-8", "replace")
         clean_list.append(e_encode)
     return clean_list
 
+
 def _has_extension(res):
-    #whether the last path sector has '.'
+    # whether the last path sector has '.'
     if res.rfind("/") == -1:
         return "." in res
     else:
-        return "." in res[res.rfind("/"):]
+        return "." in res[res.rfind("/") :]
 
-class Payload():
+
+class Payload:
     def __init__(self, target, payload_filename, resumer):
 
         self.target = target
         self.task_id = 0
         # Payload may be a filename, a python list, a directory or a file with
         # paths to multiple payload files
-        self.payload_filename = payload_filename if not type(payload_filename) == list else "robots.txt"
+        self.payload_filename = (
+            payload_filename if not type(payload_filename) == list else "robots.txt"
+        )
         self.linenumber = resumer.get_line()
         self.payload = _populate_list_with_file(payload_filename, self.linenumber)
-        self.queue = Queue.Queue()
+        self.queue = queue.Queue()
         self.dead = False
         self.extensions = None
         self.banned_response_codes = None
@@ -186,7 +191,7 @@ class Payload():
                 resource = resource.capitalize()
 
             if self.strip_extension:
-                resource = resource.split('.')[0]
+                resource = resource.split(".")[0]
 
             # Useful when looking for files without extension instead of directories
             if self.remove_slash and resource.endswith("/"):
@@ -195,12 +200,16 @@ class Payload():
             for extension in self.extensions:
                 # If resource is a whole word and user didnt provide a extension
                 # put a final /
-                if not extension and not _has_extension(resource) and not self.remove_slash:
-                    resource += '/'
+                if (
+                    not extension
+                    and not _has_extension(resource)
+                    and not self.remove_slash
+                ):
+                    resource += "/"
 
                 # Put a . before extension if the users didnt do it
-                if extension and not '.' in extension:
-                    extension = '.' + extension
+                if extension and not "." in extension:
+                    extension = "." + extension
 
                 self.task_id += 1
                 task = Task(self.task_id, self.target, resource, extension)
@@ -217,8 +226,10 @@ class Payload():
             url_components = _get_url_components(self.target)
             # save main component (scheme + netloc)
             path = urlparse.urlparse(self.target).path
-            saved_main_component = self.target[:self.target.find(path)]
-            self.total_requests = self.number_of_tasks * len(self.extensions) * len(url_components)
+            saved_main_component = self.target[: self.target.find(path)]
+            self.total_requests = (
+                self.number_of_tasks * len(self.extensions) * len(url_components)
+            )
 
             # if user select recursive but url is just root
             if len(url_components) == 1:

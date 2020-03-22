@@ -5,27 +5,26 @@ import urllib
 import hashlib
 import requests
 
-from core.printer import Console
 
-unuseful_codes = ['404']
-strict_codes = ['100', '200', '300', '301', '302', '401', '403', '405', '500']
+unuseful_codes = ["404"]
+strict_codes = ["100", "200", "300", "301", "302", "401", "403", "405", "500"]
 
 
 class Visitor(threading.Thread):
     auth = None
-    user_agent = None
-    proxy = None
-    discriminator = None
     banned_location = None
     banned_md5 = None
+    cookies = None
     delay = None
+    discriminator = None
+    headers = {}
+    is_allow_redirects = False
+    killed = False
+    persist = False
+    proxy = None
     requests = ""
     size_discriminator = []
-    killed = False
-    cookies = None
-    persist = False
-    is_allow_redirects = False
-    headers = {}
+    user_agent = None
 
     @staticmethod
     def set_headers(headers):
@@ -80,7 +79,7 @@ class Visitor(threading.Thread):
 
     @staticmethod
     def set_authentication(auth):
-        Visitor.auth = tuple(auth.split(':')) if auth else auth
+        Visitor.auth = tuple(auth.split(":")) if auth else auth
 
     @staticmethod
     def set_persist(persist):
@@ -110,7 +109,7 @@ class Visitor(threading.Thread):
             # Detect redirect to same page but ended with slash
             if url == origin:
                 return True
-            if url == origin + '/':
+            if url == origin + "/":
                 return True
 
             # Detect redirect to root
@@ -121,7 +120,7 @@ class Visitor(threading.Thread):
 
         try:
             if Visitor.user_agent:
-                Visitor.headers['User-Agent'] = Visitor.user_agent
+                Visitor.headers["User-Agent"] = Visitor.user_agent
 
             now = time.time()
             timeout = sum(self.__time) / len(self.__time) if self.__time else 10
@@ -136,42 +135,50 @@ class Visitor(threading.Thread):
             r = None
             if Visitor.proxy:
                 if Visitor.requests == "GET":
-                    r = self.session.get(task.get_complete_target(),
-                                         headers=Visitor.headers,
-                                         proxies=Visitor.proxy,
-                                         verify=False,
-                                         timeout=timeout,
-                                         auth=Visitor.auth,
-                                         cookies=Visitor.cookies,
-                                         allow_redirects=Visitor.is_allow_redirects)
+                    r = self.session.get(
+                        task.get_complete_target(),
+                        headers=Visitor.headers,
+                        proxies=Visitor.proxy,
+                        verify=False,
+                        timeout=timeout,
+                        auth=Visitor.auth,
+                        cookies=Visitor.cookies,
+                        allow_redirects=Visitor.is_allow_redirects,
+                    )
 
                 elif Visitor.requests == "HEAD":
-                    r = self.session.head(task.get_complete_target(),
-                                          headers=Visitor.headers,
-                                          proxies=Visitor.proxy,
-                                          verify=False,
-                                          timeout=timeout,
-                                          auth=Visitor.auth,
-                                          cookies=Visitor.cookies,
-                                          allow_redirects=Visitor.is_allow_redirects)
+                    r = self.session.head(
+                        task.get_complete_target(),
+                        headers=Visitor.headers,
+                        proxies=Visitor.proxy,
+                        verify=False,
+                        timeout=timeout,
+                        auth=Visitor.auth,
+                        cookies=Visitor.cookies,
+                        allow_redirects=Visitor.is_allow_redirects,
+                    )
             else:
                 if Visitor.requests == "GET":
-                    r = self.session.get(task.get_complete_target(),
-                                         headers=Visitor.headers,
-                                         verify=False,
-                                         timeout=timeout,
-                                         auth=Visitor.auth,
-                                         cookies=Visitor.cookies,
-                                         allow_redirects=Visitor.is_allow_redirects)
+                    r = self.session.get(
+                        task.get_complete_target(),
+                        headers=Visitor.headers,
+                        verify=False,
+                        timeout=timeout,
+                        auth=Visitor.auth,
+                        cookies=Visitor.cookies,
+                        allow_redirects=Visitor.is_allow_redirects,
+                    )
 
                 elif Visitor.requests == "HEAD":
-                    r = self.session.head(task.get_complete_target(),
-                                          headers=Visitor.headers,
-                                          verify=False,
-                                          timeout=timeout,
-                                          auth=Visitor.auth,
-                                          cookies=Visitor.cookies,
-                                          allow_redirects=Visitor.is_allow_redirects)
+                    r = self.session.head(
+                        task.get_complete_target(),
+                        headers=Visitor.headers,
+                        verify=False,
+                        timeout=timeout,
+                        auth=Visitor.auth,
+                        cookies=Visitor.cookies,
+                        allow_redirects=Visitor.is_allow_redirects,
+                    )
 
             after = time.time()
             delta = (after - now) * 1000
@@ -183,11 +190,14 @@ class Visitor(threading.Thread):
 
             # If discriminator is found we mark it 404
             if sys.version_info[0] >= 3:
-                tmp_content = tmp_content.decode('Latin-1')
+                tmp_content = tmp_content.decode("Latin-1")
             if Visitor.discriminator and Visitor.discriminator in tmp_content:
                 task.ignorable = True
 
-            if Visitor.banned_md5 and hashlib.md5("".join(tmp_content)).hexdigest() == self.banned_md5:
+            if (
+                Visitor.banned_md5
+                and hashlib.md5("".join(tmp_content)).hexdigest() == self.banned_md5
+            ):
                 task.ignorable = True
 
             # Check if page size is not what we need
@@ -204,32 +214,30 @@ class Visitor(threading.Thread):
                     task.response_code = str(r.history[0].status_code)
                     task.location = r.history[-1].url
             else:
-                if str(r.status_code).startswith('3'):
-                    task.set_response_code('404')
+                if str(r.status_code).startswith("3"):
+                    task.set_response_code("404")
                     task.ignorable = True
 
-            if 'content-type' in [h.lower() for h in r.headers.keys()]:
+            if "content-type" in [h.lower() for h in r.headers.keys()]:
                 try:
-                    task.response_type = r.headers['Content-Type'].split(';')[0]
+                    task.response_type = r.headers["Content-Type"].split(";")[0]
                 except:
                     pass
 
             self.lock.acquire()
-            Console.body(task)
-            self.results.get_results_queue().put(task)
-            self.results.get_a_task()
+            self.results.put(task)
 
             if Visitor.delay:
                 time.sleep(Visitor.delay)
 
         except (requests.ConnectionError, requests.Timeout) as e:
             # TODO log to a file instead of screen
-            print ("[!] Timeout/Connection error")
-            print (e)
+            print("[!] Timeout/Connection error")
+            print(e)
 
         except Exception as e:
-            print ("[!] General exception while visiting")
-            print (e)
+            print("[!] General exception while visiting")
+            print(e)
 
         finally:
             self.lock.release()

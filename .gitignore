@@ -50,3 +50,4 @@ test.txt
 ./plugins/linkextractor.py
 .vscode
 venv/*
+test/*

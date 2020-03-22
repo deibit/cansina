@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import sys
 import os
 import argparse
@@ -7,187 +7,239 @@ import socket
 import pickle
 import tempfile
 import threading
-
-try:
-    import urlparse
-except:
-    import urllib.parse as urlparse
-
-try:
-    import requests
-    import urllib3
-    urllib3.disable_warnings()
-except ImportError:
-    print("[CANSINA] Faltal Python module requests not found (install it with pip install --user requests)")
-    sys.exit(1)
+import urllib.parse as urlparse
 
 from datetime import timedelta
+
+import requests
+import urllib3
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 from core.visitor import Visitor
 from core.payload import Payload
 from core.dbmanager import DBManager
-from core.printer import Console
+from core.printer import Console, banner
 from core.resumer import Resumer
+
+from utils.misc import check_domain, make_cookie_jar, prepare_proxies, prepare_target
+
 from plugins.robots import process_robots
 from plugins.inspector import Inspector
 
-# Workaround for Python SSL Insecure*Warnings
-ver = sys.version_info
-if ver.major == 2 and ver.minor == 7 and ver.micro < 9:
-    print("[!] Python < 2.7.9 - SSL Warnings disabled")
-    from requests.packages.urllib3.exceptions import InsecureRequestWarning
-    from requests.packages.urllib3.exceptions import InsecurePlatformWarning
-    from requests.packages.urllib3.exceptions import SNIMissingWarning
-    requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-    requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
-    requests.packages.urllib3.disable_warnings(SNIMissingWarning)
-del ver
+raw_input = input
+Console.clear()
+Console.curpos(0, 0)
+Console.banner()
 
-try:
-    raw_input          # Python 2
-except NameError:
-    raw_input = input  # Python 3
 
 #   Default options
 #
 USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 10.0; Windows NT 9.0; en-EN)"
 THREADS = 4
 
-from core.printer import banner
-print(banner)
-
-#
-#   Utility functions
-#
-
-def _check_domain(target_url):
-    """Get the target url from the user, clean and return it"""
-
-    domain = urlparse.urlparse(target_url).hostname
-    print("{:30} {:>}".format("Host:", domain))
-    try:
-        if socket.gethostbyname(domain):
-            pass
-    except Exception:
-        print("[!] Domain doesn't resolve. Check URL")
-        sys.exit(1)
-
-
-def _prepare_target(target_url):
-    """Examine target url compliance adding default handle (http://) and look for a final /"""
-
-    if target_url.startswith('http://') or target_url.startswith('https://'):
-        pass
-    else:
-        target_url = 'http://' + target_url
-    if target_url.endswith('/') or '***' in target_url:
-        pass
-    else:
-        target_url += '/'
-    _check_domain(target_url)
-    return target_url
-
-
-def _prepare_proxies(proxies):
-    """It takes a list of proxies and returns a dictionary"""
-
-    if proxies:
-        proxies_dict = {}
-        for proxy_item in proxies:
-            if proxy_item.startswith('http://'):
-                proxies_dict['http'] = proxy_item
-            elif proxy_item.startswith('https://'):
-                proxies_dict['https'] = proxy_item
-        return proxies_dict
-    return {}
-
-
-def _make_cookie_jar(_cookies):
-    d = dict()
-    c = _cookies.split(',')
-    if c[0] == '':
-        return d
-    for entry in c:
-        key, value = entry.split(':')
-        d[key] = value
-    return d
 
 #
 # Parsing program options
 #
 usage = "cansina.py -u url -p payload [options]"
-description = '''
+description = """
 Cansina is a web content discovery tool.
 It makes requests and analyze the responses trying to figure out whether the
 resource is or not accessible.
-'''
+"""
 epilog = "License, requests, etc: https://github.com/deibit/cansina"
 
-parser = argparse.ArgumentParser(
-    usage=usage, description=description, epilog=epilog)
-parser.add_argument('-A', dest='authentication',
-        help="Basic Authentication (e.g: user:password)", default=False)
-parser.add_argument('-C', dest='cookies', help="your cookies (e.g: key:value)", default="")
-parser.add_argument('-D', dest='autodiscriminator',
-                    help="Check for fake 404 (warning: machine decision)", action="store_true", default=False)
-parser.add_argument('-H', dest='request_type',
-                    help="Make HTTP HEAD requests", action="store_true")
-parser.add_argument('-P', dest='proxies',
-                    help="Set a http and/or https proxy (ex: http://127.0.0.1:8080,https://...", default="")
-parser.add_argument('-S', dest='remove_slash',
-                    help="Remove ending slash for payloads", default=False, action="store_true")
-parser.add_argument('-T', dest='request_delay',
-        help="Time (a float number, e.g: 0.25 or 1.75) between requests", default=0)
-parser.add_argument('-U', dest='uppercase',
-                    help="Make payload requests upper-case", action="store_true", default=False)
-parser.add_argument('-a', dest='user_agent',
-                    help="The preferred user-agent (default provided)", default=USER_AGENT)
-parser.add_argument('-b', dest='banned',
-                    help="List of banned response codes", default="404")
-parser.add_argument('-B', dest='unbanned',
-                    help="List of unbanned response codes, mark all response as invalid without unbanned response codes, higher priority than banned", default="")
-parser.add_argument('-c', dest='content',
-                    help="Inspect content looking for a particular string", default="")
-parser.add_argument('-d', dest='discriminator',
-                    help="If this string if found it will be treated as a 404", default=None)
-parser.add_argument('-e', dest='extension',
-                    help="Extension list to use e.g: php,asp,...(default none)", default="")
-parser.add_argument('-p', dest='payload',
-                    help="A single file, a file with filenames (.payload) or a directory (will do *.txt)", default=None)
-parser.add_argument('-s', dest='size_discriminator',
-                    help="Will skip pages with this size in bytes (or a list of sizes 0,500,1500...)", default=False)
-parser.add_argument('-t', dest='threads', type=int,
-                    help="Number of threads (default 4)", default=THREADS)
-parser.add_argument('-u', dest='target',
-                    help="Target url", default=None)
-parser.add_argument('-r', dest='resume',
-                    help="Resume a session", default=False)
-parser.add_argument('-R', dest="parse_robots", action="store_true",
-                    help="Parse robots.txt and check its contents", default=False)
-parser.add_argument('--recursive', dest="recursive",
-                    help="Recursive descend on path directories", default=False, action="store_true")
-parser.add_argument('--persist', dest="persist",
-                    help="Use HTTP persistent connections", default=False, action="store_true")
-parser.add_argument('--full-path', dest="full_path",
-                    help="Show full path instead of only resources", default=False, action="store_true")
-parser.add_argument('--show-type', dest="show_content_type",
-                            help="Show content-type in results", default=False, action="store_true")
-parser.add_argument('--no-follow', dest="allow_redirects",
-                            help="Do not follow redirections", default=True, action="store_false")
-parser.add_argument('--line', dest='continue_line', type=int,
-                    help="Continue payload in line <n>", default=0)
-parser.add_argument('--headers', dest='headers',
-        help="Set personalized headers: key=value;key=value...", default="")
-parser.add_argument('--capitalize', dest='capitalize',
-        help="Transform 'word' into 'Word'.", default=False, action="store_true")
-parser.add_argument('--strip-extension', dest='strip_extension',
-        help="Strip word extension: word.ext into word", default=False, action="store_true")
-parser.add_argument('--alpha', dest='only_alpha',
-        help="Filter non alphanumeric words from wordlist", default=False, action="store_true")
-parser.add_argument('--no-progress', dest='no_progress',
-        help="Don't show tested words and progress. (For dumb terminals)", default=False, action="store_true")
-parser.add_argument('--no-colors', dest='no_colors',
-        help="Don't use output colors to keep output clean, e.g. when redirecting output to file", default=False, action="store_true")
+parser = argparse.ArgumentParser(usage=usage, description=description, epilog=epilog)
+parser.add_argument(
+    "-A",
+    dest="authentication",
+    help="Basic Authentication (e.g: user:password)",
+    default=False,
+)
+parser.add_argument(
+    "-C", dest="cookies", help="your cookies (e.g: key:value)", default=""
+)
+parser.add_argument(
+    "-D",
+    dest="autodiscriminator",
+    help="Check for fake 404 (warning: machine decision)",
+    action="store_true",
+    default=False,
+)
+parser.add_argument(
+    "-H", dest="request_type", help="Make HTTP HEAD requests", action="store_true"
+)
+parser.add_argument(
+    "-P",
+    dest="proxies",
+    help="Set a http and/or https proxy (ex: http://127.0.0.1:8080,https://...",
+    default="",
+)
+parser.add_argument(
+    "-S",
+    dest="remove_slash",
+    help="Remove ending slash for payloads",
+    default=False,
+    action="store_true",
+)
+parser.add_argument(
+    "-T",
+    dest="request_delay",
+    help="Time (a float number, e.g: 0.25 or 1.75) between requests",
+    default=0,
+)
+parser.add_argument(
+    "-U",
+    dest="uppercase",
+    help="Make payload requests upper-case",
+    action="store_true",
+    default=False,
+)
+parser.add_argument(
+    "-a",
+    dest="user_agent",
+    help="The preferred user-agent (default provided)",
+    default=USER_AGENT,
+)
+parser.add_argument(
+    "-b", dest="banned", help="List of banned response codes", default="404"
+)
+parser.add_argument(
+    "-B",
+    dest="unbanned",
+    help="List of unbanned response codes, mark all response as invalid without unbanned response codes, higher priority than banned",
+    default="",
+)
+parser.add_argument(
+    "-c",
+    dest="content",
+    help="Inspect content looking for a particular string",
+    default="",
+)
+parser.add_argument(
+    "-d",
+    dest="discriminator",
+    help="If this string if found it will be treated as a 404",
+    default=None,
+)
+parser.add_argument(
+    "-e",
+    dest="extension",
+    help="Extension list to use e.g: php,asp,...(default none)",
+    default="",
+)
+parser.add_argument(
+    "-p",
+    dest="payload",
+    help="A single file, a file with filenames (.payload) or a directory (will do *.txt)",
+    default=None,
+)
+parser.add_argument(
+    "-s",
+    dest="size_discriminator",
+    help="Will skip pages with this size in bytes (or a list of sizes 0,500,1500...)",
+    default=False,
+)
+parser.add_argument(
+    "-t",
+    dest="threads",
+    type=int,
+    help="Number of threads (default 4)",
+    default=THREADS,
+)
+parser.add_argument("-u", dest="target", help="Target url", default=None)
+parser.add_argument("-r", dest="resume", help="Resume a session", default=False)
+parser.add_argument(
+    "-R",
+    dest="parse_robots",
+    action="store_true",
+    help="Parse robots.txt and check its contents",
+    default=False,
+)
+parser.add_argument(
+    "--recursive",
+    dest="recursive",
+    help="Recursive descend on path directories",
+    default=False,
+    action="store_true",
+)
+parser.add_argument(
+    "--persist",
+    dest="persist",
+    help="Use HTTP persistent connections",
+    default=False,
+    action="store_true",
+)
+parser.add_argument(
+    "--full-path",
+    dest="full_path",
+    help="Show full path instead of only resources",
+    default=False,
+    action="store_true",
+)
+parser.add_argument(
+    "--show-type",
+    dest="show_content_type",
+    help="Show content-type in results",
+    default=False,
+    action="store_true",
+)
+parser.add_argument(
+    "--no-follow",
+    dest="allow_redirects",
+    help="Do not follow redirections",
+    default=True,
+    action="store_false",
+)
+parser.add_argument(
+    "--line",
+    dest="continue_line",
+    type=int,
+    help="Continue payload in line <n>",
+    default=0,
+)
+parser.add_argument(
+    "--headers",
+    dest="headers",
+    help="Set personalized headers: key=value;key=value...",
+    default="",
+)
+parser.add_argument(
+    "--capitalize",
+    dest="capitalize",
+    help="Transform 'word' into 'Word'.",
+    default=False,
+    action="store_true",
+)
+parser.add_argument(
+    "--strip-extension",
+    dest="strip_extension",
+    help="Strip word extension: word.ext into word",
+    default=False,
+    action="store_true",
+)
+parser.add_argument(
+    "--alpha",
+    dest="only_alpha",
+    help="Filter non alphanumeric words from wordlist",
+    default=False,
+    action="store_true",
+)
+parser.add_argument(
+    "--no-progress",
+    dest="no_progress",
+    help="Don't show tested words and progress. (For dumb terminals)",
+    default=False,
+    action="store_true",
+)
+parser.add_argument(
+    "--no-colors",
+    dest="no_colors",
+    help="Don't use output colors to keep output clean, e.g. when redirecting output to file",
+    default=False,
+    action="store_true",
+)
 
 args = parser.parse_args()
 
@@ -209,7 +261,7 @@ if not args.target:
     print("[!] You need to specify a target")
     parser.print_help()
     sys.exit()
-target = _prepare_target(args.target)
+target = prepare_target(args.target)
 
 recursive = args.recursive
 if args.recursive:
@@ -221,12 +273,12 @@ if persist:
     print("Persistent connections")
 
 # Misc options
-extension = args.extension.split(',')
+extension = args.extension.split(",")
 threads = int(args.threads)
-banned_response_codes = args.banned.split(',')
-unbanned_response_codes = args.unbanned.split(',')
+banned_response_codes = args.banned.split(",")
+unbanned_response_codes = args.unbanned.split(",")
 user_agent = args.user_agent
-proxy = _prepare_proxies(args.proxies.split(','))
+proxy = prepare_proxies(args.proxies.split(","))
 cookies = args.cookies
 request_delay = args.request_delay
 authentication = args.authentication
@@ -236,8 +288,8 @@ size_discriminator = args.size_discriminator
 personalized_headers = {}
 try:
     if args.headers:
-        for header in args.headers.split(','):
-            k, v = header.split('=')
+        for header in args.headers.split(","):
+            k, v = header.split("=")
             personalized_headers[k] = v
 except Exception as e:
     print("[?] Check personalized headers format: header=value,header=value...")
@@ -287,9 +339,13 @@ if autodiscriminator:
 
 # Misc user information
 print("{:30} {:>}".format("Banned response codes:", ",".join(banned_response_codes)))
-if not unbanned_response_codes[0] == '':
-    print("{:30} {:>}".format("unBanned response codes:", ",".join(unbanned_response_codes)))
-if not extension == ['']:
+if not unbanned_response_codes[0] == "":
+    print(
+        "{:30} {:>}".format(
+            "unBanned response codes:", ",".join(unbanned_response_codes)
+        )
+    )
+if not extension == [""]:
     print("{:30} {:>}".format("Extensions to probe:", ",".join(extension)))
 
 # Payload options
@@ -348,15 +404,21 @@ payload.set_recursive(recursive)
 
 payload_queue = payload.get_queue()
 total_requests = payload.get_total_requests()
-print("{:30} {:>}".format("Total requests:",  "%s (aprox: %s / thread)" %
-      (total_requests, int(total_requests / threads))))
+print(
+    "{:30} {:>}".format(
+        "Total requests:",
+        "%s (aprox: %s / thread)" % (total_requests, int(total_requests / threads)),
+    )
+)
 
 #
 # Manager queue configuration
 #
-database_name = urlparse.urlparse(target).scheme + '_' + urlparse.urlparse(target).hostname
+database_name = (
+    urlparse.urlparse(target).scheme + "_" + urlparse.urlparse(target).hostname
+)
 if urlparse.urlparse(target).port is not None:
-    database_name += '_' + str(urlparse.urlparse(target).port)
+    database_name += "_" + str(urlparse.urlparse(target).port)
 manager = DBManager(database_name)
 manager_lock = threading.Lock()
 
@@ -378,7 +440,7 @@ Visitor.set_headers(personalized_headers)
 
 # Cookies
 try:
-    cookie_jar = _make_cookie_jar(cookies)
+    cookie_jar = make_cookie_jar(cookies)
     Visitor.set_cookies(cookie_jar)
     if cookie_jar:
         print("Using cookies")
@@ -426,21 +488,28 @@ except KeyboardInterrupt:
     for visitor in thread_pool:
         visitor.join()
     resp = raw_input(os.linesep + "Keep a resume file? [y/N] ")
-    if resp == 'y':
+    if resp == "y":
         resumer.set_line(payload_queue.get().get_number())
-        with open("resume_file_" + time.strftime("%d_%m_%y_%H_%M", time.localtime()), 'w') as f:
+        with open(
+            "resume_file_" + time.strftime("%d_%m_%y_%H_%M", time.localtime()), "w"
+        ) as f:
             pickle.dump(resumer, f)
 
 except Exception as e:
     import traceback as tb
+
     sys.stderr.write("[!] Unknown exception: %s" % e)
     print(tb.print_tb(sys.exc_info()[2]))
+
+finally:
+    manager.save()
 
 print("Finishing...")
 
 time_after_running = time.time()
-delta = round(timedelta(seconds=(time_after_running -
-                                 time_before_running)).total_seconds(), 2)
+delta = round(
+    timedelta(seconds=(time_after_running - time_before_running)).total_seconds(), 2
+)
 print("Task took %i seconds" % delta)
 
 sys.exit()
