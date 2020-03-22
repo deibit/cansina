@@ -1,12 +1,14 @@
 class Task:
 
     """ This class stores information retrieved from/to the request"""
+
     def __init__(self, number, target, resource, extension):
 
         self.number = number
         self.target = target
         self.resource = resource
         self.extension = extension
+        self.thread = -1
 
         self.payload_length = 0
         self.payload_filename = None
@@ -46,7 +48,7 @@ class Task:
             self.valid = False
             return
         # ...but if we select a pesimistic one 'all is invalid' unless...
-        if '' not in self.unbanned_response_codes:
+        if "" not in self.unbanned_response_codes:
             self.valid = False
             if self.response_code in self.unbanned_response_codes:
                 self.valid = True
@@ -64,19 +66,21 @@ class Task:
         return self.number
 
     def values(self):
-        return (self.number,
-                self.payload_filename,
-                self.target,
-                self.resource,
-                self.extension,
-                self.response_code,
-                self.response_size,
-                self.response_time,
-                self.location)
+        return (
+            self.number,
+            self.payload_filename,
+            self.target,
+            self.resource,
+            self.extension,
+            self.response_code,
+            self.response_size,
+            self.response_time,
+            self.location,
+        )
 
     def get_complete_target(self):
-        if '***' in self.target:
-            self.target = self.target.replace('***', self.resource.replace('/', ''))
+        if "***" in self.target:
+            self.target = self.target.replace("***", self.resource.replace("/", ""))
             self.resource = ""
             return self.target + self.extension
         else:

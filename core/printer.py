@@ -37,7 +37,6 @@ def _get_terminal_width():
     """
         Get the terminal width to adjust columns size
     """
-    global COLUMNS
     try:
         # (Slightly modified) http://stackoverflow.com/a/943921/91267
         p = os.popen("stty size", "r")

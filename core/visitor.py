@@ -227,6 +227,7 @@ class Visitor(threading.Thread):
                 except:
                     pass
 
+            task.thread = self.visitor_id
             self.lock.acquire()
             self.results.put(task)
 
