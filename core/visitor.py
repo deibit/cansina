@@ -19,12 +19,12 @@ class Visitor(threading.Thread):
     discriminator = None
     headers = {}
     is_allow_redirects = False
-    killed = False
     persist = False
     proxy = None
     requests = ""
     size_discriminator = []
     user_agent = None
+    killed = False
 
     @staticmethod
     def set_headers(headers):
@@ -35,16 +35,16 @@ class Visitor(threading.Thread):
         Visitor.is_allow_redirects = pref
 
     @staticmethod
-    def kill():
-        Visitor.killed = True
-
-    @staticmethod
     def set_discriminator(discriminator):
         Visitor.discriminator = discriminator
 
     @staticmethod
     def set_cookies(_cookies):
         Visitor.cookies = _cookies
+
+    @staticmethod
+    def kill():
+        Visitor.killed = True
 
     @staticmethod
     def set_size_discriminator(size_discriminator):
@@ -96,8 +96,11 @@ class Visitor(threading.Thread):
 
     def run(self):
         try:
-            while not self.payload.empty() and not Visitor.killed:
-                self.visit(self.payload.get())
+            while not Visitor.killed:
+                task = self.payload.get()
+                if task == None:
+                    return
+                self.visit(task)
                 self.payload.task_done()
         except:
             pass

@@ -17,6 +17,8 @@ else:
     ESC = chr(27)
     CLEARSCR = "\33[2J"
     CURPOS = "\33[{};{}H"
+    HIDECUR = "\33[?25l"
+    SHOWCUR = "\33[?25h"
 
 COLUMNS = 80
 
@@ -112,6 +114,14 @@ class Console:
     @staticmethod
     def clear():
         print(CLEARSCR)
+
+    @staticmethod
+    def show_cur():
+        print(SHOWCUR)
+
+    @staticmethod
+    def hide_cur():
+        print(HIDECUR)
 
     @staticmethod
     def set_show_progress(show_progress):

@@ -464,6 +464,7 @@ Console.start_eta_queue(30)
 Console.show_full_path = full_path
 Console.show_content_type = show_content_type
 Console.header()
+Console.hide_cur()
 Console.set_show_progress(False if args.no_progress else True)
 Console.set_show_colors(False if args.no_colors else True)
 
@@ -479,14 +480,20 @@ for visitor_id in range(threads):
 # Main loop
 try:
     payload_queue.join()
+
+    for thread in thread_pool:
+        payload_queue.put(None)
     for visitor in thread_pool:
         visitor.join()
 
 except KeyboardInterrupt:
-    Visitor.kill()
     print(os.linesep + "Waiting for threads to stop...")
+
+    Visitor.kill()
+
     for visitor in thread_pool:
         visitor.join()
+
     resp = raw_input(os.linesep + "Keep a resume file? [y/N] ")
     if resp == "y":
         resumer.set_line(payload_queue.get().get_number())
@@ -502,7 +509,9 @@ except Exception as e:
     print(tb.print_tb(sys.exc_info()[2]))
 
 finally:
+    # Dump results to database
     manager.save()
+    Console.show_cur()
 
 print("Finishing...")
 
