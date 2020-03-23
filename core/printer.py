@@ -1,6 +1,5 @@
 import os
 import sys
-import time
 import urllib.parse as urlparse
 
 if os.name == "nt":
@@ -50,50 +49,8 @@ def _get_terminal_width():
 _get_terminal_width()
 
 
-class ETAQueue:
-    def __init__(self, size, requests, threads):
-        self.size = size
-        self.times = []
-        self.pending_requests = requests
-        self.threads = threads
-
-    def get_eta(self):
-        mseconds_in_a_hour = 3600000
-        mseconds_in_a_minute = 60000
-        mseconds_in_a_second = 1000
-
-        median = sum(self.times) // len(self.times)
-        mseconds = self.pending_requests * median // self.threads
-
-        (r_hours, hours) = (
-            mseconds % mseconds_in_a_hour,
-            int(mseconds / mseconds_in_a_hour),
-        )
-        (r_minutes, minutes) = (
-            r_hours % mseconds_in_a_minute,
-            int(r_hours / mseconds_in_a_minute),
-        )
-        (r_seconds, seconds) = (
-            r_minutes % mseconds_in_a_second,
-            int(r_minutes / mseconds_in_a_second),
-        )
-
-        if hours > 99:
-            (hours, minutes, seconds) = ("NO", "TE", "ND")
-
-        return "{0:2}h{1:2}m{2:2}s".format(hours, minutes, seconds)
-
-    def set_time(self, time):
-        self.pending_requests -= 1
-        if len(self.times) == self.size:
-            self.times.pop()
-        self.times.append(time)
-
-
 class Console:
     MIN_COLUMN_SIZE = 64
-    eta_queue = None
-    eta = "00h00m00s"
     show_full_path = False
     show_content_type = False
     visited = {}
@@ -131,12 +88,6 @@ class Console:
         Console.show_colors = show_colors
 
     @staticmethod
-    def start_eta_queue(size):
-        Console.eta_queue = ETAQueue(
-            size, Console.number_of_requests, Console.number_of_threads
-        )
-
-    @staticmethod
     def header():
         header = (
             os.linesep
@@ -166,9 +117,7 @@ class Console:
         elif os.name == "nt":
             return
 
-        to_format = (
-            "{1: ^3} | {2: >10} | {3: >6} | {4: >4} | {7} [{0: >2}%] - {5: ^9} - {6}"
-        )
+        to_format = "{1: ^3} | {2: >10} | {3: >6} | {4: >4} | {6} [{0: >2}%]"
         to_format_without_progress = (
             "{0: ^3} | {1: >10} | {2: >6} | {3: >4} | {5:^} {4}"
         )
@@ -206,10 +155,6 @@ class Console:
         # Fix three characters off by one on screen
         if percentage >= 100:
             percentage = 99
-
-        Console.eta_queue.set_time(task.response_time)
-        if task.number % 10 == 0:
-            Console.eta = Console.eta_queue.get_eta()
 
         # Show or not 'Content-Type'
         if Console.show_content_type:
@@ -249,7 +194,6 @@ class Console:
                 task.response_size,
                 task.number,
                 int(task.response_time),
-                Console.eta,
                 t_encode,
                 content_type,
             )

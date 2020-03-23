@@ -16,7 +16,7 @@ import urllib3
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-from core.visitor import Visitor
+from core.visitor import Visitor, strict_codes
 from core.payload import Payload
 from core.dbmanager import DBManager
 from core.printer import Console, banner
@@ -264,13 +264,12 @@ if not args.target:
 target = prepare_target(args.target)
 
 recursive = args.recursive
-if args.recursive:
-    print("Recursive requests on")
+print("{:30} {:>}".format("Recursive requests", "Yes" if recursive else "No"))
 
 # Persistent connections
 persist = args.persist
-if persist:
-    print("Persistent connections")
+print("{:30} {:>}".format("Persistent connections", "Yes" if persist else "No"))
+
 
 # Misc options
 extension = args.extension.split(",")
@@ -305,48 +304,40 @@ print("{:30} {:>}".format("Requests:", request_type))
 
 # Content inspecting
 content = args.content
-if content:
-    print("Content inspection selected")
-    if request_type == "HEAD":
-        print("[!] head request render Content Inspection useless")
 
 # Remove slash (probably an ancient option)
 remove_slash = args.remove_slash
-if remove_slash:
-    print("Requests without ending /")
 
 # Discriminator option
 discriminator = args.discriminator
-if discriminator:
-    print("Discriminator active")
-    if request_type == "HEAD":
-        print("[!] head requests renders discriminator by content useless")
 
 # Autodiscriminator (probably deprecated by future diagnostic subsystem)
 autodiscriminator = args.autodiscriminator
 autodiscriminator_location = None
 autodiscriminator_md5 = None
 if autodiscriminator:
-    print("Launching autodiscriminator")
     i = Inspector(target)
     (result, notfound_type) = i.check_this()
     if notfound_type == Inspector.TEST404_URL:
         autodiscriminator_location = result
-        print("404 ---> 302 ----> " + autodiscriminator_location)
     elif notfound_type == Inspector.TEST404_MD5:
         autodiscriminator_md5 = result
-        print("404 ---> PAGE_MD5 ----> " + autodiscriminator_md5)
 
 # Misc user information
-print("{:30} {:>}".format("Banned response codes:", ",".join(banned_response_codes)))
-if not unbanned_response_codes[0] == "":
-    print(
-        "{:30} {:>}".format(
-            "unBanned response codes:", ",".join(unbanned_response_codes)
-        )
+print("{:30} {:>}".format("Filtered response codes:", ",".join(banned_response_codes)))
+
+
+unbanned_codes = (
+    unbanned_response_codes if not unbanned_response_codes == [""] else strict_codes
+)
+print("{:30} {:>}".format("OK response codes:", ",".join(unbanned_codes)))
+
+# Using Custom File Extension List
+print(
+    "{:30} {:>}".format(
+        "Custom extensions:", ",".join(extension) if not extension == [""] else "No"
     )
-if not extension == [""]:
-    print("{:30} {:>}".format("Extensions to probe:", ",".join(extension)))
+)
 
 # Payload options
 # FIXME: This design is garbage
@@ -358,8 +349,6 @@ if parse_robots:
     if not robots_content:
         print("[!] robots.txt not found")
         sys.exit()
-    print("Reaped %s entries" % (len(robots_content)))
-    print("Using robots.txt as payload")
     payload_filename = robots_content
 else:
     payload_filename = args.payload
@@ -367,29 +356,24 @@ else:
         print("[!] You have to specify a payload")
         parser.print_help()
         sys.exit()
-    print("{:30} {:>}".format("Using payload:", payload_filename))
 
+print("{:30} {:>}".format("Payload:", payload_filename))
 payload = Payload(target, payload_filename, resumer)
-print("{:30} {:>}".format("Threads:", threads))
 
 # Uppercase
 if args.uppercase:
     payload.set_uppercase()
-    print("All resource requests will be done in uppercase")
 
 # Capitalization
 if args.capitalize:
-    print("Words will be Capitalized")
     payload.set_capitalize()
 
 # Strip extension
 if args.strip_extension:
-    print("Stripping extensions")
     payload.set_strip_extension()
 
 # Only alphanumeric words
 if args.only_alpha:
-    print("Alpha words only")
     payload.set_alpha()
 
 #
@@ -404,12 +388,6 @@ payload.set_recursive(recursive)
 
 payload_queue = payload.get_queue()
 total_requests = payload.get_total_requests()
-print(
-    "{:30} {:>}".format(
-        "Total requests:",
-        "%s (aprox: %s / thread)" % (total_requests, int(total_requests / threads)),
-    )
-)
 
 #
 # Manager queue configuration
@@ -442,8 +420,6 @@ Visitor.set_headers(personalized_headers)
 try:
     cookie_jar = make_cookie_jar(cookies)
     Visitor.set_cookies(cookie_jar)
-    if cookie_jar:
-        print("Using cookies")
 except:
     print("[!] Error setting cookies. Review cookie string (key:value,key:value...)")
     sys.exit()
@@ -460,7 +436,6 @@ show_content_type = args.show_content_type
 time_before_running = time.time()
 Console.number_of_requests = payload.get_total_requests()
 Console.number_of_threads = threads
-Console.start_eta_queue(30)
 Console.show_full_path = full_path
 Console.show_content_type = show_content_type
 Console.header()
