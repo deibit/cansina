@@ -238,10 +238,13 @@ class Visitor(threading.Thread):
             # TODO log to a file instead of screen
             print("[!] Timeout/Connection error")
             print(e)
+            pass
 
         except Exception as e:
             print("[!] General exception while visiting")
             print(e)
+            pass
 
         finally:
             self.lock.release()
+            return

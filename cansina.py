@@ -438,7 +438,6 @@ Console.number_of_requests = payload.get_total_requests()
 Console.number_of_threads = threads
 Console.show_full_path = full_path
 Console.show_content_type = show_content_type
-Console.header()
 Console.hide_cur()
 Console.set_show_progress(False if args.no_progress else True)
 Console.set_show_colors(False if args.no_colors else True)

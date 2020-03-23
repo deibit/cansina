@@ -18,6 +18,7 @@ else:
     CURPOS = "\33[{};{}H"
     HIDECUR = "\33[?25l"
     SHOWCUR = "\33[?25h"
+    DEL = "\33[2K"
 
 COLUMNS = 80
 
@@ -58,26 +59,31 @@ class Console:
     number_of_threads = 0
     show_progress = True
     show_colors = True
+    # banner height + config height
+    fixed_height = 8 + 10
+    juicy_counter = 0
+    last_offset = 0
 
     @staticmethod
     def banner():
-        print(banner)
+        sys.stdout.write(banner)
 
     @staticmethod
     def curpos(x, y):
-        print(CURPOS.format(x, y))
+        sys.stdout.write(CURPOS.format(y, x))
 
     @staticmethod
     def clear():
-        print(CLEARSCR)
+        sys.stdout.write(CLEARSCR)
 
     @staticmethod
     def show_cur():
-        print(SHOWCUR)
+        Console.curpos(0, Console.last_offset + 5)
+        sys.stdout.write(SHOWCUR)
 
     @staticmethod
     def hide_cur():
-        print(HIDECUR)
+        sys.stdout.write(HIDECUR)
 
     @staticmethod
     def set_show_progress(show_progress):
@@ -89,38 +95,11 @@ class Console:
 
     @staticmethod
     def header():
-        header = (
-            os.linesep
-            + "cod |    size    |  line  | time |"
-            + os.linesep
-            + "----------------------------------"
-            + os.linesep
-        )
-        sys.stdout.write(header)
+        sys.stdout.write("cod |    size    |  line  | time |\n")
+        sys.stdout.write("----------------------------------")
 
     @staticmethod
-    def body(task):
-        if task.ignorable:
-            return
-        percentage = int(task.number * 100 / Console.number_of_requests)
-        target = task.get_complete_target()
-        target = urlparse.urlsplit(target).path
-
-        if task.location:
-            target = target + " -> " + task.location
-
-        # If a task is valid means that is should be printed, so a proper
-        # linesep will be printed
-        linesep = ""
-        if task.is_valid():
-            linesep = os.linesep
-        elif os.name == "nt":
-            return
-
-        to_format = "{1: ^3} | {2: >10} | {3: >6} | {4: >4} | {6} [{0: >2}%]"
-        to_format_without_progress = (
-            "{0: ^3} | {1: >10} | {2: >6} | {3: >4} | {5:^} {4}"
-        )
+    def thread_activity(task):
 
         color = ""
         if Console.show_colors:
@@ -139,8 +118,10 @@ class Console:
             if task.content_detected:
                 color = MAGENTA
 
-            to_format = color + to_format + ENDC
-            to_format_without_progress = color + to_format_without_progress + ENDC
+        target = task.get_complete_target()
+        target = urlparse.urlsplit(target).path
+        if task.location:
+            target = target + " -> " + task.location
 
         # User wants to see full path
         if Console.show_full_path:
@@ -148,60 +129,66 @@ class Console:
         else:
             t_encode = target
 
-        # Trying to tame the UNICODE beast on Python
-        if not sys.version_info[0] == 3:
-            t_encode = t_encode.encode("utf-8")
-
-        # Fix three characters off by one on screen
-        if percentage >= 100:
-            percentage = 99
-
-        # Show or not 'Content-Type'
         if Console.show_content_type:
             content_type = task.response_type + " |"
         else:
             content_type = ""
 
-        # Skip already visited resources if they does not add value
-        if t_encode in Console.visited.keys():
-            (code, size) = Console.visited[t_encode]
-            if code == task.response_code and size == task.response_size:
-                color = None
-        else:
-            Console.visited[t_encode] = (task.response_code, task.response_size)
-
         # Cut resource if its length is wider than available columns
-        if len(t_encode) > COLUMNS - Console.MIN_COLUMN_SIZE:
-            t_encode = t_encode[: abs(COLUMNS - Console.MIN_COLUMN_SIZE)]
+        if len(target) > COLUMNS - Console.MIN_COLUMN_SIZE:
+            target = target[: abs(COLUMNS - Console.MIN_COLUMN_SIZE)]
 
-        # if an entry is about to be log, remove percentage and eta time
-        if color is not None and not task.response_code in task.banned_response_codes:
-            to_console = to_format_without_progress.format(
-                task.response_code,
-                task.response_size,
-                task.number,
-                int(task.response_time),
-                t_encode,
-                content_type,
-            )
+        thread_info = f"{color}#{task.thread + 1} | {task.response_code} {content_type} | {target}"
 
-            sys.stdout.write(to_console[: COLUMNS - 2] + os.linesep)
-        # print with progress
-        elif Console.show_progress:
-            to_console = to_format.format(
-                percentage,
-                task.response_code,
-                task.response_size,
-                task.number,
-                int(task.response_time),
-                t_encode,
-                content_type,
-            )
+        sys.stdout.write(f"{DEL}\r{thread_info}{ENDC}")
 
-            sys.stdout.write(to_console[: COLUMNS - 2])
-            sys.stdout.write("\r")
+        if task.response_code == "200" or task.content_detected:
+            Console.juicy_counter += 1
+            return f"{color}{task.response_code:^3} | {task.response_size:>10} | {task.number:>6} | {int(task.response_time):>4} | {target}{ENDC}"
+        else:
+            return None
 
-        sys.stdout.flush()
+    @staticmethod
+    def progress(count):
+        block = "▇"
+        placeholder = "_"
+        number_of_blocks = 60
+        block_value = round(Console.number_of_requests / number_of_blocks)
+        blocks_to_print = round(count / block_value)
+        placeholders_to_print = number_of_blocks - blocks_to_print
+        percentage = int(count * 100 / Console.number_of_requests)
 
-        if not os.name == "nt" and Console.show_progress:
-            sys.stdout.write("\x1b[0K")
+        sys.stdout.write(
+            f"\r{count:>{len(str(Console.number_of_requests))}}/{Console.number_of_requests} [{YELLOW}{block*blocks_to_print}{ENDC}{placeholder*placeholders_to_print}] - {percentage}%"
+        )
+
+    @staticmethod
+    def body(task):
+        if task.ignorable:
+            return
+
+        cursor_y = Console.fixed_height
+
+        # Show progress
+        Console.curpos(0, cursor_y + 1)
+        Console.progress(task.number)
+
+        # Show thread activity
+        cursor_y += 2  # offset
+        Console.curpos(0, cursor_y + task.thread + 1)
+        activity = Console.thread_activity(task)
+        cursor_y += Console.number_of_threads + 1
+
+        # Header
+        cursor_y += 1  # offset
+        Console.curpos(0, cursor_y)
+        Console.header()
+        cursor_y += 1
+
+        # Show juicy
+        if activity:
+            cursor_y += Console.juicy_counter
+            Console.curpos(0, cursor_y)
+            sys.stdout.write(activity)
+
+        Console.last_offset = cursor_y
