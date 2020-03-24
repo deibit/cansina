@@ -11,9 +11,9 @@ else:
     GREEN = "\033[32m"
     YELLOW = "\033[33m"
     LBLUE = "\033[36m"
-    GRAY = "\033[90m"
     ENDC = "\033[0m"
     ESC = chr(27)
+    GRAY = "\033[38;5;240m"
     CLEARSCR = "\33[2J"
     CURPOS = "\33[{};{}H"
     HIDECUR = "\33[?25l"
@@ -107,8 +107,8 @@ class Console:
                 color = GREEN
             if task.response_code == "401" or task.response_code == "403":
                 color = RED
-            if task.response_code == "404" and (
-                not task.response_code in task.banned_response_codes
+            if task.response_code == "404" or (
+                task.response_code in task.banned_response_codes
             ):
                 color = GRAY
             if task.response_code == "301" or task.response_code == "302":
@@ -135,14 +135,14 @@ class Console:
             content_type = ""
 
         # Cut resource if its length is wider than available columns
-        if len(target) > COLUMNS - Console.MIN_COLUMN_SIZE:
-            target = target[: abs(COLUMNS - Console.MIN_COLUMN_SIZE)]
+        if len(target) > COLUMNS:
+            target = target[: len(target) - COLUMNS]
 
-        thread_info = f"{color}#{task.thread + 1} | {task.response_code} {content_type} | {target}"
+        thread_info = f"{color} #{task.thread + 1} | {task.response_code} | {target}"
 
         sys.stdout.write(f"{DEL}\r{thread_info}{ENDC}")
 
-        if task.response_code == "200" or task.content_detected:
+        if task.is_valid() or task.content_detected:
             Console.juicy_counter += 1
             return f"{color}{task.response_code:^3} | {task.response_size:>10} | {task.number:>6} | {int(task.response_time):>4} | {target}{ENDC}"
         else:
@@ -192,3 +192,16 @@ class Console:
             sys.stdout.write(activity)
 
         Console.last_offset = cursor_y
+
+    @staticmethod
+    def say(message):
+        Console.last_offset += 1
+        Console.curpos(0, Console.last_offset)
+        sys.stdout.write(message)
+
+    @staticmethod
+    def ask(message):
+        Console.last_offset += 1
+        Console.curpos(0, Console.last_offset)
+        sys.stdout.write(message)
+        return sys.stdin.read()

@@ -199,6 +199,15 @@ parser.add_argument(
     help="Continue payload in line <n>",
     default=0,
 )
+
+parser.add_argument(
+    "--resumer",
+    dest="do_resumer",
+    help="Save session in a file",
+    default=False,
+    action="store_true",
+)
+
 parser.add_argument(
     "--headers",
     dest="headers",
@@ -249,7 +258,7 @@ resume = args.resume
 # If we are ressuming a former session revive last args object
 if resume:
     try:
-        with open(resume) as f:
+        with open(resume, "rb") as f:
             resumer = pickle.load(f)
             args = resumer.get_args()
     except:
@@ -461,38 +470,28 @@ try:
         visitor.join()
 
 except KeyboardInterrupt:
-    print(os.linesep + "Waiting for threads to stop...")
+    Console.say("Waiting for threads to stop...")
 
     Visitor.kill()
 
     for visitor in thread_pool:
         visitor.join()
 
-    resp = raw_input(os.linesep + "Keep a resume file? [y/N] ")
-    if resp == "y":
+    if args.do_resumer:
         resumer.set_line(payload_queue.get().get_number())
         with open(
-            "resume_file_" + time.strftime("%d_%m_%y_%H_%M", time.localtime()), "w"
+            "resume_file_" + time.strftime("%d_%m_%y_%H_%M", time.localtime()), "wb"
         ) as f:
             pickle.dump(resumer, f)
 
 except Exception as e:
     import traceback as tb
 
-    sys.stderr.write("[!] Unknown exception: %s" % e)
-    print(tb.print_tb(sys.exc_info()[2]))
+    Console.say(tb.print_tb(sys.exc_info()[2]))
 
 finally:
     # Dump results to database
     manager.save()
     Console.show_cur()
-
-print("Finishing...")
-
-time_after_running = time.time()
-delta = round(
-    timedelta(seconds=(time_after_running - time_before_running)).total_seconds(), 2
-)
-print("Task took %i seconds" % delta)
 
 sys.exit()
