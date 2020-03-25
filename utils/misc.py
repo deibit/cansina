@@ -10,7 +10,7 @@ def check_domain(target_url):
     """Get the target url from the user, clean and return it"""
 
     domain = urlparse.urlparse(target_url).hostname
-    print("{:30} {:>}".format("Host:", domain))
+
     try:
         if socket.gethostbyname(domain):
             pass

@@ -19,7 +19,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from core.visitor import Visitor, strict_codes
 from core.payload import Payload
 from core.dbmanager import DBManager
-from core.printer import Console, banner
+from core.printer import Console
 from core.resumer import Resumer
 
 from utils.misc import check_domain, make_cookie_jar, prepare_proxies, prepare_target
@@ -37,7 +37,6 @@ Console.banner()
 #
 USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 10.0; Windows NT 9.0; en-EN)"
 THREADS = 4
-
 
 #
 # Parsing program options
@@ -272,12 +271,18 @@ if not args.target:
     sys.exit()
 target = prepare_target(args.target)
 
+Console.add_config("{:37} {:>}".format("Target:", target))
+
 recursive = args.recursive
-print("{:30} {:>}".format("Recursive requests", "Yes" if recursive else "No"))
+Console.add_config(
+    "{:37} {:>}".format("Recursive requests", "Yes" if recursive else "No")
+)
 
 # Persistent connections
 persist = args.persist
-print("{:30} {:>}".format("Persistent connections", "Yes" if persist else "No"))
+Console.add_config(
+    "{:37} {:>}".format("Persistent connections", "Yes" if persist else "No")
+)
 
 
 # Misc options
@@ -309,7 +314,8 @@ if request_type:
     request_type = "HEAD"
 else:
     request_type = "GET"
-print("{:30} {:>}".format("Requests:", request_type))
+
+Console.add_config("{:37} {:>}".format("Requests type:", request_type))
 
 # Content inspecting
 content = args.content
@@ -333,17 +339,21 @@ if autodiscriminator:
         autodiscriminator_md5 = result
 
 # Misc user information
-print("{:30} {:>}".format("Filtered response codes:", ",".join(banned_response_codes)))
+
+
+Console.add_config(
+    "{:37} {:>}".format("Filtered response codes:", ",".join(banned_response_codes))
+)
 
 
 unbanned_codes = (
     unbanned_response_codes if not unbanned_response_codes == [""] else strict_codes
 )
-print("{:30} {:>}".format("OK response codes:", ",".join(unbanned_codes)))
+Console.add_config("{:37} {:>}".format("Ok response codes:", ",".join(unbanned_codes)))
 
 # Using Custom File Extension List
-print(
-    "{:30} {:>}".format(
+Console.add_config(
+    "{:37} {:>}".format(
         "Custom extensions:", ",".join(extension) if not extension == [""] else "No"
     )
 )
@@ -366,7 +376,7 @@ else:
         parser.print_help()
         sys.exit()
 
-print("{:30} {:>}".format("Payload:", payload_filename))
+Console.add_config("{:37} {:>}".format("Payload:", payload_filename))
 payload = Payload(target, payload_filename, resumer)
 
 # Uppercase
@@ -447,9 +457,9 @@ Console.number_of_requests = payload.get_total_requests()
 Console.number_of_threads = threads
 Console.show_full_path = full_path
 Console.show_content_type = show_content_type
-Console.hide_cur()
 Console.set_show_progress(False if args.no_progress else True)
 Console.set_show_colors(False if args.no_colors else True)
+Console.hide_cur()
 
 #
 # Create the thread_pool and start the daemonized threads

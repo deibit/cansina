@@ -1,6 +1,7 @@
 import os
 import sys
 import urllib.parse as urlparse
+from collections import OrderedDict
 
 if os.name == "nt":
     RED, MAGENTA, BLUE, GREEN, YELLOW, LBLUE, ENDC = ("", "", "", "", "", "", "")
@@ -21,16 +22,7 @@ else:
     DEL = "\33[2K"
 
 COLUMNS = 80
-
-banner = """
-   _____                _
-  / ____|              (_)
- | |     __ _ _ __  ___ _ _ __   __ _
- | |    / _` | '_ \/ __| | '_ \ / _` |
- | |___| (_| | | | \__ \ | | | | (_| |
-  \_____\__,_|_| |_|___/_|_| |_|\__,_|
-
-"""
+ROWS = 100
 
 
 def _get_terminal_width():
@@ -43,30 +35,34 @@ def _get_terminal_width():
         rows, columns = p.read().split()
         p.close()
         COLUMNS = int(columns)
+        ROWS = int(rows)
     except:
+        # ʕノ•ᴥ•ʔノ ︵ ┻━┻
+        # Assume 80 columns and 100 lines at least
         pass
 
 
 _get_terminal_width()
 
 
+class Juicy(OrderedDict):
+    def __setitem__(self, key, value):
+        super().__setitem__(key, value)
+        super().move_to_end(key)
+
+
 class Console:
-    MIN_COLUMN_SIZE = 64
     show_full_path = False
     show_content_type = False
-    visited = {}
     number_of_requests = 0
     number_of_threads = 0
     show_progress = True
     show_colors = True
-    # banner height + config height
-    fixed_height = 8 + 10
-    juicy_counter = 0
+    # fixed_height is a value comming from cansina.py configuration info plus banner
+    fixed_height = 10 + 5
+    juicy_entries = Juicy()
     last_offset = 0
-
-    @staticmethod
-    def banner():
-        sys.stdout.write(banner)
+    config_entries = []
 
     @staticmethod
     def curpos(x, y):
@@ -80,6 +76,7 @@ class Console:
     def show_cur():
         Console.curpos(0, Console.last_offset + 5)
         sys.stdout.write(SHOWCUR)
+        # print(Console.juicy_entries.keys())
 
     @staticmethod
     def hide_cur():
@@ -94,13 +91,50 @@ class Console:
         Console.show_colors = show_colors
 
     @staticmethod
-    def header():
-        sys.stdout.write("cod |    size    |  line  | time |\n")
-        sys.stdout.write("----------------------------------")
+    def add_config(message):
+        Console.config_entries.append(f"{message}\n")
+
+    @staticmethod
+    def banner():
+        offset = 5
+        ascii_banner = """
+   ___              _
+  / __|__ _ _ _  __(_)_ _  __ _
+ | (__/ _` | ' \(_-< | ' \/ _` |
+  \___\__,_|_||_/__/_|_||_\__,_|
+
+        """
+        sys.stdout.write(ascii_banner)
+        return offset
+
+    @staticmethod
+    def config():
+        offset = 0
+        for line in Console.config_entries:
+            offset += 1
+            sys.stdout.write(line)
+        return offset
+
+    @staticmethod
+    def progress(count):
+        offset = 1
+        block = "▇"
+        placeholder = "_"
+        number_of_blocks = 60
+        block_value = 100 / 60
+
+        percentage = count * 100 / Console.number_of_requests
+        blocks_to_print = round(percentage / block_value) + 1
+        placeholders_to_print = number_of_blocks - blocks_to_print
+
+        sys.stdout.write(
+            f"\r{count:>{len(str(Console.number_of_requests))}}/{Console.number_of_requests} [{YELLOW}{block*blocks_to_print}{ENDC}{placeholder*placeholders_to_print}] - {round(percentage,1)}%"
+        )
+
+        return offset
 
     @staticmethod
     def thread_activity(task):
-
         color = ""
         if Console.show_colors:
             if task.response_code == "200":
@@ -123,85 +157,92 @@ class Console:
         if task.location:
             target = target + " -> " + task.location
 
-        # User wants to see full path
+        # Full path
         if Console.show_full_path:
-            t_encode = task.get_complete_target()
-        else:
-            t_encode = target
+            target = task.get_complete_target()
 
+        # Content type
         if Console.show_content_type:
             content_type = task.response_type + " |"
         else:
             content_type = ""
 
-        # Cut resource if its length is wider than available columns
+        # Cut target string if its length is wider than available columns
         if len(target) > COLUMNS:
             target = target[: len(target) - COLUMNS]
 
+        # Format and print info to terminal
         thread_info = f"{color} #{task.thread + 1} | {task.response_code} | {target}"
+        sys.stdout.write(f"\r{DEL}{thread_info}{ENDC}")
 
-        sys.stdout.write(f"{DEL}\r{thread_info}{ENDC}")
-
+        # Add to juicy
         if task.is_valid() or task.content_detected:
-            Console.juicy_counter += 1
-            return f"{color}{task.response_code:^3} | {task.response_size:>10} | {task.number:>6} | {int(task.response_time):>4} | {target}{ENDC}"
-        else:
-            return None
+            formatted_task = f"\r{DEL}{color}{task.response_code:^3} | {task.response_size:>10} | {task.number:>6} | {int(task.response_time):>4} | {target}{ENDC}"
+            if not target in Console.juicy_entries:
+                Console.juicy_entries[target] = formatted_task
 
     @staticmethod
-    def progress(count):
-        block = "▇"
-        placeholder = "_"
-        number_of_blocks = 60
-        block_value = round(Console.number_of_requests / number_of_blocks)
-        blocks_to_print = round(count / block_value)
-        placeholders_to_print = number_of_blocks - blocks_to_print
-        percentage = int(count * 100 / Console.number_of_requests)
-
-        sys.stdout.write(
-            f"\r{count:>{len(str(Console.number_of_requests))}}/{Console.number_of_requests} [{YELLOW}{block*blocks_to_print}{ENDC}{placeholder*placeholders_to_print}] - {percentage}%"
-        )
+    def header():
+        offset = 5
+        sys.stdout.write("Results\n")
+        sys.stdout.write("\n")
+        sys.stdout.write("----------------------------------\n")
+        sys.stdout.write("Cod |    Size    |  Line  | Time |\n")
+        sys.stdout.write("----------------------------------")
+        return offset
 
     @staticmethod
     def body(task):
-        if task.ignorable:
-            return
+        # y-positioning cursor
+        # cursor_y = Console.fixed_height
+        cursor_y = 0
+        Console.curpos(0, cursor_y)
+        cursor_y += Console.banner()
 
-        cursor_y = Console.fixed_height
+        # Show banner
+        cursor_y += 2
+        Console.curpos(0, cursor_y)
+        cursor_y += Console.config()
 
         # Show progress
-        Console.curpos(0, cursor_y + 1)
-        Console.progress(task.number)
+        cursor_y += 1
+        Console.curpos(0, cursor_y)
+        cursor_y += Console.progress(task.number)
+        cursor_y += 1
 
         # Show thread activity
-        cursor_y += 2  # offset
-        Console.curpos(0, cursor_y + task.thread + 1)
-        activity = Console.thread_activity(task)
+        Console.curpos(0, cursor_y)
+        sys.stdout.write("Thread activity")
+        cursor_y += 1
+        Console.curpos(0, cursor_y + (task.thread + 1))
+        Console.thread_activity(task)
         cursor_y += Console.number_of_threads + 1
 
         # Header
         cursor_y += 1  # offset
         Console.curpos(0, cursor_y)
-        Console.header()
-        cursor_y += 1
+        cursor_y += Console.header()
 
         # Show juicy
-        if activity:
-            cursor_y += Console.juicy_counter
+        juicy_entries = list(Console.juicy_entries.values())
+        start_from = 0
+        stop_in = len(juicy_entries) - 1
+        free_rows = ROWS - cursor_y
+
+        if len(juicy_entries) > free_rows:
+            start_from = len(juicy_entries) - free_rows
+            stop_in = free_rows
+
+        for y, entry in enumerate(juicy_entries[start_from:stop_in]):
             Console.curpos(0, cursor_y)
-            sys.stdout.write(activity)
+            cursor_y += 1
+            if cursor_y > ROWS:
+                return
+            sys.stdout.write(entry)
 
         Console.last_offset = cursor_y
 
     @staticmethod
     def say(message):
-        Console.last_offset += 1
         Console.curpos(0, Console.last_offset)
-        sys.stdout.write(message)
-
-    @staticmethod
-    def ask(message):
-        Console.last_offset += 1
-        Console.curpos(0, Console.last_offset)
-        sys.stdout.write(message)
-        return sys.stdin.read()
+        sys.stdout.write(f"{message}\n")
