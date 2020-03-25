@@ -172,7 +172,7 @@ class Console:
             target = target[: len(target) - COLUMNS]
 
         # Format and print info to terminal
-        thread_info = f"{color} #{task.thread + 1} | {task.response_code} | {target}"
+        thread_info = f"{color} #{task.thread + 1:<3} | {task.response_code} | {target}"
         sys.stdout.write(f"\r{DEL}{thread_info}{ENDC}")
 
         # Add to juicy
