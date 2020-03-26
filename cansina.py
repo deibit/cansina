@@ -158,11 +158,11 @@ parser.add_argument(
     action="store_true",
 )
 parser.add_argument(
-    "--persist",
+    "--no-persist",
     dest="persist",
-    help="Use HTTP persistent connections",
-    default=False,
-    action="store_true",
+    help="Do not Use HTTP persistent connections",
+    default=True,
+    action="store_false",
 )
 parser.add_argument(
     "--full-path",

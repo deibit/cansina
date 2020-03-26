@@ -176,7 +176,8 @@ class Console:
 
         # Content type
         if Console.show_content_type:
-            content_type = task.response_type + " |"
+            content_type_color = GRAY if Console.show_colors else ""
+            content_type = f"{content_type_color}{task.response_type}{ENDC}"
         else:
             content_type = ""
 
@@ -185,26 +186,26 @@ class Console:
             target = target[: len(target) - COLUMNS]
 
         # Format and print info to terminal
-        thread_info = f"{color} #{task.thread + 1:<3} | {task.response_code} | {target}"
+        thread_info = f"{color} #{task.thread + 1:<3} {task.response_code}  {target}"
         if Console.show_progress:
             sys.stdout.write(f"\r{DEL}{thread_info}{ENDC}\n")
 
         # Add to juicy
         if task.is_valid() or task.content_detected:
-            formatted_task = f"\r{DEL}{color}{task.response_code:^3} | {task.response_size:>10} | {task.number:>6} | {target}{ENDC}"
+            size_color = BLUE if Console.show_colors else ""
+            formatted_task = f"\r{DEL}{color}{task.response_code:^3}{ENDC} {size_color}{task.response_size:>10} bytes{ENDC} {content_type} {target}"
 
             if not target in Console.juicy_entries:
                 Console.juicy_entries[target] = formatted_task
 
             if not Console.show_progress:
-                formatted_task = f"{color}{task.response_code:^3}{ENDC} {task.response_size:>10} bytes {target}{ENDC}\n"
+                formatted_task = f"{color}{task.response_code:^3}{ENDC} {task.response_size:>10} bytes {content_type} {target}\n"
                 sys.stdout.write(formatted_task)
 
     @staticmethod
     def header():
         offset = 2
         sys.stdout.write("Results\n")
-        sys.stdout.write("---------------------------\n")
         return offset
 
     @staticmethod
