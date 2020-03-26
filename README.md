@@ -26,6 +26,13 @@ Cansina is included in [BlackArch Linux](https://www.blackarch.org/), give it a 
 
 ![CansinaImage](https://github.com/deibit/cansina/raw/gh-pages/images/cansina-showcase.png "Image")
 
+# Speed
+
+Cansina download page content for inspection (Yep, Cansina is not racing for speed). 
+
+Put -H to make requests lighter and therefore faster
+
+
 # Installation
 
 From release tagged Py27, Cansina is made with Python 3.x in mind.
@@ -45,12 +52,10 @@ pip install -r requirements.txt
 [Wiki](https://github.com/deibit/cansina/wiki) is full of documentation and examples. But as a fast example:
 
 ```
-python3 cansina.py -u <site_url> -p <payload_file> --persist
+python3 cansina.py -u <site_url> -p <payload_file>
 ```
 
 Cansina is Python 2 compatible but 3 is more than advisable.
-
---persist is optional but it speedup the process. Also the noise.
 
 Help summary:
 
