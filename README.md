@@ -28,7 +28,7 @@ Cansina is included in [BlackArch Linux](https://www.blackarch.org/), give it a 
 
 # Speed
 
-Cansina download page content for inspection (Yep, Cansina is not racing for speed). 
+Cansina downloads page content for inspection (Yep, Cansina is not racing for speed). 
 
 Put -H to make requests lighter and therefore faster
 
