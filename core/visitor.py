@@ -90,7 +90,6 @@ class Visitor(threading.Thread):
         self.visitor_id = visitor_id
         self.payload = payload
         self.results = results
-        self.__time = []
         self.session = None
         self.lock = lock
 
@@ -125,9 +124,6 @@ class Visitor(threading.Thread):
             if Visitor.user_agent:
                 Visitor.headers["User-Agent"] = Visitor.user_agent
 
-            now = time.time()
-            timeout = sum(self.__time) / len(self.__time) if self.__time else 10
-
             # Persistent connections
             if Visitor.persist:
                 if not self.session:
@@ -143,7 +139,6 @@ class Visitor(threading.Thread):
                         headers=Visitor.headers,
                         proxies=Visitor.proxy,
                         verify=False,
-                        timeout=timeout,
                         auth=Visitor.auth,
                         cookies=Visitor.cookies,
                         allow_redirects=Visitor.is_allow_redirects,
@@ -155,7 +150,6 @@ class Visitor(threading.Thread):
                         headers=Visitor.headers,
                         proxies=Visitor.proxy,
                         verify=False,
-                        timeout=timeout,
                         auth=Visitor.auth,
                         cookies=Visitor.cookies,
                         allow_redirects=Visitor.is_allow_redirects,
@@ -166,7 +160,6 @@ class Visitor(threading.Thread):
                         task.get_complete_target(),
                         headers=Visitor.headers,
                         verify=False,
-                        timeout=timeout,
                         auth=Visitor.auth,
                         cookies=Visitor.cookies,
                         allow_redirects=Visitor.is_allow_redirects,
@@ -177,19 +170,15 @@ class Visitor(threading.Thread):
                         task.get_complete_target(),
                         headers=Visitor.headers,
                         verify=False,
-                        timeout=timeout,
                         auth=Visitor.auth,
                         cookies=Visitor.cookies,
                         allow_redirects=Visitor.is_allow_redirects,
                     )
 
-            after = time.time()
-            delta = (after - now) * 1000
             tmp_content = r.content
             task.response_size = len(tmp_content)
-            task.response_time = delta
+            task.response_time = round(r.elapsed.microseconds / 1000, 2)
             task.set_response_code(r.status_code)
-            self.__time.append(delta)
 
             # If discriminator is found we mark it 404
             if sys.version_info[0] >= 3:

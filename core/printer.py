@@ -51,19 +51,39 @@ class Juicy(OrderedDict):
         super().move_to_end(key)
 
 
+class Throughput:
+    def __init__(self):
+        self.MAX = 10
+        self.deltas = []
+
+    def push(self, delta):
+        if len(self.deltas) == self.MAX:
+            self.deltas.pop(0)
+
+        self.deltas.append(delta)
+
+    def get(self):
+        deltas_len = len(self.deltas)
+        if deltas_len:
+            return round(sum(self.deltas) / deltas_len, 2)
+        else:
+            return 0.0
+
+
 class Console:
-    show_full_path = False
-    show_content_type = False
-    number_of_requests = 0
-    number_of_threads = 0
-    show_progress = True
-    show_colors = True
+    config_entries = []
     # fixed_height is a value comming from cansina.py configuration info plus banner
     fixed_height = 10 + 5
     juicy_entries = Juicy()
     last_offset = 0
-    config_entries = []
+    number_of_requests = 0
+    number_of_threads = 0
+    show_colors = True
+    show_content_type = False
+    show_full_path = False
+    show_progress = True
     update_counter = 0
+    net_throughput = Throughput()
 
     @staticmethod
     def curpos(x, y):
@@ -147,6 +167,27 @@ class Console:
         return offset
 
     @staticmethod
+    def elapsed_time():
+        offset = 1
+        net_throughput = Console.net_throughput.get()
+        color = ""
+
+        if Console.show_colors:
+            if net_throughput < 553:
+                color = GREEN
+            elif net_throughput >= 553 and net_throughput < 998:
+                color = YELLOW
+            elif net_throughput >= 998:
+                color = RED
+
+        sys.stdout.write(
+            "\r{}{:37} {}{:>} ms{}\n".format(
+                DEL, "Thread activity", color, net_throughput, ENDC
+            )
+        )
+        return offset
+
+    @staticmethod
     def thread_activity(task):
         color = ""
         if Console.show_colors:
@@ -188,6 +229,7 @@ class Console:
         # Format and print info to terminal
         thread_info = f"{color} #{task.thread + 1:<3} {task.response_code}  {target}"
         if Console.show_progress:
+            Console.net_throughput.push(task.response_time)
             sys.stdout.write(f"\r{DEL}{thread_info}{ENDC}\n")
 
         # Add to juicy
@@ -201,12 +243,6 @@ class Console:
             if not Console.show_progress:
                 formatted_task = f"{color}{task.response_code:^3}{ENDC} {task.response_size:>10} bytes {content_type} {target}\n"
                 sys.stdout.write(formatted_task)
-
-    @staticmethod
-    def header():
-        offset = 2
-        sys.stdout.write("Results\n")
-        return offset
 
     @staticmethod
     def update(task):
@@ -223,26 +259,22 @@ class Console:
             Console.curpos(0, cursor_y)
             cursor_y += Console.config()
 
-            # Show progress
-            cursor_y += 1
-            Console.curpos(0, cursor_y)
-            cursor_y += Console.progress()
-            cursor_y += 1
-
             # Show thread activity
+            cursor_y += 1
             Console.curpos(0, cursor_y)
-            sys.stdout.write("Thread activity")
+            Console.elapsed_time()
             cursor_y += 1
             Console.curpos(0, cursor_y + (task.thread + 1))
             Console.thread_activity(task)
             cursor_y += Console.number_of_threads + 1
 
-            # Header
-            cursor_y += 1  # offset
+            # Show progress
+            cursor_y += 1
             Console.curpos(0, cursor_y)
-            cursor_y += Console.header()
+            cursor_y += Console.progress()
 
             # Show juicy
+            cursor_y += 1
             juicy_entries = list(Console.juicy_entries.values())
             start_from = 0
             stop_in = len(juicy_entries) - 1
