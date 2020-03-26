@@ -27,12 +27,6 @@ from utils.misc import check_domain, make_cookie_jar, prepare_proxies, prepare_t
 from plugins.robots import process_robots
 from plugins.inspector import Inspector
 
-raw_input = input
-Console.clear()
-Console.curpos(0, 0)
-Console.banner()
-
-
 #   Default options
 #
 USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 10.0; Windows NT 9.0; en-EN)"
@@ -459,7 +453,7 @@ Console.show_full_path = full_path
 Console.show_content_type = show_content_type
 Console.set_show_progress(False if args.no_progress else True)
 Console.set_show_colors(False if args.no_colors else True)
-Console.hide_cur()
+Console.init()
 
 #
 # Create the thread_pool and start the daemonized threads
@@ -502,6 +496,6 @@ except Exception as e:
 finally:
     # Dump results to database
     manager.save()
-    Console.show_cur()
+    Console.end()
 
 sys.exit()

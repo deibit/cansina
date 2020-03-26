@@ -63,6 +63,7 @@ class Console:
     juicy_entries = Juicy()
     last_offset = 0
     config_entries = []
+    update_counter = 0
 
     @staticmethod
     def curpos(x, y):
@@ -70,13 +71,14 @@ class Console:
 
     @staticmethod
     def clear():
-        sys.stdout.write(CLEARSCR)
+        if Console.show_progress:
+            sys.stdout.write(CLEARSCR)
 
     @staticmethod
     def show_cur():
-        Console.curpos(0, Console.last_offset + 5)
+        if Console.show_progress:
+            Console.curpos(0, Console.last_offset + 5)
         sys.stdout.write(SHOWCUR)
-        # print(Console.juicy_entries.keys())
 
     @staticmethod
     def hide_cur():
@@ -93,6 +95,17 @@ class Console:
     @staticmethod
     def add_config(message):
         Console.config_entries.append(f"{message}\n")
+
+    @staticmethod
+    def init():
+        if Console.show_progress:
+            Console.clear()
+            Console.hide_cur()
+
+    @staticmethod
+    def end():
+        if Console.show_progress:
+            Console.show_cur()
 
     @staticmethod
     def banner():
@@ -116,19 +129,19 @@ class Console:
         return offset
 
     @staticmethod
-    def progress(count):
+    def progress():
         offset = 1
         block = "▇"
         placeholder = "_"
         number_of_blocks = 60
         block_value = 100 / 60
 
-        percentage = count * 100 / Console.number_of_requests
+        percentage = Console.update_counter * 100 / Console.number_of_requests
         blocks_to_print = round(percentage / block_value) + 1
         placeholders_to_print = number_of_blocks - blocks_to_print
 
         sys.stdout.write(
-            f"\r{count:>{len(str(Console.number_of_requests))}}/{Console.number_of_requests} [{YELLOW}{block*blocks_to_print}{ENDC}{placeholder*placeholders_to_print}] - {round(percentage,1)}%"
+            f"\r{DEL}{Console.update_counter:>{len(str(Console.number_of_requests))}}/{Console.number_of_requests} [{YELLOW}{block*blocks_to_print}{ENDC}{placeholder*placeholders_to_print}] - {round(percentage,1)}%"
         )
 
         return offset
@@ -173,76 +186,85 @@ class Console:
 
         # Format and print info to terminal
         thread_info = f"{color} #{task.thread + 1:<3} | {task.response_code} | {target}"
-        sys.stdout.write(f"\r{DEL}{thread_info}{ENDC}")
+        if Console.show_progress:
+            sys.stdout.write(f"\r{DEL}{thread_info}{ENDC}\n")
 
         # Add to juicy
         if task.is_valid() or task.content_detected:
-            formatted_task = f"\r{DEL}{color}{task.response_code:^3} | {task.response_size:>10} | {task.number:>6} | {int(task.response_time):>4} | {target}{ENDC}"
+            formatted_task = f"\r{DEL}{color}{task.response_code:^3} | {task.response_size:>10} | {task.number:>6} | {target}{ENDC}"
+
             if not target in Console.juicy_entries:
                 Console.juicy_entries[target] = formatted_task
 
+            if not Console.show_progress:
+                formatted_task = f"{color}{task.response_code:^3}{ENDC} {task.response_size:>10} bytes {target}{ENDC}\n"
+                sys.stdout.write(formatted_task)
+
     @staticmethod
     def header():
-        offset = 5
+        offset = 2
         sys.stdout.write("Results\n")
-        sys.stdout.write("\n")
-        sys.stdout.write("----------------------------------\n")
-        sys.stdout.write("Cod |    Size    |  Line  | Time |\n")
-        sys.stdout.write("----------------------------------")
+        sys.stdout.write("---------------------------\n")
         return offset
 
     @staticmethod
-    def body(task):
+    def update(task):
+        Console.update_counter += 1
         # y-positioning cursor
         # cursor_y = Console.fixed_height
-        cursor_y = 0
-        Console.curpos(0, cursor_y)
-        cursor_y += Console.banner()
-
-        # Show banner
-        cursor_y += 2
-        Console.curpos(0, cursor_y)
-        cursor_y += Console.config()
-
-        # Show progress
-        cursor_y += 1
-        Console.curpos(0, cursor_y)
-        cursor_y += Console.progress(task.number)
-        cursor_y += 1
-
-        # Show thread activity
-        Console.curpos(0, cursor_y)
-        sys.stdout.write("Thread activity")
-        cursor_y += 1
-        Console.curpos(0, cursor_y + (task.thread + 1))
-        Console.thread_activity(task)
-        cursor_y += Console.number_of_threads + 1
-
-        # Header
-        cursor_y += 1  # offset
-        Console.curpos(0, cursor_y)
-        cursor_y += Console.header()
-
-        # Show juicy
-        juicy_entries = list(Console.juicy_entries.values())
-        start_from = 0
-        stop_in = len(juicy_entries) - 1
-        free_rows = ROWS - cursor_y
-
-        if len(juicy_entries) > free_rows:
-            start_from = len(juicy_entries) - free_rows
-            stop_in = free_rows
-
-        for y, entry in enumerate(juicy_entries[start_from:stop_in]):
+        if Console.show_progress:
+            cursor_y = 0
             Console.curpos(0, cursor_y)
-            cursor_y += 1
-            if cursor_y > ROWS:
-                return
-            sys.stdout.write(entry)
+            cursor_y += Console.banner()
 
-        Console.last_offset = cursor_y
+            # Show banner
+            cursor_y += 2
+            Console.curpos(0, cursor_y)
+            cursor_y += Console.config()
+
+            # Show progress
+            cursor_y += 1
+            Console.curpos(0, cursor_y)
+            cursor_y += Console.progress()
+            cursor_y += 1
+
+            # Show thread activity
+            Console.curpos(0, cursor_y)
+            sys.stdout.write("Thread activity")
+            cursor_y += 1
+            Console.curpos(0, cursor_y + (task.thread + 1))
+            Console.thread_activity(task)
+            cursor_y += Console.number_of_threads + 1
+
+            # Header
+            cursor_y += 1  # offset
+            Console.curpos(0, cursor_y)
+            cursor_y += Console.header()
+
+            # Show juicy
+            juicy_entries = list(Console.juicy_entries.values())
+            start_from = 0
+            stop_in = len(juicy_entries) - 1
+            free_rows = ROWS - cursor_y
+
+            if len(juicy_entries) > free_rows:
+                start_from = len(juicy_entries) - free_rows
+                stop_in = free_rows
+
+            for y, entry in enumerate(juicy_entries[start_from:stop_in]):
+                Console.curpos(0, cursor_y)
+                cursor_y += 1
+                if cursor_y > ROWS:
+                    return
+                sys.stdout.write(entry)
+
+            Console.last_offset = cursor_y
+
+        else:
+            Console.thread_activity(task)
 
     @staticmethod
     def say(message):
-        Console.curpos(0, Console.last_offset)
+        if Console.show_progress:
+            Console.curpos(0, Console.last_offset)
         sys.stdout.write(f"{message}\n")

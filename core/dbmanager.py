@@ -47,7 +47,7 @@ class DBManager:
         self.database_name = database_name
 
     def put(self, task):
-        Console.body(task)
+        Console.update(task)
         self.queue.put(task)
 
     def save(self):
