@@ -1,5 +1,4 @@
-Cansina
-=======
+# Cansina
 
 **IMPORTANT**: Clone this repository with:
 
@@ -23,8 +22,43 @@ Feature requests and comments are welcome.
 
 Cansina is included in [BlackArch Linux](https://www.blackarch.org/), give it a try!
 
-Options
--------
+## Screenshot
+
+![CansinaImage](https://github.com/deibit/cansina/raw/gh-pages/images/cansina-showcase.png "Image")
+
+# Installation
+
+From release tagged Py27, Cansina is made with Python 3.x in mind.
+
+[Last version with Python 2.7 support](https://github.com/deibit/cansina/tree/Py27)
+
+```
+git clone --depth=1 https://github.com/deibit/cansina
+
+cd cansina
+
+pip install -r requirements.txt
+```
+
+## Usage
+
+[Wiki](https://github.com/deibit/cansina/wiki) is full of documentation and examples. But as a fast example:
+
+```
+python3 cansina.py -u <site_url> -p <payload_file> --persist
+```
+
+Cansina is Python 2 compatible but 3 is more than advisable.
+
+--persist is optional but it speedup the process. Also the noise.
+
+Help summary:
+
+```
+python3 cansina.py -h
+```
+
+## Options
 
 ```
 usage: cansina.py -u url -p payload [options]
@@ -62,7 +96,7 @@ optional arguments:
   -r RESUME             Resume a session
   -R                    Parse robots.txt and check its contents
   --recursive           Recursive descend on path directories
-  --persist             Use HTTP persistent connections
+  --no-persist          Do not use persistant sessions
   --full-path           Show full path instead of only resources
   --show-type           Show content-type in results
   --no-follow           Do not follow redirections
@@ -77,50 +111,7 @@ optional arguments:
 License, requests, etc: https://github.com/deibit/cansina
 ```
 
-
-Screenshot
-----------
-
-![CansinaImage](https://github.com/deibit/cansina/raw/gh-pages/images/cansina-showcase.png "Image")
-
-
-Installation
-============
-
-From release tagged Py27, Cansina is made with Python 3.x in mind.
-
-[Last version with Python 2.7 support](https://github.com/deibit/cansina/tree/Py27)
-
-```
-git clone --depth=1 https://github.com/deibit/cansina
-
-cd cansina
-
-pip install -r requirements.txt
-```
-
-
-Usage
------
-
-[Wiki](https://github.com/deibit/cansina/wiki) is full of documentation and examples. But as a fast example:
-
-```
-python3 cansina.py -u <site_url> -p <payload_file> --persist
-```
-
-Cansina is Python 2 compatible but 3 is more than advisable.
-
---persist is optional but it speedup the process. Also the noise.
-
-Help summary:
-
-```
-python3 cansina.py -h
-```
-
-Features
---------
+## Features
 
 - Multithreading
 - Multiextension
@@ -129,7 +120,7 @@ Features
 - Content detection
 - Filter results by size
 - Filter results by content
-- URL pattern (***) to interpolate strings
+- URL pattern (\*\*\*) to interpolate strings
 - SSL support
 - Proxy support
 - Data persistence with sqlite database
@@ -140,9 +131,7 @@ Features
 - Persistent connections
 - Complementary tools
 
-
-Important
----------
+## Important
 
 This tool is intended to be used in a fair and legal context, meaning, for example,
 a penetration testing for which you have been provided previous authorization.
@@ -151,22 +140,16 @@ One of its legitimate uses might be the one described in the following article:
 
 - [Forced browsing](https://www.owasp.org/index.php/Forced_browsing)
 
-
-Dependencies
-------------
+## Dependencies
 
 - [requests](https://github.com/kennethreitz/requests)
 - Python 3 (also Python 2 is supported)
 
-
-Wordlists
----------
+## Wordlists
 
 - [SecList](https://github.com/danielmiessler/SecLists)
 
-
-License information
--------------------
+## License information
 
 License: GNU General Public License, version 3 or later; see LICENSE.txt
-         included in this archive for details.
+included in this archive for details.
