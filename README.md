@@ -26,7 +26,7 @@ Cansina is included in [BlackArch Linux](https://www.blackarch.org/), give it a 
 
 ![CansinaImage](https://github.com/deibit/cansina/raw/gh-pages/images/cansina-showcase.png "Image")
 
-# Speed
+## Speed
 
 Wanna make Cansina run faster?
 
@@ -36,11 +36,11 @@ Cansina downloads page content for inspection (Yep, Cansina does not racing for 
 - Put **--no-progress** to print no fancy information in the screen
 - Raise default threads to ten with **-t 10** (or even more if you don't mind noise and faulty tries)
 
-# Windows
+## Windows
 
 Untested in Windows. It should work with **--no-progress**
 
-# Installation
+## Installation
 
 From release tagged Py27, Cansina is made with Python 3.x in mind.
 
