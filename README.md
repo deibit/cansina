@@ -28,10 +28,17 @@ Cansina is included in [BlackArch Linux](https://www.blackarch.org/), give it a 
 
 # Speed
 
-Cansina downloads page content for inspection (Yep, Cansina is not racing for speed). 
+Wanna make Cansina run faster?
 
-Put -H to make requests lighter and therefore faster
+Cansina downloads page content for inspection (Yep, Cansina does not racing for speed). 
 
+- Put **-H** to make requests lighter
+- Put **--no-progress** to print no fancy information in the screen
+- Raise default threads to ten with **-t 10** (or even more if you don't mind noise and faulty tries)
+
+# Windows
+
+Untested in Windows. It should work with **--no-progress**
 
 # Installation
 
