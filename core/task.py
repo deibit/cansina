@@ -21,9 +21,8 @@ class Task:
         self.response_size = None
         self.response_time = None
         self.response_type = ""
-        self.valid = True
         self.content_detected = False
-        self.ignorable = False
+        self.ignorable = True
 
     def set_payload_length(self, length):
         self.payload_length = length
@@ -41,17 +40,15 @@ class Task:
         self.payload_filename = payload_filename
 
     def set_response_code(self, code):
-        self.response_code = str(code)
+        self.response_code = code
         # By default a code is valid but...if...
         # ...we select and optimistic detection 'all is valid' unless...
         if self.response_code in self.banned_response_codes:
-            self.valid = False
-            return
+            self.ignorable = True
         # ...but if we select a pesimistic one 'all is invalid' unless...
-        if "" not in self.unbanned_response_codes:
-            self.valid = False
-            if self.response_code in self.unbanned_response_codes:
-                self.valid = True
+        elif self.response_code in self.unbanned_response_codes:
+            print(self.response_code)
+            self.ignorable = False
 
     def set_location(self, location):
         self.location = location
@@ -85,9 +82,6 @@ class Task:
             return self.target + self.extension
         else:
             return self.target + self.resource + self.extension
-
-    def is_valid(self):
-        return self.valid
 
     def content_has_detected(self, value):
         self.content_detected = value

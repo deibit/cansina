@@ -6,8 +6,8 @@ import hashlib
 import requests
 
 
-unuseful_codes = ["404"]
-strict_codes = ["100", "200", "300", "301", "302", "401", "403", "405", "500"]
+unuseful_codes = [404]
+strict_codes = [100, 200, 300, 301, 302, 401, 403, 405, 500]
 
 
 class Visitor(threading.Thread):
@@ -178,6 +178,7 @@ class Visitor(threading.Thread):
             tmp_content = r.content
             task.response_size = len(tmp_content)
             task.response_time = round(r.elapsed.microseconds / 1000, 2)
+
             task.set_response_code(r.status_code)
 
             # If discriminator is found we mark it 404
@@ -206,8 +207,8 @@ class Visitor(threading.Thread):
                     task.response_code = str(r.history[0].status_code)
                     task.location = r.history[-1].url
             else:
-                if str(r.status_code).startswith("3"):
-                    task.set_response_code("404")
+                if r.status_code >= 300 and r.status_code < 400:
+                    task.set_response_code(404)
                     task.ignorable = True
 
             if "content-type" in [h.lower() for h in r.headers.keys()]:

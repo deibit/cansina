@@ -39,21 +39,34 @@ class DBManager:
                 connection.close()
 
             except Exception as e:
-                print("[DBManager] Error creating database {0}").format(database_name)
+                print("[DBManager] Error creating database {0}".format(database_name))
                 sys.exit()
 
         self.dead = False
         self.queue = queue.Queue()
         self.database_name = database_name
+        self.output = None
 
     def put(self, task):
         Console.update(task)
         self.queue.put(task)
 
     def save(self):
+        output = None
+        if self.output:
+            output = open(self.output, "w+")
+
         while not self.queue.empty():
             task = self.queue.get()
             self.process(task)
+            if output and not task.ignorable:
+                output.write(
+                    "{},{},{}\n".format(
+                        task.response_code,
+                        task.get_complete_target(),
+                        task.response_size,
+                    )
+                )
             self.queue.task_done()
 
     def process(self, task):
@@ -80,11 +93,10 @@ class DBManager:
             print(e)
         # TODO banned response code at user will
         if not cursor.fetchone():
-            if not task.response_code == "404":
-                if task.is_valid():
-                    cursor.execute(
-                        "INSERT INTO requests VALUES (?,?,?,?,?,?,?,?,?,?)",
-                        task.values() + (time.time(),),
-                    )
-                    connection.commit()
+            if not task.response_code == 404 or not task.ignorable:
+                cursor.execute(
+                    "INSERT INTO requests VALUES (?,?,?,?,?,?,?,?,?,?)",
+                    task.values() + (time.time(),),
+                )
+                connection.commit()
         connection.close()

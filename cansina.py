@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+from plugins.inspector import Inspector
+from plugins.robots import process_robots
+from utils.misc import check_domain, make_cookie_jar, prepare_proxies, prepare_target
+from core.resumer import Resumer
+from core.printer import Console
+from core.dbmanager import DBManager
+from core.payload import Payload
+from core.visitor import Visitor, strict_codes
 import sys
 import os
 import argparse
@@ -16,16 +24,6 @@ import urllib3
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-from core.visitor import Visitor, strict_codes
-from core.payload import Payload
-from core.dbmanager import DBManager
-from core.printer import Console
-from core.resumer import Resumer
-
-from utils.misc import check_domain, make_cookie_jar, prepare_proxies, prepare_target
-
-from plugins.robots import process_robots
-from plugins.inspector import Inspector
 
 #   Default options
 #
@@ -122,6 +120,14 @@ parser.add_argument(
     help="Extension list to use e.g: php,asp,...(default none)",
     default="",
 )
+
+parser.add_argument(
+    "-o",
+    dest="output",
+    help="Filename to write results (csv format, will append results if file exists)",
+    default="",
+)
+
 parser.add_argument(
     "-p",
     dest="payload",
@@ -282,14 +288,19 @@ Console.add_config(
 # Misc options
 extension = args.extension.split(",")
 threads = int(args.threads)
-banned_response_codes = args.banned.split(",")
-unbanned_response_codes = args.unbanned.split(",")
+banned_response_codes = [int(item) for item in args.banned.split(",") if item]
+unbanned_response_codes = [
+    int(item)
+    for item in args.unbanned.split(",")
+    if item and item not in banned_response_codes
+]
 user_agent = args.user_agent
 proxy = prepare_proxies(args.proxies.split(","))
 cookies = args.cookies
 request_delay = args.request_delay
 authentication = args.authentication
 size_discriminator = args.size_discriminator
+output = args.output
 
 # Personalized headers
 personalized_headers = {}
@@ -336,13 +347,17 @@ if autodiscriminator:
 
 
 Console.add_config(
-    "{:37} {:>}".format("Filtered response codes:", ",".join(banned_response_codes))
+    "{:37} {:>}".format(
+        "Filtered response codes:",
+        ",".join([str(item) for item in banned_response_codes]),
+    )
 )
 
 
-unbanned_codes = (
-    unbanned_response_codes if not unbanned_response_codes == [""] else strict_codes
+unbanned_response_codes = (
+    unbanned_response_codes if unbanned_response_codes else strict_codes
 )
+unbanned_codes = [str(i) for i in unbanned_response_codes]
 Console.add_config("{:37} {:>}".format("Ok response codes:", ",".join(unbanned_codes)))
 
 # Using Custom File Extension List
@@ -411,6 +426,7 @@ database_name = (
 if urlparse.urlparse(target).port is not None:
     database_name += "_" + str(urlparse.urlparse(target).port)
 manager = DBManager(database_name)
+manager.output = output
 manager_lock = threading.Lock()
 
 #

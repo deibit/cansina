@@ -97,7 +97,7 @@ class Console:
     @staticmethod
     def show_cur():
         if Console.show_progress:
-            Console.curpos(0, Console.last_offset + 5)
+            Console.curpos(0, Console.last_offset + 2)
         sys.stdout.write(SHOWCUR)
 
     @staticmethod
@@ -129,7 +129,6 @@ class Console:
 
     @staticmethod
     def banner():
-        offset = 5
         ascii_banner = """
    ___              _
   / __|__ _ _ _  __(_)_ _  __ _
@@ -138,19 +137,14 @@ class Console:
 
         """
         sys.stdout.write(ascii_banner)
-        return offset
 
     @staticmethod
     def config():
-        offset = 0
         for line in Console.config_entries:
-            offset += 1
             sys.stdout.write(line)
-        return offset
 
     @staticmethod
     def progress():
-        offset = 1
         block = "▇"
         placeholder = "_"
         number_of_blocks = 60
@@ -164,11 +158,8 @@ class Console:
             f"\r{DEL}{Console.update_counter:>{len(str(Console.number_of_requests))}}/{Console.number_of_requests} [{YELLOW}{block*blocks_to_print}{ENDC}{placeholder*placeholders_to_print}] - {round(percentage,1)}%"
         )
 
-        return offset
-
     @staticmethod
     def elapsed_time():
-        offset = 1
         net_throughput = Console.net_throughput.get()
         color = ""
 
@@ -185,23 +176,22 @@ class Console:
                 DEL, "Thread activity", color, net_throughput, ENDC
             )
         )
-        return offset
 
     @staticmethod
     def thread_activity(task):
         color = ""
         if Console.show_colors:
-            if task.response_code == "200":
+            if task.response_code == 200:
                 color = GREEN
-            if task.response_code == "401" or task.response_code == "403":
+            if task.response_code == 401 or task.response_code == 403:
                 color = RED
-            if task.response_code == "404" or (
+            if task.response_code == 404 or (
                 task.response_code in task.banned_response_codes
             ):
                 color = GRAY
-            if task.response_code == "301" or task.response_code == "302":
+            if task.response_code == 301 or task.response_code == 302:
                 color = LBLUE
-            if task.response_code.startswith("5") or task.response_code == "400":
+            if str(task.response_code).startswith("5") or task.response_code == 400:
                 color = YELLOW
             if task.content_detected:
                 color = MAGENTA
@@ -233,7 +223,7 @@ class Console:
             sys.stdout.write(f"\r{DEL}{thread_info}{ENDC}\n")
 
         # Add to juicy
-        if task.is_valid() or task.content_detected:
+        if not task.ignorable:
             size_color = BLUE if Console.show_colors else ""
             formatted_task = f"\r{DEL}{color}{task.response_code:^3}{ENDC} {size_color}{task.response_size:>10} bytes{ENDC} {content_type} {target}"
 
@@ -250,14 +240,17 @@ class Console:
         # y-positioning cursor
         # cursor_y = Console.fixed_height
         if Console.show_progress:
-            cursor_y = 0
-            Console.curpos(0, cursor_y)
-            cursor_y += Console.banner()
 
             # Show banner
-            cursor_y += 2
+            cursor_y = 0
             Console.curpos(0, cursor_y)
-            cursor_y += Console.config()
+            Console.banner()
+            cursor_y += 7
+
+            # Show config
+            Console.curpos(0, cursor_y)
+            Console.config()
+            cursor_y += 9
 
             # Show thread activity
             cursor_y += 1
@@ -271,24 +264,19 @@ class Console:
             # Show progress
             cursor_y += 1
             Console.curpos(0, cursor_y)
-            cursor_y += Console.progress()
+            Console.progress()
+            cursor_y += 2
 
             # Show juicy
-            cursor_y += 1
             juicy_entries = list(Console.juicy_entries.values())
             start_from = 0
-            stop_in = len(juicy_entries) - 1
-            free_rows = ROWS - cursor_y
+            stop_in = start_from + (ROWS - cursor_y)
 
-            if len(juicy_entries) > free_rows:
-                start_from = len(juicy_entries) - free_rows
-                stop_in = free_rows
-
-            for y, entry in enumerate(juicy_entries[start_from:stop_in]):
+            for entry in juicy_entries[start_from:stop_in]:
                 Console.curpos(0, cursor_y)
                 cursor_y += 1
-                if cursor_y > ROWS:
-                    return
+                if cursor_y > ROWS - 20:
+                    break
                 sys.stdout.write(entry)
 
             Console.last_offset = cursor_y
@@ -298,6 +286,6 @@ class Console:
 
     @staticmethod
     def say(message):
-        if Console.show_progress:
+        if Console.show_progress and Console.last_offset < ROWS:
             Console.curpos(0, Console.last_offset)
         sys.stdout.write(f"{message}\n")
