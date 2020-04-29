@@ -28,9 +28,9 @@ Cansina is included in [BlackArch Linux](https://www.blackarch.org/), give it a 
 
 ## Speed
 
-Wanna make Cansina run faster?
+Wanna make Cansina run faster? Grab my cup of coffee.
 
-Cansina downloads page content for inspection (Yep, Cansina does not racing for speed). 
+Cansina downloads page content for inspection by default (Yep, Cansina does not racing for speed). but you can disable GET requests and make them HEAD (no body page download). Also, do no print the fancy terminal interface (you will lost some hackish points).
 
 - Put **-H** to make requests lighter
 - Put **--no-progress** to print no fancy information in the screen
@@ -42,7 +42,7 @@ Untested in Windows. It should work with **--no-progress**
 
 ## Installation
 
-From release tagged Py27, Cansina is made with Python 3.x in mind.
+From release tagged Py27, Cansina is made with only Python 3 in mind.
 
 [Last version with Python 2.7 support](https://github.com/deibit/cansina/tree/Py27)
 
@@ -98,6 +98,8 @@ optional arguments:
   -c CONTENT            Inspect content looking for a particular string
   -d DISCRIMINATOR      If this string if found it will be treated as a 404
   -e EXTENSION          Extension list to use e.g: php,asp,...(default none)
+  -o OUTPUT             Write (append) results in CSV format to a file; -o
+                        <filename>
   -p PAYLOAD            A single file, a file with filenames (.payload) or a
                         directory (will do *.txt)
   -s SIZE_DISCRIMINATOR
@@ -108,23 +110,28 @@ optional arguments:
   -r RESUME             Resume a session
   -R                    Parse robots.txt and check its contents
   --recursive           Recursive descend on path directories
-  --no-persist          Do not use persistant sessions
+  --no-persist          Do not Use HTTP persistent connections
   --full-path           Show full path instead of only resources
   --show-type           Show content-type in results
   --no-follow           Do not follow redirections
   --line CONTINUE_LINE  Continue payload in line <n>
+  --resumer             Save session in a file
   --headers HEADERS     Set personalized headers: key=value;key=value...
   --capitalize          Transform 'word' into 'Word'.
   --strip-extension     Strip word extension: word.ext into word
   --alpha               Filter non alphanumeric words from wordlist
-  --no-progress         Don't show tested words and progress. (For dumb terminals)
-  --no-colors           Don't use output colors to keep output clean, e.g. when redirecting output to file
+  --no-progress         Don't show tested words and progress. (For dumb
+                        terminals)
+  --no-colors           Don't use output colors to keep output clean, e.g.
+                        when redirecting output to file
 
 License, requests, etc: https://github.com/deibit/cansina
 ```
 
 ## Features
 
+- Data persistence with sqlite database
+- Optional output in CSV format
 - Multithreading
 - Multiextension
 - Custom headers
@@ -135,7 +142,6 @@ License, requests, etc: https://github.com/deibit/cansina
 - URL pattern (\*\*\*) to interpolate strings
 - SSL support
 - Proxy support
-- Data persistence with sqlite database
 - Basic Authentication
 - Cookie jar
 - Resuming
