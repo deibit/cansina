@@ -42,10 +42,6 @@ Untested in Windows. It should work with **--no-progress**
 
 ## Installation
 
-From release tagged Py27, Cansina is made with Python 3.x in mind.
-
-[Last version with Python 2.7 support](https://github.com/deibit/cansina/tree/Py27)
-
 ```
 git clone --depth=1 https://github.com/deibit/cansina
 
@@ -54,6 +50,10 @@ cd cansina
 pip install -r requirements.txt
 ```
 
+From release tagged Py27, Cansina is made with Python 3.x in mind.
+
+[Last version with Python 2.7 support](https://github.com/deibit/cansina/tree/Py27)
+
 ## Usage
 
 [Wiki](https://github.com/deibit/cansina/wiki) is full of documentation and examples. But as a fast example:
@@ -61,8 +61,6 @@ pip install -r requirements.txt
 ```
 python3 cansina.py -u <site_url> -p <payload_file>
 ```
-
-Cansina is Python 2 compatible but 3 is more than advisable.
 
 Help summary:
 
@@ -155,7 +153,7 @@ One of its legitimate uses might be the one described in the following article:
 ## Dependencies
 
 - [requests](https://github.com/kennethreitz/requests)
-- Python 3 (also Python 2 is supported)
+- Python 3
 
 ## Wordlists
 
