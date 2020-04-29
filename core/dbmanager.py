@@ -54,7 +54,7 @@ class DBManager:
     def save(self):
         output = None
         if self.output:
-            output = open(self.output, "w+")
+            output = open(self.output, "a")
 
         while not self.queue.empty():
             task = self.queue.get()

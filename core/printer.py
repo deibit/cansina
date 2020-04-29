@@ -22,7 +22,7 @@ else:
     DEL = "\33[2K"
 
 COLUMNS = 80
-ROWS = 100
+ROWS = 70
 
 
 def _get_terminal_width():
@@ -30,15 +30,17 @@ def _get_terminal_width():
         Get the terminal width to adjust columns size
     """
     try:
+        global ROWS
         # (Slightly modified) http://stackoverflow.com/a/943921/91267
         p = os.popen("stty size", "r")
         rows, columns = p.read().split()
         p.close()
         COLUMNS = int(columns)
         ROWS = int(rows)
+
     except:
         # ʕノ•ᴥ•ʔノ ︵ ┻━┻
-        # Assume 80 columns and 100 lines at least
+        # Assume 80 columns and 70 rows at least
         pass
 
 
@@ -97,7 +99,7 @@ class Console:
     @staticmethod
     def show_cur():
         if Console.show_progress:
-            Console.curpos(0, Console.last_offset + 2)
+            Console.curpos(0, Console.last_offset)
         sys.stdout.write(SHOWCUR)
 
     @staticmethod
@@ -269,14 +271,16 @@ class Console:
 
             # Show juicy
             juicy_entries = list(Console.juicy_entries.values())
-            start_from = 0
-            stop_in = start_from + (ROWS - cursor_y)
+            free_rows = ROWS - cursor_y
 
-            for entry in juicy_entries[start_from:stop_in]:
+            if len(juicy_entries) > free_rows:
+                juicy_entries = juicy_entries[len(juicy_entries) - free_rows :]
+
+            for entry in juicy_entries:
                 Console.curpos(0, cursor_y)
                 cursor_y += 1
-                if cursor_y > ROWS - 20:
-                    break
+                if cursor_y > ROWS:
+                    return
                 sys.stdout.write(entry)
 
             Console.last_offset = cursor_y

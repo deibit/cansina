@@ -47,7 +47,6 @@ class Task:
             self.ignorable = True
         # ...but if we select a pesimistic one 'all is invalid' unless...
         elif self.response_code in self.unbanned_response_codes:
-            print(self.response_code)
             self.ignorable = False
 
     def set_location(self, location):

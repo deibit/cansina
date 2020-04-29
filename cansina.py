@@ -124,7 +124,7 @@ parser.add_argument(
 parser.add_argument(
     "-o",
     dest="output",
-    help="Filename to write results (csv format, will append results if file exists)",
+    help="Write (append) results in CSV format to a file; -o <filename>",
     default="",
 )
 
