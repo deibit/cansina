@@ -1,25 +1,22 @@
 #!/usr/bin/env python3
 from plugins.inspector import Inspector
 from plugins.robots import process_robots
-from utils.misc import check_domain, make_cookie_jar, prepare_proxies, prepare_target
+from utils.misc import make_cookie_jar, prepare_proxies, prepare_target
 from core.resumer import Resumer
 from core.printer import Console
 from core.dbmanager import DBManager
 from core.payload import Payload
 from core.visitor import Visitor, strict_codes
 import sys
-import os
 import argparse
 import time
-import socket
 import pickle
-import tempfile
 import threading
+import random
 import urllib.parse as urlparse
 
 from datetime import timedelta
 
-import requests
 import urllib3
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -27,8 +24,13 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 #   Default options
 #
-USER_AGENT = "Mozilla/5.0 (Windows; U; MSIE 10.0; Windows NT 9.0; en-EN)"
 THREADS = 4
+USER_AGENT = ""
+
+# Set a random user-agent
+with open("core/ua.txt", "r") as uas:
+    lines = uas.readlines()
+    USER_AGENT = lines[random.randint(0, len(lines) - 1)].strip()
 
 #
 # Parsing program options
@@ -260,7 +262,7 @@ if resume:
         with open(resume, "rb") as f:
             resumer = pickle.load(f)
             args = resumer.get_args()
-    except:
+    except Exception:
         sys.stdout.write("[!] Could not load a correct resume file, sorry.")
         sys.exit()
 
@@ -449,7 +451,7 @@ Visitor.set_headers(personalized_headers)
 try:
     cookie_jar = make_cookie_jar(cookies)
     Visitor.set_cookies(cookie_jar)
-except:
+except Exception:
     print("[!] Error setting cookies. Review cookie string (key:value,key:value...)")
     sys.exit()
 

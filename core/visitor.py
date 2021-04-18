@@ -1,7 +1,6 @@
 import threading
 import time
 import sys
-import urllib
 import hashlib
 import requests
 
@@ -97,11 +96,11 @@ class Visitor(threading.Thread):
         try:
             while not Visitor.killed:
                 task = self.payload.get()
-                if task == None:
+                if not task:
                     return
                 self.visit(task)
                 self.payload.task_done()
-        except:
+        except Exception:
             pass
 
     def visit(self, task):
@@ -214,7 +213,7 @@ class Visitor(threading.Thread):
             if "content-type" in [h.lower() for h in r.headers.keys()]:
                 try:
                     task.response_type = r.headers["Content-Type"].split(";")[0]
-                except:
+                except Exception:
                     pass
 
             task.thread = self.visitor_id
@@ -228,12 +227,10 @@ class Visitor(threading.Thread):
             # TODO log to a file instead of screen
             print("[!] Timeout/Connection error")
             print(e)
-            pass
 
         except Exception as e:
             print("[!] General exception while visiting")
             print(e)
-            pass
 
         finally:
             self.lock.release()

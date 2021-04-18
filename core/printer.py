@@ -31,6 +31,7 @@ def _get_terminal_width():
     """
     try:
         global ROWS
+        global COLUMNS
         # (Slightly modified) http://stackoverflow.com/a/943921/91267
         p = os.popen("stty size", "r")
         rows, columns = p.read().split()
@@ -38,7 +39,7 @@ def _get_terminal_width():
         COLUMNS = int(columns)
         ROWS = int(rows)
 
-    except:
+    except Exception:
         # ʕノ•ᴥ•ʔノ ︵ ┻━┻
         # Assume 80 columns and 70 rows at least
         pass
