@@ -22,8 +22,6 @@ Feature requests and comments are welcome.
 
 Cansina is included in [BlackArch Linux](https://www.blackarch.org/), give it a try!
 
-## Screenshot
-
 ![CansinaImage](https://github.com/deibit/cansina/raw/gh-pages/images/cansina-showcase.png "Image")
 
 ## Speed
@@ -35,6 +33,17 @@ Cansina downloads page content for inspection by default (Yep, Cansina does not 
 - Put **-H** to make requests lighter
 - Put **--no-progress** to print no fancy information in the screen
 - Raise default threads to ten with **-t 10** (or even more if you don't mind noise and faulty tries)
+
+## Integrated tree viewer
+
+Cansina integrates a tree viewer (thanks to asciitree package) to output a project sqlite base stored results (http 200 status code by now).
+
+```
+./cansina.py -V output/http_testphp.vulnweb.com.sqlite
+```
+
+![ViewerImage](https://github.com/deibit/cansina/raw/gh-pages/images/viewer.png "Image")
+
 
 ## Windows
 
