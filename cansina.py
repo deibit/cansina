@@ -7,6 +7,7 @@ from core.printer import Console
 from core.dbmanager import DBManager
 from core.payload import Payload
 from core.visitor import Visitor, strict_codes
+from core.viewer import viewer
 import sys
 import argparse
 import time
@@ -122,14 +123,12 @@ parser.add_argument(
     help="Extension list to use e.g: php,asp,...(default none)",
     default="",
 )
-
 parser.add_argument(
     "-o",
     dest="output",
     help="Write (append) results in CSV format to a file; -o <filename>",
     default="",
 )
-
 parser.add_argument(
     "-p",
     dest="payload",
@@ -148,6 +147,12 @@ parser.add_argument(
     type=int,
     help="Number of threads (default 4)",
     default=THREADS,
+)
+parser.add_argument(
+    "-V",
+    dest="view",
+    help="Print a tree with a project's discovered items: -V output/project.sqlite",
+    default="",
 )
 parser.add_argument("-u", dest="target", help="Target url", default=None)
 parser.add_argument("-r", dest="resume", help="Resume a session", default=False)
@@ -200,7 +205,6 @@ parser.add_argument(
     help="Continue payload in line <n>",
     default=0,
 )
-
 parser.add_argument(
     "--resumer",
     dest="do_resumer",
@@ -208,7 +212,6 @@ parser.add_argument(
     default=False,
     action="store_true",
 )
-
 parser.add_argument(
     "--headers",
     dest="headers",
@@ -252,6 +255,12 @@ parser.add_argument(
 )
 
 args = parser.parse_args()
+
+# Viewer? Show results and exit
+view = args.view
+if view:
+    viewer(view)
+    sys.exit()
 
 # Initialize a Resumer object
 resumer = Resumer(args, args.continue_line)
