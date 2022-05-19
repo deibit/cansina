@@ -7,7 +7,7 @@ import urllib.parse as urlparse
 try:
     from asciitree import LeftAligned
 except:
-    print("install asciitree for viewer feature")
+    pass
 
 
 RED = "\033[31m"
