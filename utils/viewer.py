@@ -75,7 +75,7 @@ banned_extensions = args.banned_extensions
 unbanned_extensions = args.unbanned_extensions
 size_filter = args.size_filter
 used_payloads = args.u
-tree = args.tree
+want_tree = args.tree
 
 if not response_codes:
     response_codes = ["200", "302", "403"]
@@ -131,7 +131,7 @@ def table():
     if used_payloads:
         output = {}
         for k, v in data:
-            if not output.has_key(k):
+            if not k in output:
                 output[k] = [v]
                 continue
             output[k].append(v)
@@ -142,7 +142,7 @@ def table():
                 print("        {}{}".format(BLUE, v))
         sys.exit()
 
-    data.sort(cmp=comparator, key=lambda x: x[2] + x[3] + x[4])
+    data.sort(key=lambda x: x[2] + x[3] + x[4])
     for line in data:
         (url, resource, extension, response_code, location, response_size) = (
             line[2],
@@ -189,7 +189,7 @@ def table():
                 )
 
 
-def tree():
+def ftree():
     if not LeftAligned:
         print("asciitree not installed!")
         sys.exit(-1)
@@ -228,6 +228,6 @@ def tree():
 
 if __name__ == "__main__":
     if args.tree:
-        tree()
+        ftree()
     else:
         table()
