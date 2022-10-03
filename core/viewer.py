@@ -105,8 +105,8 @@ def table(data):
 
 
 def tree(data):
-    if not LeftAligned:
-        print("asciitree not installed!")
+    if not "LeftAligned" in dir():
+        print("[!] Module 'asciitree' not installed. Try: \"pip install asciitree\"")
         sys.exit(-1)
 
     tr = LeftAligned()
