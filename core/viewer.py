@@ -4,11 +4,6 @@ import sqlite3
 import argparse
 import urllib.parse as urlparse
 
-try:
-    from asciitree import LeftAligned
-except:
-    pass
-
 
 RED = "\033[31m"
 MAGENTA = "\033[35m"
@@ -105,7 +100,9 @@ def table(data):
 
 
 def tree(data):
-    if not "LeftAligned" in dir():
+    try:
+        from asciitree import LeftAligned
+    except:
         print("[!] Module 'asciitree' not installed. Try: \"pip install asciitree\"")
         sys.exit(-1)
 
