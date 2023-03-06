@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "cansina"
+version = "0.1.0"
+description = ""
+authors = ["David Garcia <daganu@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = {extras = ["security"], version = "^2.28.2"}
+asciitree = "^0.3.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
