@@ -25,7 +25,6 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 current_directory = os.path.dirname(os.path.abspath(__file__))
-print(current_directory)
 
 #   Default options
 #
