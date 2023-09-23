@@ -35,15 +35,7 @@ cansina -u <site_url> -p <payload_file>
 Help summary:
 
 ```
-python3 cansina.py -h
-```
-
-## Options
-
-```
-usage: cansina.py -h
-
-License, requests, etc: https://github.com/deibit/cansina
+cansina.py -h
 ```
 
 ## Features
