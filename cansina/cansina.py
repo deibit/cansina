@@ -1,27 +1,31 @@
 #!/usr/bin/env python3
-from plugins.inspector import Inspector
-from plugins.robots import process_robots
-from utils.misc import make_cookie_jar, prepare_proxies, prepare_target
-from core.resumer import Resumer
-from core.printer import Console
-from core.dbmanager import DBManager
-from core.payload import Payload
-from core.visitor import Visitor, strict_codes
-from core.viewer import viewer
-import sys
 import argparse
-import time
+import os
 import pickle
-import threading
 import random
+import sys
+import threading
+import time
 import urllib.parse as urlparse
-
 from datetime import timedelta
 
 import urllib3
 
+from cansina.core.dbmanager import DBManager
+from cansina.core.payload import Payload
+from cansina.core.printer import Console
+from cansina.core.resumer import Resumer
+from cansina.core.viewer import viewer
+from cansina.core.visitor import Visitor, strict_codes
+from cansina.plugins.inspector import Inspector
+from cansina.plugins.robots import process_robots
+from cansina.utils.misc import make_cookie_jar, prepare_proxies, prepare_target
+
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+
+current_directory = os.path.dirname(os.path.abspath(__file__))
+print(current_directory)
 
 #   Default options
 #
@@ -29,7 +33,7 @@ THREADS = 4
 USER_AGENT = ""
 
 # Set a random user-agent
-with open("core/ua.txt", "r") as uas:
+with open(f"{current_directory}/utils/ua.txt", "r") as uas:
     lines = uas.readlines()
     USER_AGENT = lines[random.randint(0, len(lines) - 1)].strip()
 
@@ -129,6 +133,14 @@ parser.add_argument(
     help="Write (append) results in CSV format to a file; -o <filename>",
     default="",
 )
+
+parser.add_argument(
+    "-O",
+    dest="db_output",
+    help="Where to write the sqlite database file. -O <filepath> (default is current directory)",
+    default=".",
+)
+
 parser.add_argument(
     "-p",
     dest="payload",
@@ -436,7 +448,14 @@ database_name = (
 )
 if urlparse.urlparse(target).port is not None:
     database_name += "_" + str(urlparse.urlparse(target).port)
-manager = DBManager(database_name)
+
+
+if args.db_output:
+    db_dir = args.db_output
+else:
+    db_dir = current_directory
+
+manager = DBManager(f"{db_dir}/{database_name}.sqlite")
 manager.output = output
 manager_lock = threading.Lock()
 
@@ -491,38 +510,40 @@ for visitor_id in range(threads):
     thread_pool.append(v)
     v.start()
 
-# Main loop
-try:
-    payload_queue.join()
 
-    for thread in thread_pool:
-        payload_queue.put(None)
-    for visitor in thread_pool:
-        visitor.join()
+if __name__ == "__main__":
+    # Main loop
+    try:
+        payload_queue.join()
 
-except KeyboardInterrupt:
-    Console.say("Waiting for threads to stop...")
+        for thread in thread_pool:
+            payload_queue.put(None)
+        for visitor in thread_pool:
+            visitor.join()
 
-    Visitor.kill()
+    except KeyboardInterrupt:
+        Console.say("Waiting for threads to stop...")
 
-    for visitor in thread_pool:
-        visitor.join()
+        Visitor.kill()
 
-    if args.do_resumer:
-        resumer.set_line(payload_queue.get().get_number())
-        with open(
-            "resume_file_" + time.strftime("%d_%m_%y_%H_%M", time.localtime()), "wb"
-        ) as f:
-            pickle.dump(resumer, f)
+        for visitor in thread_pool:
+            visitor.join()
 
-except Exception as e:
-    import traceback as tb
+        if args.do_resumer:
+            resumer.set_line(payload_queue.get().get_number())
+            with open(
+                "resume_file_" + time.strftime("%d_%m_%y_%H_%M", time.localtime()), "wb"
+            ) as f:
+                pickle.dump(resumer, f)
 
-    Console.say(tb.print_tb(sys.exc_info()[2]))
+    except Exception as e:
+        import traceback as tb
 
-finally:
-    # Dump results to database
-    manager.save()
-    Console.end()
+        Console.say(tb.print_tb(sys.exc_info()[2]))
+
+    finally:
+        # Dump results to database
+        manager.save()
+        Console.end()
 
 sys.exit()

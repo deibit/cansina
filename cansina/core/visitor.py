@@ -1,9 +1,9 @@
+import hashlib
+import sys
 import threading
 import time
-import sys
-import hashlib
-import requests
 
+import requests
 
 unuseful_codes = [404]
 strict_codes = [100, 200, 300, 301, 302, 401, 403, 405, 500]

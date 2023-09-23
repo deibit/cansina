@@ -27,7 +27,7 @@ ROWS = 70
 
 def _get_terminal_width():
     """
-        Get the terminal width to adjust columns size
+    Get the terminal width to adjust columns size
     """
     try:
         global ROWS

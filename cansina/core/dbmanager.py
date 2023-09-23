@@ -1,23 +1,20 @@
-import sqlite3
-import time
 import os
-import sys
 import queue
+import sqlite3
+import sys
+import time
 
-from core.printer import Console
+from cansina.core.printer import Console
 
-OUTPUT_DIR = "output" + os.sep
 SUFIX = ".sqlite"
 
 
 class DBManager:
-    def __init__(self, database_name):
+    def __init__(self, database_path):
 
         # Check for self.database_path, create dirs and database if they don't exists
-        self.database_path = OUTPUT_DIR + database_name + SUFIX
+        self.database_path = database_path
         if not os.path.isfile(self.database_path):
-            if not os.path.isdir(OUTPUT_DIR):
-                os.mkdir(OUTPUT_DIR)
             try:
                 connection = sqlite3.connect(self.database_path)
                 connection.text_factory = str
@@ -39,12 +36,11 @@ class DBManager:
                 connection.close()
 
             except Exception as e:
-                print("[DBManager] Error creating database {0}".format(database_name))
+                print("[DBManager] Error creating database {0}".format(database_path))
                 sys.exit()
 
         self.dead = False
         self.queue = queue.Queue()
-        self.database_name = database_name
         self.output = None
 
     def put(self, task):

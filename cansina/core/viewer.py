@@ -1,9 +1,8 @@
 #!/usr/bin/env python
-import sys
-import sqlite3
 import argparse
+import sqlite3
+import sys
 import urllib.parse as urlparse
-
 
 RED = "\033[31m"
 MAGENTA = "\033[35m"

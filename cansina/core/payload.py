@@ -1,19 +1,18 @@
+import fileinput
+import fnmatch
+import os
+import os.path
+import queue
 import sys
 import threading
 import time
-import fileinput
-import os
-import os.path
-import fnmatch
-import queue
-
 import urllib.parse as urlparse
 
-from core.task import Task
+from cansina.core.task import Task
 
 
 def _get_url_components(target):
-    """ Get a url and returns multiple paths composed by recursive components"""
+    """Get a url and returns multiple paths composed by recursive components"""
     path = [i for i in urlparse.urlparse(target).path.split("/") if len(i) > 0]
     temp_path = ""
     list_path = ["/"]
@@ -25,13 +24,13 @@ def _get_url_components(target):
 
 
 def _populate_list_with_file(file_name, linenumber):
-    """ Open a file, read its content and strips it. Returns a list with the content
-        additionally it filter and clean some splinters
+    """Open a file, read its content and strips it. Returns a list with the content
+    additionally it filter and clean some splinters
     """
 
     def _read_a_file_return_a_list(file_name):
         """
-            Small utility function. Open a file a return its content as a list
+        Small utility function. Open a file a return its content as a list
         """
         tmp_list = []
         try:
