@@ -35,7 +35,7 @@ cansina -u <site_url> -p <payload_file>
 Help summary:
 
 ```
-cansina.py -h
+cansina -h
 ```
 
 ## Features
