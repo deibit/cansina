@@ -1,6 +1,7 @@
 # Cansina
 
 [![Build Status](https://travis-ci.org/deibit/cansina.svg?branch=master)](https://travis-ci.org/deibit/cansina)
+[![Run on Repl.it](https://repl.it/badge/github/deibit/cansina)](https://repl.it/github/deibit/cansina)
 
 Cansina is a Web Content Discovery Application.
 
