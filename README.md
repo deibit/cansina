@@ -69,6 +69,10 @@ Cansina downloads page content for inspection by default (Yep, Cansina does not 
 - Put **--no-progress** to print no fancy information in the screen
 - Raise default threads to ten with **-t 10** (or even more if you don't mind noise and faulty tries)
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=deibit/cansina&type=Date)](https://star-history.com/#deibit/cansina&Date)
+
 ## Integrated tree viewer
 
 Cansina integrates a tree viewer (thanks to asciitree package) to output a project sqlite base stored results (http 200 status code by now).
